@@ -11,7 +11,10 @@ inline void test_gradient_counting()
 inline void test_GD()
 {
 	// std::cout << "GD: " << gradient_optimize(schaffer_function, { 0, -1.25 }, 0.01, 100);
-	std::cout << "GD: " << gradient_optimize(parabaloid, parabaloid_derivative, { 0, -1.25 }, 0.01, 100);
+	std::cout << "GD: " << gradient_optimize(parabaloid, parabaloid_derivative, { 0, -1.25 }, 0.1, 100,
+			[](size_t iteration, const std::vector<double>& current_values ){
+		std::cout << "After iteration " << iteration << ": argument value: " << current_values << ", function result = " << parabaloid(current_values) << std::endl;
+	});
 }
 
 inline void test_newton_optimize()

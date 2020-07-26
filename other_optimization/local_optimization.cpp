@@ -75,22 +75,24 @@ std::vector<double> get_second_gradient(const std::function<double(const std::ve
 /// Without knowing derivative:
 
 std::pair<double, std::vector<double>> gradient_optimize(const std::function<double(const std::vector<double>&)>& func,
-	const std::vector<double>& start_point, double learning_rate, const size_t iterations, double little_delta)
+	const std::vector<double>& start_point, double learning_rate, const size_t iterations,
+	const std::optional<std::function<void (size_t iteration, std::vector<double> current_value)>>& logging_callback, double little_delta)
 {
 	return gradient_optimize(func,
 	                       [little_delta, & start_point, & func](const std::vector<double>&) -> std::vector<double> { return get_gradient(func, start_point, little_delta); },
-	                       start_point, learning_rate, iterations);
+	                       start_point, learning_rate, iterations, logging_callback);
 }
 
 
 
 std::pair<double, std::vector<double>> newton_optimize(const std::function<double(const std::vector<double>&)>& func,
-	const std::vector<double>& start_point, double learning_rate, size_t iterations, double little_delta)
+	const std::vector<double>& start_point, double learning_rate, size_t iterations,
+	const std::optional<std::function<void (size_t iteration, std::vector<double> current_value, double current_error_function)>>& logging_callback, double little_delta)
 {
 	return newton_optimize(func,
 			[little_delta, & start_point, & func](const std::vector<double>&) -> std::vector<double> { return get_gradient(func, start_point, little_delta); },
 			[little_delta, & start_point, & func](const std::vector<double>&) -> std::vector<double> { return get_second_gradient(func, start_point, little_delta); },
-			start_point, learning_rate, iterations);
+			start_point, learning_rate, iterations, logging_callback);
 }
 
 
@@ -100,7 +102,8 @@ std::pair<double, std::vector<double>> newton_optimize(const std::function<doubl
 std::pair<double, std::vector<double> >
 gradient_optimize (const std::function<double (const std::vector<double> &)> &func,
                    const std::function<std::vector<double> (const std::vector<double> &)> &derivative,
-                   const std::vector<double> &start_point, double learning_rate, size_t iterations)
+                   const std::vector<double> &start_point, double learning_rate, size_t iterations,
+                   const std::optional<std::function<void (size_t iteration, std::vector<double> current_value)>>& logging_callback)
 {
 
 	auto current_point = start_point;
@@ -115,6 +118,9 @@ gradient_optimize (const std::function<double (const std::vector<double> &)> &fu
 		{
 			current_point[n_dim] -= learning_rate * this_grad[n_dim];
 		}
+
+		if (logging_callback)
+			logging_callback->operator()(iteration, current_point);
 	}
 
 	return { func(current_point), current_point };
@@ -124,7 +130,7 @@ std::pair<double, std::vector<double> >
 newton_optimize (const std::function<double (const std::vector<double> &)> &func,
                  const std::function<std::vector<double> (const std::vector<double> &)> &derivative,
                  const std::function<std::vector<double> (const std::vector<double>&)>& second_derivative,
-                 const std::vector<double> &start_point, double learning_rate, size_t iterations)
+                 const std::vector<double> &start_point, double learning_rate, size_t iterations, const std::optional<std::function<void (size_t iteration, std::vector<double> current_value, double current_error_function)>>& logging_callback)
 {
 	auto current_point = start_point;
 	auto previous_point = current_point;
@@ -160,6 +166,8 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 			current_point[n_dim] -= learning_rate * first_grad[n_dim] / second_grad[n_dim];
 		}
 
+		if (logging_callback)
+			logging_callback->operator()(iteration, current_point, function_result);
 	}
 
 	return { func(current_point), current_point };

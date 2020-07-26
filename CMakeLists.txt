@@ -23,8 +23,11 @@ endmacro()
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(cotire)
 
-include_directories(D:/pythonic)
+set(Pythonic_DIR D:/pythonic/)
+find_package(Pythonic)
+
 include_directories(.)
+include_directories(${pythonic_include_directories})
 
 add_library(GA
         GA/GA.cpp
@@ -32,9 +35,11 @@ add_library(GA
         GA/ga_util.cpp
         GA/ga_util.h
         other_optimization/local_optimization.cpp
-)
+        other_optimization/combi_optimizing.cpp other_optimization/combi_optimizing.h)
 
-add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
+# add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
+
+target_link_libraries(GA ${pythonic_static_library})
 
 add_executable(GA_test
         tests/ga_test.cpp
@@ -42,7 +47,8 @@ add_executable(GA_test
         tests/test_functions.h
         tests/test_functions.cpp
 )
-add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
+# add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
+target_link_libraries(GA_test ${pythonic_static_library})
 target_link_libraries(GA_test GA)
 
 cotire(GA)

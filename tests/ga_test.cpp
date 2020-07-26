@@ -263,8 +263,8 @@ void simple_ga_test()
 
 int main()
 {
-	// test_GD();
-	test_newton_optimize();
+	test_GD();
+	// test_newton_optimize();
 	// test_gradient_counting();
 	// compare_GD_and_newton();
 	
