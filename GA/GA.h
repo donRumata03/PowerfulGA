@@ -34,9 +34,10 @@ struct GA_params
 };
 
 namespace GA {
-	std::pair<double, genome> ga_optimize(const std::function< double(std::vector<double>&) >& fitness_function,
-		const std::vector<std::pair<double, double>>& point_ranges, GA_params params,
-		const std::function< void(double, double, const genome&) >& informer = nullptr,
+	std::pair<double, genome> ga_optimize(
+			const std::function< double(std::vector<double>&) >& fitness_function,
+			const std::vector<std::pair<double, double>>& point_ranges, GA_params params,
+			const std::function< void(double, double, const genome&) >& informer = nullptr,
 		                                  std::vector<double>* to_store_fitness = nullptr);
 
 	std::pair<double, genome> log_ga_optimize(
