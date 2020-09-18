@@ -20,5 +20,3 @@ namespace GA {
 
 
 }
-
-void renew_random();

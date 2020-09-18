@@ -31,7 +31,7 @@ struct GA_params
 	double parent_fit_pow = 0.3;
 
 
-	GA::matting_mode mode_of_matting = GA::matting_mode::low_variance_genetic;
+	GA::crossover_mode mode_of_matting = GA::crossover_mode::low_variance_genetic;
 
 	double hazing_percent = 0.3;
 	std::optional<double> exiting_fitness_value = {};

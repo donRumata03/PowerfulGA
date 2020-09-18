@@ -10,4 +10,7 @@ namespace GA
 {
 	std::pair<double, genome> find_best_genome(population& pop, const std::vector<double>& fits);
 	std::pair<double, genome> find_best_genome(light_population& pop, const std::vector<double>& fits);
+
+
+	void renew_random();
 }
