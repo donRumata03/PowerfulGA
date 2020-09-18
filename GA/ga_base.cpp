@@ -1,4 +1,4 @@
-#include "ga_util.h"
+#include "ga_base.h"
 
 /*
 template<class distributor, class ... Args>
@@ -33,38 +33,6 @@ vector<double> uniform_distribute(const double from, const double to, const size
 
 namespace GA
 {
-	population generate_population(const std::vector<std::pair<double, double>>& ranges, const size_t amount)
-	{
-		size_t genome_size = ranges.size();
-		population res(amount);
-
-		std::vector<std::vector<double>> genome_randoms(genome_size);
-		for (int i = 0; i < genome_size; i++) {
-			genome_randoms[i] = uniform_distribute(ranges[i].first, ranges[i].second, amount);
-		}
-
-
-		for (size_t i = 0; i < amount; i++) {
-			res[i].reserve(genome_size);
-			for (size_t j = 0; j < genome_size; j++) {
-				res[i].emplace_back(genome_randoms[j][i]);
-			}
-		}
-
-		return res;
-	}
-
-	void mutate(genome& target_genome, const std::vector<double>& sigmas, const double target_gene_number, const normalizer& normaaa)
-	{
-		auto real_gene_number = static_cast<size_t>(cut(std::round(normaaa.generate(target_gene_number, target_gene_number / 2)), 0, target_genome.size()));
-		std::vector<size_t> mutate_indexes = uniform_int_distribute(0, target_genome.size() - 1, real_gene_number);
-		// vector<double> mutate_values = normal_distribute(0, sigma, real_gene_number);
-		// cout << mutate_indexes << " " << mutate_values << endl;
-		for (size_t index = 0; index < mutate_indexes.size(); index++) {
-			double this_mutate_value = normaaa.generate(0, sigmas[index]);
-			target_genome[mutate_indexes[index]] += this_mutate_value;
-		}
-	}
 
 
 	size_t get_matting_index(std::vector<double>& russian_roulette, const double value)
@@ -218,51 +186,7 @@ namespace GA
 		return { best_fitness, *g };
 	}
 	
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa,
-		const double hyper_elite_fit_pow, const double usual_elite_fit_pow, const double parent_fit_pow, 
-		const size_t usual_elite_number, const size_t hyper_elite_number, const size_t best_genome_number, const genome& best_genome,
-		const matting_mode mode)
-	{
-		light_population souls;
-		
-		souls.reserve(pop.size());
-		for (genome& val : pop) souls.push_back(&val);
 
-		light_population parents = select_matting_pool(souls, fitnesses, pop.size(), parent_fit_pow);
-		light_population usual_elite = select_matting_pool(souls, fitnesses, usual_elite_number, usual_elite_fit_pow);
-		light_population hyper_elite = select_matting_pool(souls, fitnesses, hyper_elite_number, hyper_elite_fit_pow);
-
-		
-		size_t child_number = pop.size() - usual_elite_number - hyper_elite_number - best_genome_number;
-
-		
-		// cout << "Parents: " << endl;
-		// for (auto parent : parents) cout << *parent << endl;
-
-		// cout << "Elite: " << endl;
-		// for (auto& p : elite) cout << *p << endl;
-
-		
-		light_parents_t formed_pairs = distribute_pairs(parents, child_number);
-
-		// cout << "Best: " << 1 / find_best_genome(pop, fitnesses).first << " " << find_best_genome(pop, fitnesses).second << endl;
-		
-		// cout << endl << "Pairs: " << endl;
-		// for (auto& p : formed_pairs) cout << *p.first << " " << *p.second << endl;
-
-		population res = perform_crossover(formed_pairs, normaaaaa, mode);
-		
-		res.reserve(pop.size());
-
-		// cout << res << endl;
-		
-		for (auto& elite_person : usual_elite) res.emplace_back(*elite_person);
-		for (auto& elite_person : hyper_elite) res.emplace_back(*elite_person);
-
-		for (size_t index = 0; index < best_genome_number; index++) res.emplace_back(best_genome);
-		
-		return res;
-	}
 
 
 	genome mat_parents(const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const matting_mode mode)
@@ -298,7 +222,6 @@ namespace GA
 				new_variance = exp(randval( log(variance / 2.), log(variance * 1.5) ));
 				this_gene = normaaaaa.generate(gene_mu, new_variance); // normal_distribute(gene_mu, new_variance, 1)[0];
 				break;
-				// TODO: use fast normal number generator!
 			case matting_mode::high_variance_genetic:
 			case matting_mode::low_variance_genetic:
 				bool high_mode = mode == matting_mode::high_variance_genetic;

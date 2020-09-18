@@ -263,7 +263,9 @@ void simple_ga_test()
 
 int main()
 {
-	test_GD();
+	std::function<void(void)> value = test_GD;
+
+	value();
 	// test_newton_optimize();
 	// test_gradient_counting();
 	// compare_GD_and_newton();

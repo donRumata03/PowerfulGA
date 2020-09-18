@@ -3,7 +3,11 @@
 #include <functional>
 #include <optional>
 
-#include "ga_util.h"
+#include "ga_base.h"
+
+#include "operations/matting.h"
+#include "operations/mutation.h"
+#include "operations/population_generation.h"
 
 constexpr bool DEBUG_GA = false;
 

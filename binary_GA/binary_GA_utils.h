@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GA/ga_util.h"
+#include "../GA/ga_base.h"
 
 namespace binary_GA
 {
