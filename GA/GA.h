@@ -26,9 +26,9 @@ struct GA_params
 	bool allow_multithreading = false;
 	size_t threads = std::thread::hardware_concurrency() - 2;
 
-	double best_genome_percent = 0.05; // TODO!
+	double best_genome_percent = 0.05;
 
-	double hyper_elite_pow = 5; // TODO!
+	double hyper_elite_pow = 5;
 	double elite_fit_pow = 2;
 	double parent_fit_pow = 0.3;
 

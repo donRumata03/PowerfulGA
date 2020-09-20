@@ -42,7 +42,7 @@ namespace GA
 	Population_t select_matting_pool(const Population_t& genomes, const std::vector<double>& fitnesses, size_t amount, double fit_dependence);
 
 	// Work with russian roulette:
-	size_t get_matting_index(std::vector<double>& russian_roulette, const double value);
+	size_t get_matting_index(std::vector<double>& russian_roulette, double value);
 }
 
 /// Template function implementations:

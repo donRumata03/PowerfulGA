@@ -38,4 +38,14 @@ namespace GA
 		for (int i = 0; i < 100; i++) rand();
 	}
 
+
+
+	genome_quantities calculate_genome_quantities (size_t population_size, const genome_quantity_orientation &orient_params)
+	{
+		// TODO!!!
+		return genome_quantities{
+
+		};
+	}
+
 }
