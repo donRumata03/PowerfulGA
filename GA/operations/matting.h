@@ -11,17 +11,38 @@
 
 namespace GA
 {
+	/**
+	 * For internal usage:
+	 */
+	struct generation_updating_parameters
+	{
+		double parent_fit_pow;
 
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa,
-	                               double hyper_elite_fit_pow, double usual_elite_fit_pow, double parent_fit_pow,
-	                               size_t usual_elite_number, size_t hyper_elite_number, size_t best_genome_number, const genome& best_genome,
-	                               crossover_mode mode = crossover_mode::low_variance_genetic);
+		double hyper_elite_fit_pow;
+		size_t hyper_elite_number;
+
+		double usual_elite_fit_pow;
+		size_t usual_elite_number;
+
+		size_t best_genome_number;
+		genome best_genome;
+
+		crossover_mode mode = crossover_mode::low_variance_genetic;
+	};
+
+	/// Resultant function that computes the new population:
+	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const generation_updating_parameters& params);
+
+	// Function that divides all the population into parent pairs:
+	light_parents_t distribute_pairs(light_population& pop, size_t pair_amount, bool allow_gay_marriage = false); // Actually ", bool allow_SELF_marriage = false"
 
 
+	// Uses Russian roulette to select some pairs of parents:
 	template<class Population_t>
 	Population_t select_matting_pool(const Population_t& genomes, const std::vector<double>& fitnesses, size_t amount, double fit_dependence);
-	// light_population select_matting_pool(const light_population& genomes, const std::vector<double>& fitnesses, const size_t amount, const double fit_dependence);
 
+	// Work with russian roulette:
+	size_t get_matting_index(std::vector<double>& russian_roulette, const double value);
 }
 
 /// Template function implementations:

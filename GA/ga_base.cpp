@@ -1,3 +1,4 @@
+#include <GA/operations/crossover.h>
 #include "ga_base.h"
 
 /*
@@ -38,7 +39,7 @@ namespace GA
 	/**
 	 * 			Dummy crossover function, DEPRECATED!
 	 */
-	population perform_crossover_matting(parents_t & parents) {
+	population perform_dummy_crossover_matting(parents_t & parents) {
 // #pragma message("Deprecated function used!")
 		population res;
 		res.reserve(parents.size() * 2);
@@ -86,7 +87,7 @@ namespace GA
 
 
 
-	population perform_crossover(parents_t& parents, const normalizer& normaaaaa, const matting_mode mode) {
+	population launch_crossover(parents_t& parents, const normalizer& normaaaaa, GA::crossover_mode mode) {
 		population res;
 		res.reserve(parents.size() * 2);
 		for (auto& p : parents) {
@@ -114,7 +115,7 @@ namespace GA
 	}
 
 
-	population perform_crossover(light_parents_t& parents, const normalizer& normaaaaa, const matting_mode mode) {
+	population launch_crossover(light_parents_t& parents, const normalizer& normaaaaa, crossover_mode mode) {
 		population res;
 		res.reserve(parents.size() * 2);
 		for (auto& p : parents) {

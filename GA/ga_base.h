@@ -4,6 +4,7 @@
 
 
 namespace GA {
+	// Some typedefs:
 
 	using genome = std::vector<double>;
 
@@ -12,11 +13,4 @@ namespace GA {
 	
 	using parents_t = std::vector<std::pair<genome, genome>>;
 	using light_parents_t = std::vector<std::pair<genome*, genome*>>;
-
-	
-
-
-
-
-
 }

@@ -160,12 +160,22 @@ namespace GA {
 			if (params.exiting_fitness_value && current_fitness > *params.exiting_fitness_value) break;
 			if (to_store_fitness) to_store_fitness->push_back(current_fitness);
 
-			
+
 			// Making new population, the most interesting part:
 			p = make_new_generation(p, fitnesses, normaaaaa,
-				params.hyper_elite_pow, params.elite_fit_pow, params.parent_fit_pow, 
-				usual_elite_number, hyper_elite_number, (epoch == 0) ? 0 : best_genome_number, 
-				best_genome, matting_mode);
+			{
+				params.parent_fit_pow,
+
+				params.hyper_elite_pow,
+				hyper_elite_number,
+
+				params.elite_fit_pow,
+				usual_elite_number,
+
+				(epoch == 0) ? 0 : best_genome_number,
+				best_genome,
+				matting_mode
+			});
 
 			
 			if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;
@@ -187,7 +197,7 @@ namespace GA {
 			if constexpr (DEBUG_GA) cout << "Parent pairs: " << parent_pairs << endl;
 
 			// Crossover matting
-			auto crossover_res = perform_crossover_matting(parent_pairs);
+			auto crossover_res = perform_dummy_crossover_matting(parent_pairs);
 			if constexpr (DEBUG_GA) cout << "Kids: " << crossover_res << endl;
 
 			// Add matting results and some of the creatures from the previous population to the next one:

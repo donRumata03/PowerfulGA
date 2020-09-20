@@ -154,19 +154,19 @@ int main()
 {
 	std::function<void(void)> value = test_GD;
 
-	test_GD();
+	/// Local optimization:
+	// test_GD();
 	// test_newton_optimize();
 	// test_gradient_counting();
 	// compare_GD_and_newton();
-	
-	// simple_ga_test();
 
+	/// GA:
+	simple_ga_test();
+
+	/// GA operations:
 	// fancy_crossover_test();
-
 	// crossover_wrapper_test();
-
 	// parent_choosing_test();
-
 	// new_gen_test();
 	
 	return 0;

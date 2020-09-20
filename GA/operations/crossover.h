@@ -23,10 +23,12 @@ namespace GA
 	};
 
 
-	population perform_crossover_matting(parents_t& parents); // Deprecated
-	light_parents_t distribute_pairs(light_population& pop, size_t pair_amount, bool allow_gay_marriage = false);
+	population perform_dummy_crossover_matting(parents_t& parents); /// DEPRECATED
 
+	// Fresh, actual function for crossover of two genomes:
 	genome mat_parents(const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); // For test
-	population perform_crossover(parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); // Fancy
-	population perform_crossover(light_parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); // Fancy
+
+	// Simply run matting for multiple parents
+	population launch_crossover(parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); // Not so efficient, too much copying!
+	population launch_crossover(light_parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); /// Used
 }

@@ -8,6 +8,8 @@
 #include "operations/matting.h"
 #include "operations/mutation.h"
 #include "operations/population_generation.h"
+#include "operations/util.h"
+#include "operations/crossover.h"
 
 constexpr bool DEBUG_GA = false;
 

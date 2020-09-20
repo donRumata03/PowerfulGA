@@ -22,6 +22,8 @@ using optimization_algorithm_t = std::function<size_t(std::vector<double>)>; // 
 std::vector<std::pair<double, double>> make_optimization_algorithm_performance_distribution() {
 	// TODO!
 	// Returns
+
+	return {};
 }
 
 

@@ -38,7 +38,7 @@ void crossover_test()
 	renew_random();
 
 	parents_t parents = {{{1, 2, 3, 4}, {6, 7, 8, 9}}};
-	auto res = GA::perform_crossover_matting(parents);
+	auto res = GA::perform_dummy_crossover_matting(parents);
 	std::cout << res << std::endl;
 }
 
@@ -87,9 +87,9 @@ void crossover_wrapper_test()
 
 	normalizer normaaa(100000);
 
-	for(size_t i = 0; i < 10; i++) std::cout << perform_crossover(p, normaaa) << std::endl;
+	for(size_t i = 0; i < 10; i++) std::cout << launch_crossover(p, normaaa) << std::endl;
 	std::cout << std::endl;
-	for(size_t i = 0; i < 10; i++) std::cout << perform_crossover(p, normaaa, crossover_mode::high_variance_genetic) << std::endl;
+	for(size_t i = 0; i < 10; i++) std::cout << launch_crossover(p, normaaa, crossover_mode::high_variance_genetic) << std::endl;
 
 	/*
 	vector<double> values1, values2;
