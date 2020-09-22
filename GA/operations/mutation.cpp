@@ -19,6 +19,15 @@ namespace GA
 		}
 	}
 
+	void cut_mutations (population &population, const std::vector<std::pair<double, double>> &constraints)
+	{
+		for (auto& genome : population) {
+			for (size_t gene_index = 0; gene_index < genome.size(); gene_index++) {
+				genome[gene_index] = std::clamp(genome[gene_index], constraints[gene_index].first, constraints[gene_index].second);
+			}
+		}
+	}
+
 
 }
 

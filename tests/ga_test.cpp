@@ -53,7 +53,7 @@ void ga_test()
 	params.allow_multithreading = true;
 	params.threads = 10;
 
-	params.mode_of_matting = crossover_mode::low_variance_genetic;
+	params.crossover_mode = crossover_mode::low_variance_genetic;
 
 	std::cout << std::thread::hardware_concurrency() << " threads" << std::endl;
 
@@ -138,7 +138,7 @@ void simple_ga_test()
 
 	params.exiting_fitness_value = 1e+10;
 	
-	params.mode_of_matting = crossover_mode::low_variance_genetic;
+	params.crossover_mode = crossover_mode::low_variance_genetic;
 
 	auto callback = [](const double percent, const double best_fitness, const std::vector<double>& best_genome)
 	{

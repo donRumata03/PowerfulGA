@@ -7,13 +7,14 @@
 #include "../ga_base.h"
 
 #include "crossover.h"
-
+#include "util.h"
 
 namespace GA
 {
 	/**
 	 * For internal usage:
 	 */
+	/*
 	struct generation_updating_parameters
 	{
 		double parent_fit_pow;
@@ -29,9 +30,11 @@ namespace GA
 
 		crossover_mode mode = crossover_mode::low_variance_genetic;
 	};
+	*/
 
 	/// Resultant function that computes the new population:
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const generation_updating_parameters& params);
+	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
+			const genome_quantities& quantities, crossover_mode mode);
 
 	// Function that divides all the population into parent pairs:
 	light_parents_t distribute_pairs(light_population& pop, size_t pair_amount, bool allow_gay_marriage = false); // Actually ", bool allow_SELF_marriage = false"

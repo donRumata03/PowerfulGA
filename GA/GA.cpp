@@ -4,6 +4,7 @@
 
 namespace GA {
 
+	// TODO: add possibility to run 2 GA's at once!!!
 	population p;
 	std::vector<double> fitnesses;
 	volatile bool thread_count_time = false;
@@ -61,9 +62,8 @@ namespace GA {
 		size_t usual_elite_number = cut(all_elite_number - hyper_elite_number, 0, population_size);
 
 		size_t child_number = non_best_number - all_elite_number;
-		assert(child_number >= 0);
-		
-		auto matting_mode = params.mode_of_matting;
+
+		auto matting_mode = params.crossover_mode;
 
 		std::cout << "People distribution: Non best: " << non_best_number << " Childs: " << child_number <<
 		" All elite: " << all_elite_number << " Usual elite: " << usual_elite_number << " Hyper elite: " << hyper_elite_number
@@ -93,7 +93,7 @@ namespace GA {
 		fitnesses.assign(population_size, 0.);
 		if (to_store_fitness) to_store_fitness->reserve(epoch_num);
 		
-		// Making_threads
+		// Making threads
 		std::vector<std::thread> threads;
 		if(allow_multithreading)
 		{
@@ -112,7 +112,7 @@ namespace GA {
 		normalizer normaaaaa(10000);
 		
 
-		// Start main loop:
+		/// Beginning of the main loop:
 		double current_fitness = 0;
 		genome best_genome;
 
@@ -121,9 +121,7 @@ namespace GA {
 			for (auto& g : p) {
 				mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
 			}
-			if (params.cut_mutations) for (auto& g : p) {
-				for (size_t gene_index = 0; gene_index < g.size(); gene_index++) g[gene_index] = cut(g[gene_index], point_ranges[gene_index].first, point_ranges[gene_index].second);
-			}
+			if (params.cut_mutations) cut_mutations(p, )
 			if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
 
 			// Calculating fitnesses : MULTITHREADING!
@@ -145,14 +143,14 @@ namespace GA {
 				threads_work_collected = true;
 				// fitnesses = thread_results; 
 			}
-			else {
+			else { // If multithreading in`t allowed:
 				for (size_t index = 0; index < population_size; index++) {
 					fitnesses[index] = fitness_function(p[index]);
 				}
 			}
 
 			
-			// Process the best genome:
+			// Find the best genome and its fitness:
 			auto [_best_fitness, _best_genome] = find_best_genome(p, fitnesses);
 			best_genome = _best_genome;
 			current_fitness = _best_fitness;
@@ -160,75 +158,37 @@ namespace GA {
 			if (params.exiting_fitness_value && current_fitness > *params.exiting_fitness_value) break;
 			if (to_store_fitness) to_store_fitness->push_back(current_fitness);
 
+			// Calculating population quantities:
+			auto population_quantities = calculate_genome_quantities(population_size,
+					{
+						hazing_percent,
+						double(epoch) / epoch_num,
+
+						params.parent_fit_pow,
+						params.elite_fit_pow,
+						params.hyper_elite_fit_pow,
+						epoch != 0
+					});
+
+			assert(population_quantities.parent_number >= 0 && child_number >= 0);
+
 
 			// Making new population, the most interesting part:
-			p = make_new_generation(p, fitnesses, normaaaaa,
-			{
-				params.parent_fit_pow,
-
-				params.hyper_elite_pow,
-				hyper_elite_number,
-
-				params.elite_fit_pow,
-				usual_elite_number,
-
-				(epoch == 0) ? 0 : best_genome_number,
-				best_genome,
-				matting_mode
-			});
+			p = make_new_generation(p, fitnesses, normaaaaa, best_genome, population_quantities, params.crossover_mode);
 
 			
 			if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;
 
-			/*
-			
-			// Selecting matting pool
-			auto parents = GA::select_matting_pool(p, fitnesses, population_size - best_genome_number, params.elite_fit_pow);
-			for (int i = 0; i < best_genome_number; i++) parents.push_back(best_genome);
-			if constexpr (DEBUG_GA) cout << "Parents selected:" << parents << endl;
-
-			// Make parent pairs:
-			// (Some of the creatures go directly to the next population, the other ones go through matting)
-			parents_t parent_pairs;
-			for (size_t parent_number = 0; parent_number < pop_parents_number; parent_number += 2) {
-				parent_pairs.push_back({ parents[parent_number], parents[parent_number + 1] });
-			}
-
-			if constexpr (DEBUG_GA) cout << "Parent pairs: " << parent_pairs << endl;
-
-			// Crossover matting
-			auto crossover_res = perform_dummy_crossover_matting(parent_pairs);
-			if constexpr (DEBUG_GA) cout << "Kids: " << crossover_res << endl;
-
-			// Add matting results and some of the creatures from the previous population to the next one:
-			population new_population(population_size);
-
-			copy(crossover_res.begin(), crossover_res.end(), new_population.begin());
-
-			copy(parents.begin() + pop_parents_number, parents.end(), new_population.begin() + pop_parents_number);
-
-			p = move(new_population);
-			if constexpr (DEBUG_GA) cout << "After forming new population: " << p << endl << endl;
-
-			*/
-
-			
-
-			
-			
-
-			// Output information:			
-			if (informer) informer(100 * double(epoch) / epoch_num, current_fitness, best_genome);
-			else {
-				std::cout << "GA Percent: " << 100 * double(epoch) / epoch_num;
-				std::cout << " ; Best fitness: " << current_fitness << " ; Best genome: " << best_genome << std::endl;
-			}
-
+			// Output information:
+			informer(100 * double(epoch) / epoch_num, current_fitness, best_genome);
 		}
+		/// ^^^ End Of Main Loop ^^^
 
-		// Stop other threads:
-		thread_task_ready = true;
-		for (auto& this_thread : threads) this_thread.join();
+		if(allow_multithreading) {
+			// Stop other threads:
+			thread_task_ready = true;
+			for (auto &this_thread : threads) this_thread.join();
+		}
 
 		// Here`s the actual result:
 		return { current_fitness, best_genome };

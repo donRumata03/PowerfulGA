@@ -9,7 +9,8 @@ namespace GA
 {
 
 	/// Resultant function:
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const generation_updating_parameters& params)
+	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
+										const genome_quantities& quantities, crossover_mode mode)
 	{
 		/// New population is:
 		///
@@ -27,13 +28,13 @@ namespace GA
 		souls.reserve(pop.size());
 		for (genome& val : pop) souls.push_back(&val);
 
-		light_population parents = select_matting_pool(souls, fitnesses, pop.size(), params.parent_fit_pow); /// Not the ideal ones, will come through matting
+		light_population parents = select_matting_pool(souls, fitnesses, pop.size(), quantities.parent_fit_pow); /// Not the ideal ones, will come through matting
 
-		light_population usual_elite = select_matting_pool(souls, fitnesses, params.usual_elite_number, params.usual_elite_fit_pow); /// Will be directly added
-		light_population hyper_elite = select_matting_pool(souls, fitnesses, params.hyper_elite_number, params.hyper_elite_fit_pow); /// Will be directly added
+		light_population usual_elite = select_matting_pool(souls, fitnesses, quantities.usual_elite_number, quantities.usual_elite_fit_pow); /// Will be directly added
+		light_population hyper_elite = select_matting_pool(souls, fitnesses, quantities.hyper_elite_number, quantities.hyper_elite_fit_pow); /// Will be directly added
 
 
-		size_t child_number = pop.size() - params.usual_elite_number - params.hyper_elite_number - params.best_genome_number;
+		size_t child_number = pop.size() - quantities.usual_elite_number - quantities.hyper_elite_number - quantities.best_genome_number;
 
 
 		// cout << "Parents: " << endl;
@@ -50,7 +51,7 @@ namespace GA
 		// cout << endl << "Pairs: " << endl;
 		// for (auto& p : formed_pairs) cout << *p.first << " " << *p.second << endl;
 
-		population res = launch_crossover(formed_pairs, normaaaaa, params.mode);
+		population res = launch_crossover(formed_pairs, normaaaaa, mode);
 
 		res.reserve(pop.size());
 
@@ -59,7 +60,7 @@ namespace GA
 		for (auto& elite_person : usual_elite) res.emplace_back(*elite_person);
 		for (auto& elite_person : hyper_elite) res.emplace_back(*elite_person);
 
-		for (size_t index = 0; index < params.best_genome_number; index++) res.emplace_back(params.best_genome);
+		for (size_t index = 0; index < quantities.best_genome_number; index++) res.emplace_back(best_genome);
 
 		return res;
 	}

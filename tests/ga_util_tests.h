@@ -123,3 +123,34 @@ void parent_choosing_test()
 }
 
 
+inline void test_quantity_counter_with_big_number() {
+	size_t population_size = 0;
+
+	genome_quantity_orientation orientation = {
+			.hazing_percent = 0.5,
+			.algorithm_progress_percent = 0,
+
+			.parent_fit_pow = 0.7,
+			.usual_elite_fit_pow = 2,
+			.hyper_elite_fit_pow = 5,
+
+			.has_best_genome = true,
+	};
+
+	std::cout << "Initial value: " <<
+		calculate_genome_quantities(population_size, orientation)
+	<< std::endl;
+
+	orientation.algorithm_progress_percent = 0.5;
+
+	std::cout << "Middle value: " <<
+		calculate_genome_quantities(population_size, orientation)
+	<< std::endl;
+
+	orientation.algorithm_progress_percent = 1.;
+
+	std::cout << "Finishing value: " <<
+		calculate_genome_quantities(population_size, orientation)
+	<< std::endl;
+}
+

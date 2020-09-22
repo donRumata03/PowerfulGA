@@ -19,12 +19,7 @@ using optimization_algorithm_t = std::function<size_t(std::vector<double>)>; // 
 /**
  * @returns: The non-smoothed distribution graph
  */
-std::vector<std::pair<double, double>> make_optimization_algorithm_performance_distribution() {
-	// TODO!
-	// Returns
-
-	return {};
-}
+std::vector<std::pair<double, double>> make_optimization_algorithm_performance_distribution();
 
 
 
