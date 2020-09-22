@@ -164,7 +164,8 @@ inline void test_quantity_counter_with_big_number() {
 
 
 inline void test_quantity_counter_with_little_number() {
-	size_t population_size = 10;
+	// size_t population_size = 10;
+	size_t population_size = 3;
 
 	genome_quantity_orientation orientation = {
 			.hazing_percent = 0.5,

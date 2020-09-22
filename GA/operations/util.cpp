@@ -42,9 +42,11 @@ namespace GA
 
 	genome_quantities calculate_genome_quantities (size_t population_size, const genome_quantity_orientation &orient_params)
 	{
+		// TODO: add possibility for client to choose how much do the hazing vary through time
+
 		/// New population is:
 		///
-		/// 	best_genome (given number of times)
+		/// 	best_genome
 		///			+
 		/// 	hyper_elite
 		///			+
@@ -54,26 +56,27 @@ namespace GA
 		///			=
 		///    POPULATION_SIZE
 
+		/// Also modifies fit pows according to the algorithm_progress_percent -> progress_coefficient
+
 		// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		assert(orient_params.hazing_percent < 1 && orient_params.hazing_percent > 0);
-		assert(population_size >= 5);
+		assert(population_size >= 3);
 
 		// double progress_coefficient = square(orient_params.algorithm_progress_percent) * 3; /// Multiplying by 3 to save the average value
-		/// 	because the Integral of x^2 from 0 to 1 is ¹/³
+		/// 	because the Integral of x^2 from 0 to 1 is ⅓
 
 		double progress_coefficient = std::min(1.2 * orient_params.algorithm_progress_percent, 1.) * (12./7); /// Multiplying by 12./7 to save the average value
+		/// 	because the Integral of `min(1.2 * x, 1.)` from 0 to 1 is 7/12
+		//              so, progress_coefficient varies from `0` to `12 / 7`
+
 
 		// double new_hazing_percent = orient_params.hazing_percent;
 		// double new_hazing_percent = cut(orient_params.hazing_percent * 2 * orient_params.algorithm_progress_percent, 0.01, 0.9);
 		double new_hazing_percent = cut(orient_params.hazing_percent * progress_coefficient, 0.01, 0.9);
 
-		// std::cout << new_hazing_percent << std::endl;
-
-		/// Simple implementation without hazing increasing by hazing percent:
-
 		auto next_eliting_step = [](size_t space_left, double current_hazing) -> size_t {
-			return size_t(cut(std::round(current_hazing * space_left), 0, space_left));
+			return size_t(std::clamp(std::round(current_hazing * space_left), 0., double(space_left)));
 		};
 
 		auto get_advanced_hazing = [](double some_hazing) { return sqrt(some_hazing); };
@@ -89,7 +92,7 @@ namespace GA
 		size_t child_number = population_size - all_elite_number;
 		if (child_number % 2) // Make it dividable by two: <- why??? IT ISN`T NECESSARY!!!
 		{
-			if (child_number != population_size) {
+			if (child_number <= population_size - 1) {
 				// Increase children number and decrease elite number if we can
 				child_number++;
 				all_elite_number--;
@@ -123,6 +126,8 @@ namespace GA
 		assert(usual_elite_number >= 0);
 		assert(hyper_elite_number >= 0);
 		assert(best_genome_number >= 0);
+
+		/// TODO: modify the fit pows here:
 
 		return genome_quantities \
 		{
