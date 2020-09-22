@@ -59,13 +59,16 @@ namespace GA
 		assert(orient_params.hazing_percent < 1 && orient_params.hazing_percent > 0);
 		assert(population_size >= 5);
 
-		double progress_coefficient = square(orient_params.algorithm_progress_percent) * 3; /// Multiplying by 3 to save the average value
-		/// 	because the Integral of x^2 from 0 to 1 is ¹/‰↑∞←³
+		// double progress_coefficient = square(orient_params.algorithm_progress_percent) * 3; /// Multiplying by 3 to save the average value
+		/// 	because the Integral of x^2 from 0 to 1 is ¹/³
+
+		double progress_coefficient = std::min(1.2 * orient_params.algorithm_progress_percent, 1.) * (12./7); /// Multiplying by 12./7 to save the average value
 
 		// double new_hazing_percent = orient_params.hazing_percent;
 		// double new_hazing_percent = cut(orient_params.hazing_percent * 2 * orient_params.algorithm_progress_percent, 0.01, 0.9);
 		double new_hazing_percent = cut(orient_params.hazing_percent * progress_coefficient, 0.01, 0.9);
 
+		// std::cout << new_hazing_percent << std::endl;
 
 		/// Simple implementation without hazing increasing by hazing percent:
 
@@ -74,14 +77,17 @@ namespace GA
 		};
 
 		auto get_advanced_hazing = [](double some_hazing) { return sqrt(some_hazing); };
-		auto get_slightly_advanced_hazing = [](double some_hazing) { return sqrt(some_hazing); };
+		auto get_slightly_advanced_hazing = [](double some_hazing) { return pow(some_hazing, 0.7); };
 
 		auto get_diminished_hazing = [](double some_hazing) { return square(some_hazing); };
+		auto get_slightly_diminished_hazing = [](double some_hazing) { return pow(some_hazing, 1.11); };
+
+		auto slightly_move_to_half = [](double some_hazing){ return sqrt(0.5 * some_hazing); };
 
 		// Split parents and privileged:
-		size_t all_elite_number = next_eliting_step(population_size, get_diminished_hazing(new_hazing_percent)); // get_diminished_hazing is to add some data
+		size_t all_elite_number = next_eliting_step(population_size, get_slightly_diminished_hazing(new_hazing_percent)); // get_diminished_hazing is to add some data
 		size_t child_number = population_size - all_elite_number;
-		if (child_number % 2) // Make it dividable by two:
+		if (child_number % 2) // Make it dividable by two: <- why??? IT ISN`T NECESSARY!!!
 		{
 			if (child_number != population_size) {
 				// Increase children number and decrease elite number if we can
@@ -95,36 +101,52 @@ namespace GA
 			}
 		}
 
-		size_t parent_number = child_number / 2;
+		size_t parent_number = child_number * 2;
 
 		// Separate usual elite and higher elite sorts:
 		size_t non_usual_elite_number = next_eliting_step(all_elite_number, new_hazing_percent);
 		size_t usual_elite_number = all_elite_number - non_usual_elite_number;
 
 		// Separate best genome and hyper elite:
-		size_t hyper_elite_number = next_eliting_step(all_elite_number, new_hazing_percent);
-		size_t best_genome_number = non_usual_elite_number;
+		size_t hyper_elite_number, best_genome_number;
+		if (orient_params.use_best_genome) {
+			best_genome_number = next_eliting_step(non_usual_elite_number, slightly_move_to_half(new_hazing_percent));
+			hyper_elite_number = non_usual_elite_number - best_genome_number;
+		}
+		else {
+			hyper_elite_number = non_usual_elite_number;
+			best_genome_number = 0;
+		}
+
+		assert(child_number + usual_elite_number + hyper_elite_number + best_genome_number == population_size);
+		assert(child_number >= 0);
+		assert(usual_elite_number >= 0);
+		assert(hyper_elite_number >= 0);
+		assert(best_genome_number >= 0);
 
 		return genome_quantities \
 		{
 				.parent_fit_pow = orient_params.parent_fit_pow,
 				.parent_number = parent_number,
 				.child_number = child_number,
+
 				.usual_elite_fit_pow = orient_params.usual_elite_fit_pow,
 				.usual_elite_number = usual_elite_number,
+
 				.hyper_elite_fit_pow = orient_params.hyper_elite_fit_pow,
 				.hyper_elite_number = hyper_elite_number,
+
 				.best_genome_number = best_genome_number,
 		};
 	}
 
 	std::ostream &operator<< (std::ostream &os, const genome_quantities &quantities)
 	{
-		os << "{\nparent_fit_pow: " << quantities.parent_fit_pow << " \nparent_number: " << quantities.parent_number
-		   << " \nchild_number: " << quantities.child_number << " \nusual_elite_fit_pow: " << quantities.usual_elite_fit_pow
-		   << " \nusual_elite_number: " << quantities.usual_elite_number << " \nhyper_elite_fit_pow: "
-		   << quantities.hyper_elite_fit_pow << " \nhyper_elite_number: " << quantities.hyper_elite_number
-		   << " \nbest_genome_number: " << quantities.best_genome_number << "}";
+		os << "{\n\tparent_fit_pow: " << quantities.parent_fit_pow << " \n\tparent_number: " << quantities.parent_number
+		   << " \n\tchild_number: " << quantities.child_number << " \n\tusual_elite_fit_pow: " << quantities.usual_elite_fit_pow
+		   << " \n\tusual_elite_number: " << quantities.usual_elite_number << " \n\thyper_elite_fit_pow: "
+		   << quantities.hyper_elite_fit_pow << " \n\thyper_elite_number: " << quantities.hyper_elite_number
+		   << " \n\tbest_genome_number: " << quantities.best_genome_number << "\n}";
 		return os;
 	}
 }

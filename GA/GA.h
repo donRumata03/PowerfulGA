@@ -1,7 +1,5 @@
 #pragma once
 #include <pythonic.h>
-#include <functional>
-#include <optional>
 
 #include "ga_base.h"
 
@@ -41,8 +39,9 @@ struct GA_params
 
 namespace GA {
 	inline void default_GA_informer(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
+		static_assert(is_printable_by_me<const std::vector<double>>::value);
 		std::cout << "GA Percent: " << percent;
-		std::cout << " ; Best fitness: " << best_fitness << " ; Best genome: " << best_genome << std::endl;
+		// std::cout << " ; Best fitness: " << best_fitness << " ; Best genome: " << best_genome << std::endl;
 	}
 
 	std::pair<double, genome> ga_optimize(

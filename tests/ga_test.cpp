@@ -154,20 +154,27 @@ int main()
 {
 	std::function<void(void)> value = test_GD;
 
-	/// Local optimization:
+	// std::cout << std::vector<double> {1, 4, 3} << std::endl;
+
+	/// 								Local optimization:
 	// test_GD();
 	// test_newton_optimize();
 	// test_gradient_counting();
 	// compare_GD_and_newton();
 
-	/// GA:
-	simple_ga_test();
+	/// 										GA itself:
+	// simple_ga_test();
 
-	/// GA operations:
+	/// 										GA operations:
 	// fancy_crossover_test();
 	// crossover_wrapper_test();
 	// parent_choosing_test();
 	// new_gen_test();
-	
+
+	/// Quantity:
+	// test_quantity_counter_with_big_number();
+	test_quantity_counter_with_little_number();
+	// progress_coefficient_test();
+
 	return 0;
 }

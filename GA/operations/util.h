@@ -39,7 +39,7 @@ namespace GA
 		double usual_elite_fit_pow;
 		double hyper_elite_fit_pow;
 
-		bool has_best_genome;
+		bool use_best_genome;
 	};
 
 	/**

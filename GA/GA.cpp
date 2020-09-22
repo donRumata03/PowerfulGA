@@ -42,6 +42,8 @@ namespace GA {
 		const std::vector<std::pair<double, double>>& point_ranges, const GA_params params,
 		const std::function< void(double, double, const genome&) >& informer, std::vector<double>* to_store_fitness)
 	{
+
+
 		// Unpacking parameters:
 		auto population_size = params.population_size;
 		auto epoch_num = params.epoch_num;
@@ -81,13 +83,13 @@ namespace GA {
 
 		std::vector<double> mutation_sigmas;
 		mutation_sigmas.reserve(point_ranges.size());
-		for (auto& range : point_ranges) mutation_sigmas.emplace_back((range.first - range.second) * mutation_percent_sigma);
-		if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
+		for (auto& range : point_ranges) mutation_sigmas.push_back((range.first - range.second) * mutation_percent_sigma);
+		// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
 
 		
 		// Generating initial population
 		p = generate_population(point_ranges, population_size);
-		if constexpr (DEBUG_GA) std::cout << "Initial population: " << p << std::endl << std::endl;
+		// if constexpr (DEBUG_GA) std::cout << "Initial population: " << p << std::endl << std::endl;
 
 		// Init fitness vectors:
 		fitnesses.assign(population_size, 0.);
@@ -117,12 +119,11 @@ namespace GA {
 		genome best_genome;
 
 		for (size_t epoch = 0; epoch < epoch_num; epoch++) {
-			// Mutation
-			for (auto& g : p) {
-				mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
-			}
-			if (params.cut_mutations) cut_mutations(p, )
-			if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
+			/// Mutation
+			for (auto& g : p) mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
+			if (params.cut_mutations) cut_mutations(p, point_ranges);
+
+			// if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
 
 			// Calculating fitnesses : MULTITHREADING!
 			// vector<double> fitnesses(population_size);
@@ -177,7 +178,7 @@ namespace GA {
 			p = make_new_generation(p, fitnesses, normaaaaa, best_genome, population_quantities, params.crossover_mode);
 
 			
-			if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;
+			// if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;
 
 			// Output information:
 			informer(100 * double(epoch) / epoch_num, current_fitness, best_genome);
