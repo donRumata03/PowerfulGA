@@ -24,12 +24,11 @@ struct GA_params
 	bool allow_multithreading = false;
 	size_t threads = std::thread::hardware_concurrency() - 2;
 
-	double best_genome_percent = 0.05;
+	/// DELETED: double best_genome_percent = 0.05;
 
 	double hyper_elite_fit_pow = 5;
 	double elite_fit_pow = 2;
 	double parent_fit_pow = 0.3;
-
 
 	GA::crossover_mode crossover_mode = GA::crossover_mode::low_variance_genetic;
 

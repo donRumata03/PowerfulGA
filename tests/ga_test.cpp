@@ -163,7 +163,7 @@ int main()
 	// compare_GD_and_newton();
 
 	/// 										GA itself:
-	// simple_ga_test();
+	simple_ga_test();
 
 	/// 										GA operations:
 	// fancy_crossover_test();
@@ -173,7 +173,7 @@ int main()
 
 	/// Quantity:
 	// test_quantity_counter_with_big_number();
-	test_quantity_counter_with_little_number();
+	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
 
 	return 0;

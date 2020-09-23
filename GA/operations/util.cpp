@@ -122,10 +122,15 @@ namespace GA
 		}
 
 		assert(child_number + usual_elite_number + hyper_elite_number + best_genome_number == population_size);
-		assert(child_number >= 0);
-		assert(usual_elite_number >= 0);
-		assert(hyper_elite_number >= 0);
-		assert(best_genome_number >= 0);
+
+
+#ifndef NDEBUG
+		size_t min_suspicious_number = std::numeric_limits<size_t>::max() - 10'000'000; // IT`S VERY BIG!!
+		assert(child_number <= min_suspicious_number);
+		assert(usual_elite_number <= min_suspicious_number);
+		assert(hyper_elite_number <= min_suspicious_number);
+		assert(best_genome_number <= min_suspicious_number);
+#endif
 
 		/// TODO: modify the fit pows here:
 

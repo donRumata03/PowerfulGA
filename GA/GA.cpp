@@ -42,18 +42,20 @@ namespace GA {
 		const std::vector<std::pair<double, double>>& point_ranges, const GA_params params,
 		const std::function< void(double, double, const genome&) >& informer, std::vector<double>* to_store_fitness)
 	{
-
-
 		// Unpacking parameters:
-		auto population_size = params.population_size;
-		auto epoch_num = params.epoch_num;
-		auto mutation_percent_sigma = params.mutation_percent_sigma;
-		bool allow_multithreading = params.allow_multithreading;
-		size_t thread_number = params.threads;
-		
+	/*
+	auto population_size = params.population_size;
+	auto epoch_num = params.epoch_num;
+	auto mutation_percent_sigma = params.mutation_percent_sigma;
+	bool allow_multithreading = params.allow_multithreading;
+	size_t thread_number = params.threads;
+	*/
 
+/*
 		bool best_genome_guarantee = params.best_genome_percent != 0;
 		auto best_genome_number = size_t(std::round(params.best_genome_percent * population_size));
+*/
+/*
 
 		size_t non_best_number = population_size - best_genome_number;
 		
@@ -66,12 +68,15 @@ namespace GA {
 		size_t child_number = non_best_number - all_elite_number;
 
 		auto matting_mode = params.crossover_mode;
+*/
+/*
 
 		std::cout << "People distribution: Non best: " << non_best_number << " Childs: " << child_number <<
 		" All elite: " << all_elite_number << " Usual elite: " << usual_elite_number << " Hyper elite: " << hyper_elite_number
 		<< " Best genome: " << best_genome_number << std::endl;
-		
-		/*
+*/
+
+/*
 		double temp_pop = population_size * parents_percent;
 		size_t pop_parents_number = (size_t(temp_pop) % 2) ? size_t(temp_pop) + 1 : size_t(temp_pop);
 		if constexpr (DEBUG_GA) cout << "Replications per iteration: " << pop_parents_number << endl << endl; 
@@ -83,28 +88,28 @@ namespace GA {
 
 		std::vector<double> mutation_sigmas;
 		mutation_sigmas.reserve(point_ranges.size());
-		for (auto& range : point_ranges) mutation_sigmas.push_back((range.first - range.second) * mutation_percent_sigma);
+		for (auto& range : point_ranges) mutation_sigmas.push_back((range.first - range.second) * params.mutation_percent_sigma);
 		// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
 
 		
 		// Generating initial population
-		p = generate_population(point_ranges, population_size);
+		p = generate_population(point_ranges, params.population_size);
 		// if constexpr (DEBUG_GA) std::cout << "Initial population: " << p << std::endl << std::endl;
 
 		// Init fitness vectors:
-		fitnesses.assign(population_size, 0.);
-		if (to_store_fitness) to_store_fitness->reserve(epoch_num);
+		fitnesses.assign(params.population_size, 0.);
+		if (to_store_fitness) to_store_fitness->reserve(params.epoch_num);
 		
 		// Making threads
 		std::vector<std::thread> threads;
-		if(allow_multithreading)
+		if(params.allow_multithreading)
 		{
-			threads_ready.assign(thread_number, false);
+			threads_ready.assign(params.threads, false);
 
-			auto task_ranges = distribute_task_ranges(population_size, thread_number);
+			auto task_ranges = distribute_task_ranges(params.population_size, params.threads);
 			
-			threads.reserve(thread_number);
-			for (size_t thread_index = 0; thread_index < thread_number; thread_index++)
+			threads.reserve(params.threads);
+			for (size_t thread_index = 0; thread_index < params.threads; thread_index++)
 			{
 				threads.emplace_back(count_fitness_function_thread, thread_index, ref(fitness_function), task_ranges[thread_index]);
 			}
@@ -118,7 +123,7 @@ namespace GA {
 		double current_fitness = 0;
 		genome best_genome;
 
-		for (size_t epoch = 0; epoch < epoch_num; epoch++) {
+		for (size_t epoch = 0; epoch < params.epoch_num; epoch++) {
 			/// Mutation
 			for (auto& g : p) mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
 			if (params.cut_mutations) cut_mutations(p, point_ranges);
@@ -127,7 +132,7 @@ namespace GA {
 
 			// Calculating fitnesses : MULTITHREADING!
 			// vector<double> fitnesses(population_size);
-			if (allow_multithreading) {
+			if (params.allow_multithreading) {
 				threads_work_collected = false;				
 				// Say other threads, that it`s time to count:
 				thread_count_time = true;
@@ -145,7 +150,7 @@ namespace GA {
 				// fitnesses = thread_results; 
 			}
 			else { // If multithreading in`t allowed:
-				for (size_t index = 0; index < population_size; index++) {
+				for (size_t index = 0; index < params.population_size; index++) {
 					fitnesses[index] = fitness_function(p[index]);
 				}
 			}
@@ -160,19 +165,16 @@ namespace GA {
 			if (to_store_fitness) to_store_fitness->push_back(current_fitness);
 
 			// Calculating population quantities:
-			auto population_quantities = calculate_genome_quantities(population_size,
+			auto population_quantities = calculate_genome_quantities(params.population_size,
 					{
-						hazing_percent,
-						double(epoch) / epoch_num,
+							params.hazing_percent,
+						double(epoch) / params.epoch_num,
 
 						params.parent_fit_pow,
 						params.elite_fit_pow,
 						params.hyper_elite_fit_pow,
 						epoch != 0
 					});
-
-			assert(population_quantities.parent_number >= 0 && child_number >= 0);
-
 
 			// Making new population, the most interesting part:
 			p = make_new_generation(p, fitnesses, normaaaaa, best_genome, population_quantities, params.crossover_mode);
@@ -181,11 +183,11 @@ namespace GA {
 			// if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;
 
 			// Output information:
-			informer(100 * double(epoch) / epoch_num, current_fitness, best_genome);
+			informer(100 * double(epoch) / params.epoch_num, current_fitness, best_genome);
 		}
 		/// ^^^ End Of Main Loop ^^^
 
-		if(allow_multithreading) {
+		if(params.allow_multithreading) {
 			// Stop other threads:
 			thread_task_ready = true;
 			for (auto &this_thread : threads) this_thread.join();
