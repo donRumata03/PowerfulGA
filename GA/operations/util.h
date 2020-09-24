@@ -12,9 +12,12 @@ namespace GA
 	std::pair<double, genome> find_best_genome(population& pop, const std::vector<double>& fits);
 	std::pair<double, genome> find_best_genome(light_population& pop, const std::vector<double>& fits);
 
+	population materialize_population(const light_population& l_pop);
 
 	struct genome_quantities
 	{
+		size_t population_size;
+
 		double parent_fit_pow;
 		size_t parent_number;
 		size_t child_number;

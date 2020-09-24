@@ -35,22 +35,26 @@ void ga_test()
 
 	GA_params params;
 
-	size_t total_computations = 5000000;
-	params.population_size = 500000;
+	size_t total_computations = 500'000;
+	params.population_size = 20'000;
 	params.epoch_num = total_computations / params.population_size;
-	
-	params.hazing_percent = 0.3;
+
+	params.set_default_epoch_num(1000'000);
+	std::cout << params.population_size << " " << params.epoch_num << std::endl;
+
+
+	params.hazing_percent = 0.7;
 	
 	params.target_gene_mutation_number = 0.1;
 	params.mutation_percent_sigma = 0.01;
 	params.cut_mutations = false;
-	params.best_genome_percent = 0.05;
+	// params.best_genome_percent = 0.05;
 
 	params.elite_fit_pow = 2;
-	params.parent_fit_pow = 0.1;
+	params.parent_fit_pow = 0.3;
 
 	// Multithreading parameters:
-	params.allow_multithreading = true;
+	params.allow_multithreading = false;
 	params.threads = 10;
 
 	params.crossover_mode = crossover_mode::low_variance_genetic;
@@ -122,12 +126,12 @@ void simple_ga_test()
 	params.population_size = 20;
 	params.epoch_num = total_computations / params.population_size;
 
-	params.hazing_percent = 0.3;
+	params.hazing_percent = 0.6;
 
 	params.target_gene_mutation_number = 0.1;
 	params.mutation_percent_sigma = 0.01;
 	params.cut_mutations = false;
-	params.best_genome_percent = 0.05;
+	// params.best_genome_percent = 0.05;
 
 	params.elite_fit_pow = 2;
 	params.parent_fit_pow = 0.1;
@@ -152,9 +156,12 @@ void simple_ga_test()
 
 int main()
 {
+	SetConsoleOutputCP(CP_UTF8);
+	system(("chcp " + std::to_string(CP_UTF8)).c_str());
+
 	std::function<void(void)> value = test_GD;
 
-	// std::cout << std::vector<double> {1, 4, 3} << std::endl;
+	// std::cout << std::log(10) / std::log(2) << std::endl;
 
 	/// 								Local optimization:
 	// test_GD();
@@ -163,8 +170,10 @@ int main()
 	// compare_GD_and_newton();
 
 	/// 										GA itself:
-	simple_ga_test();
+	// simple_ga_test();
 
+
+	ga_test();
 	/// 										GA operations:
 	// fancy_crossover_test();
 	// crossover_wrapper_test();

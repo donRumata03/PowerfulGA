@@ -82,7 +82,7 @@ namespace GA {
 		if constexpr (DEBUG_GA) cout << "Replications per iteration: " << pop_parents_number << endl << endl; 
 		*/
 
-		/*
+		/**
 		 * Parameter Interpretation and other preparations:
 		 */
 
@@ -176,8 +176,10 @@ namespace GA {
 						epoch != 0
 					});
 
+			// std::cout << "Population Quantities: " << population_quantities << std::endl;
+
 			// Making new population, the most interesting part:
-			p = make_new_generation(p, fitnesses, normaaaaa, best_genome, population_quantities, params.crossover_mode);
+			make_new_generation(p, fitnesses, normaaaaa, best_genome, population_quantities, params.crossover_mode, params.custom_operations);
 
 			
 			// if constexpr (DEBUG_GA) std::cout << "Fitness functions: " << fitnesses << std::endl;

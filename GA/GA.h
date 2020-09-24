@@ -3,11 +3,11 @@
 
 #include "ga_base.h"
 
-#include "operations/matting.h"
 #include "operations/mutation.h"
 #include "operations/population_generation.h"
 #include "operations/util.h"
 #include "operations/crossover.h"
+#include "operations/matting.h"
 
 constexpr bool DEBUG_GA = false;
 
@@ -34,6 +34,21 @@ struct GA_params
 
 	double hazing_percent = 0.3;
 	std::optional<double> exiting_fitness_value = {};
+
+	GA::GA_operation_set custom_operations = {};
+
+	void set_default_epoch_num(size_t total_computations) {
+		/// TODO: find the best fraction by testing:
+		if (total_computations < 100) {
+			double temp_population_size = std::pow(double(total_computations), 0.75);
+			epoch_num = size_t(total_computations / temp_population_size);
+			population_size = size_t(temp_population_size);
+		}
+		else {
+			epoch_num = size_t(10. * std::log(double(total_computations)) / std::log(10'000));
+			population_size = total_computations / epoch_num;
+		}
+	}
 };
 
 namespace GA {

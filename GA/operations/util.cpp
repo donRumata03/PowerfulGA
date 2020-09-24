@@ -32,10 +32,26 @@ namespace GA
 		return { best_fitness, *g };
 	}
 
+	population materialize_population (const light_population &l_pop)
+	{
+		population res;
+		res.reserve(l_pop.size());
+
+		for (auto p : l_pop) {
+			res.emplace_back(*p);
+		}
+
+		return res;
+	}
+
 	void renew_random()
 	{
-		srand(unsigned(time(nullptr)));
-		for (int i = 0; i < 100; i++) rand();
+		std::random_device rd {};
+		// std::mt19937 mt { rd() };
+//		srand(mt());
+		srand(rd());
+
+		// for (int i = 0; i < 100; i++) rand();
 	}
 
 
@@ -73,7 +89,9 @@ namespace GA
 
 		// double new_hazing_percent = orient_params.hazing_percent;
 		// double new_hazing_percent = cut(orient_params.hazing_percent * 2 * orient_params.algorithm_progress_percent, 0.01, 0.9);
-		double new_hazing_percent = cut(orient_params.hazing_percent * progress_coefficient, 0.01, 0.9);
+		double new_hazing_percent = cut(orient_params.hazing_percent * progress_coefficient, 0.05, 0.9);
+
+		// std::cout << console_colors::bold << console_colors::yellow << "Current Hazing: " << new_hazing_percent << console_colors::remove_all_colors << std::endl;
 
 		auto next_eliting_step = [](size_t space_left, double current_hazing) -> size_t {
 			return size_t(std::clamp(std::round(current_hazing * space_left), 0., double(space_left)));
@@ -136,6 +154,7 @@ namespace GA
 
 		return genome_quantities \
 		{
+				.population_size = population_size,
 				.parent_fit_pow = orient_params.parent_fit_pow,
 				.parent_number = parent_number,
 				.child_number = child_number,
@@ -159,4 +178,5 @@ namespace GA
 		   << " \n\tbest_genome_number: " << quantities.best_genome_number << "\n}";
 		return os;
 	}
+
 }

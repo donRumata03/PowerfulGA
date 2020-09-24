@@ -108,4 +108,49 @@ namespace GA
 
 		return res;
 	}
+
+
+
+	population launch_crossover(parents_t& parents, const normalizer& normaaaaa, GA::crossover_mode mode) {
+		population res;
+		res.reserve(parents.size() * 2);
+		for (auto& p : parents) {
+			assert(p.second.size() == p.first.size());
+
+			res.push_back(mat_parents({ &p.first, &p.second }, normaaaaa, mode));
+
+			/*
+			size_t crossover_point = randint(size_t(0), p.first.size());
+			// cout << "Crossover point: " << crossover_point << endl;
+			genome& child1 = res.emplace_back();
+			genome& child2 = res.emplace_back();
+			child1 = p.first;
+			child2 = p.first;
+
+			copy(p.first.begin(), p.first.begin() + crossover_point, child1.begin());
+			copy(p.second.begin() + crossover_point, p.second.end(), child1.begin() + crossover_point);
+
+			// cout << "Traveled first! " << child1.size() << " " << child2.size() << endl;
+			copy(p.second.begin(), p.second.begin() + crossover_point, child2.begin());
+			copy(p.first.begin() + crossover_point, p.first.end(), child2.begin() + crossover_point);
+			*/
+		}
+		return res;
+	}
+
+
+	population apply_crossover(light_parents_t& parents,
+			const std::function<genome (const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)>& parent_matter,
+			const normalizer& normaaaaa, crossover_mode mode)
+{
+		population res;
+		res.reserve(parents.size() * 2);
+		for (auto& p : parents) {
+			assert(p.second->size() == p.first->size());
+
+			res.push_back(parent_matter({ p.first, p.second }, normaaaaa, mode));
+		}
+		return res;
+	}
+
 }

@@ -27,6 +27,12 @@ double eggholder_function(const std::vector<double>& point)
 
 double schaffer_function(const std::vector<double>& point)
 {
+	if (point.size() != 2) {
+		std::cout << console_colors::red /*<< console_colors::bold*/ << console_colors::underlined << "The size of genome "  << point
+			<< " is " << point.size() << ", but should be " << 2 << console_colors::remove_all_colors
+		<< std::endl;
+	}
+
 	assert(point.size() == 2);
 	double x = point[0], y = point[1];
 	return 0.5 + (square(cos(sin(abs(square(x) - square(y))))) - 0.5) / square(1 + 0.001 * (square(x) + square(y)));

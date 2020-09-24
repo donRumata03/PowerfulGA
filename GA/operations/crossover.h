@@ -30,5 +30,7 @@ namespace GA
 
 	// Simply run matting for multiple parents
 	population launch_crossover(parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); // Not so efficient, too much copying!
-	population launch_crossover(light_parents_t& parents, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); /// Used
+
+	population apply_crossover(light_parents_t& parents,
+			const std::function<genome (const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)>& parent_matter, const normalizer& normaaaaa, crossover_mode mode = crossover_mode::low_variance_genetic); /// Used
 }

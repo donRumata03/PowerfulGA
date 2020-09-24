@@ -6,8 +6,10 @@
 
 #include "../ga_base.h"
 
-#include "crossover.h"
 #include "util.h"
+#include "crossover.h"
+#include "mutation.h"
+#include "population_generation.h"
 
 namespace GA
 {
@@ -32,9 +34,37 @@ namespace GA
 	};
 	*/
 
+	/**
+	 * Allows to customize all the useful operations with genome:
+	 */
+	struct GA_operation_set
+	{
+		/// Population Generation:
+		std::function<population(const std::vector<std::pair<double, double>>& ranges, size_t amount)> population_generation = generate_population;
+
+		/// Genome mutation:
+		std::function<void(genome& target_genome, const std::vector<double>& sigmas, double target_gene_number, const normalizer& normaaa)> mutation = mutate;
+
+		/// Genome selection isn`t customizable, because, come on, it doesn`t depend on the nature of the genomes but only on the fitness function result and on the method of selection
+
+		/// Pair Distribution is also non-customizable for the same reasons
+
+		/// Function For actual matting
+		std::function<genome (const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)> parents_matting = mat_parents;
+	};
+
+
+	/**
+	 * 	Binary GA operation Preset: works with std::vector<std::bitset<...>> instead of std::vector<double>, so need templates for GA main function!!!
+	 */
+	static inline GA_operation_set binary_GA_operation_preset = {
+			// TODO!!! : use templates for genome type!!!
+			/// .population_generation = ;
+	};
+
 	/// Resultant function that computes the new population:
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
-			const genome_quantities& quantities, crossover_mode mode);
+	void make_new_generation(population& pop,const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
+			const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations);
 
 	// Function that divides all the population into parent pairs:
 	light_parents_t distribute_pairs(light_population& pop, size_t pair_amount, bool allow_gay_marriage = false); // Actually ", bool allow_SELF_marriage = false"

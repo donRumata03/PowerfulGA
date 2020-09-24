@@ -9,8 +9,8 @@ namespace GA
 {
 
 	/// Resultant function:
-	population make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
-										const genome_quantities& quantities, crossover_mode mode)
+	void make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
+										const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations)
 	{
 		/// New population is:
 		///
@@ -30,39 +30,32 @@ namespace GA
 
 		light_population parents = select_matting_pool(souls, fitnesses, pop.size(), quantities.parent_fit_pow); /// Not the ideal ones, will come through matting
 
-		light_population usual_elite = select_matting_pool(souls, fitnesses, quantities.usual_elite_number, quantities.usual_elite_fit_pow); /// Will be directly added
-		light_population hyper_elite = select_matting_pool(souls, fitnesses, quantities.hyper_elite_number, quantities.hyper_elite_fit_pow); /// Will be directly added
+		light_population light_usual_elite = select_matting_pool(souls, fitnesses, quantities.usual_elite_number, quantities.usual_elite_fit_pow); /// Will be directly added
+		light_population light_hyper_elite = select_matting_pool(souls, fitnesses, quantities.hyper_elite_number, quantities.hyper_elite_fit_pow); /// Will be directly added
 
+		auto usual_elite = materialize_population(light_usual_elite);
+		auto hyper_elite = materialize_population(light_hyper_elite);
 
 		size_t child_number = pop.size() - quantities.usual_elite_number - quantities.hyper_elite_number - quantities.best_genome_number;
+		assert(child_number == quantities.child_number);
+
+		light_parents_t formed_pairs = distribute_pairs(parents, quantities.child_number);
 
 
-		// cout << "Parents: " << endl;
-		// for (auto parent : parents) cout << *parent << endl;
+		/// std::vector<genome> pop HAS NOW USELESS DATA!!! => Fill it with what we want
+		/// Its size is exactly what we need!!!
 
-		// cout << "Elite: " << endl;
-		// for (auto& p : elite) cout << *p << endl;
+		population children = apply_crossover(formed_pairs, custom_operations.parents_matting, normaaaaa, mode);
 
+		pop.clear(); // <- Doesn`t decrease the capacity
 
-		light_parents_t formed_pairs = distribute_pairs(parents, child_number);
+		for (auto& child : children) pop.emplace_back(std::move(child));            // Copy children
+		for (auto& elite_person : usual_elite) pop.emplace_back(std::move(elite_person));     // Copy usual elite
+		for (auto& elite_person : hyper_elite) pop.emplace_back(std::move(elite_person));     // Copy hyper elite
 
-		// cout << "Best: " << 1 / find_best_genome(pop, fitnesses).first << " " << find_best_genome(pop, fitnesses).second << endl;
+		for (size_t index = 0; index < quantities.best_genome_number; index++) pop.emplace_back(best_genome); // Add best genomes
 
-		// cout << endl << "Pairs: " << endl;
-		// for (auto& p : formed_pairs) cout << *p.first << " " << *p.second << endl;
-
-		population res = launch_crossover(formed_pairs, normaaaaa, mode);
-
-		res.reserve(pop.size());
-
-		// cout << res << endl;
-
-		for (auto& elite_person : usual_elite) res.emplace_back(*elite_person);
-		for (auto& elite_person : hyper_elite) res.emplace_back(*elite_person);
-
-		for (size_t index = 0; index < quantities.best_genome_number; index++) res.emplace_back(best_genome);
-
-		return res;
+		assert(pop.size() == quantities.population_size);
 	}
 
 
@@ -82,6 +75,26 @@ namespace GA
 		}
 
 		return r;
+	}
+
+
+	light_parents_t distribute_pairs(light_population& pop, const size_t pair_amount, const bool allow_gay_marriage)
+	{
+		light_parents_t result;
+		result.reserve(pair_amount);
+
+		size_t pop_size = pop.size();
+
+		for(size_t p_index = 0; p_index < pair_amount; p_index++)
+		{
+			size_t father_index = randint(0, pop_size);
+			size_t mother_index = randint(0, pop_size);
+			if (!allow_gay_marriage)
+				while (mother_index == father_index) mother_index = randint(0, pop_size);
+
+			result.emplace_back(pop[mother_index], pop[father_index]);
+		}
+		return result;
 	}
 
 

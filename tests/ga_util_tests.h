@@ -87,9 +87,9 @@ void crossover_wrapper_test()
 
 	normalizer normaaa(100000);
 
-	for(size_t i = 0; i < 10; i++) std::cout << launch_crossover(p, normaaa) << std::endl;
+	for(size_t i = 0; i < 10; i++) std::cout << apply_crossover(p, mat_parents, normaaa) << std::endl;
 	std::cout << std::endl;
-	for(size_t i = 0; i < 10; i++) std::cout << launch_crossover(p, normaaa, crossover_mode::high_variance_genetic) << std::endl;
+	for(size_t i = 0; i < 10; i++) std::cout << apply_crossover(p, mat_parents, normaaa, crossover_mode::high_variance_genetic) << std::endl;
 
 	/*
 	vector<double> values1, values2;
