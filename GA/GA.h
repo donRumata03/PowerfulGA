@@ -38,7 +38,7 @@ struct GA_params
 	GA::GA_operation_set custom_operations = {};
 
 	void set_default_epoch_num(size_t total_computations) {
-		/// TODO: find the best fraction by testing:
+		/// TODO: find the optimal fraction by testing:
 		if (total_computations < 100) {
 			double temp_population_size = std::pow(double(total_computations), 0.75);
 			epoch_num = size_t(total_computations / temp_population_size);

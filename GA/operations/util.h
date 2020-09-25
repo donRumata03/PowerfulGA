@@ -49,7 +49,12 @@ namespace GA
 	 * Calculates actual values from the oriented ones:
 	 * @return
 	 */
-	genome_quantities calculate_genome_quantities(size_t space_left, const genome_quantity_orientation& orient_params);
+	genome_quantities calculate_genome_quantities(size_t population_size, const genome_quantity_orientation& orient_params);
+
+	/**
+	 * Shows the graph with different type (children, hyper_elite, e.t.c.) dynamic
+	 */
+	void view_quantity_dynamic(size_t population_size, genome_quantity_orientation orient_params);
 
 	void renew_random();
 }

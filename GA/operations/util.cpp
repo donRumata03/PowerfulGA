@@ -179,4 +179,34 @@ namespace GA
 		return os;
 	}
 
+	void view_quantity_dynamic (size_t population_size, genome_quantity_orientation orient_params)
+	{
+		size_t dynamic_iterations = 10'000;
+
+		std::vector<double> child_dynamic(dynamic_iterations),
+							usual_elite_dynamic(dynamic_iterations),
+							hyper_elite_dynamic(dynamic_iterations),
+							best_genome_dynamic(dynamic_iterations);
+
+		for (size_t iteration = 0; iteration < dynamic_iterations; ++iteration) {
+			double completion_percent = double(iteration) / dynamic_iterations;
+			orient_params.algorithm_progress_percent = completion_percent;
+
+			auto this_quantity = calculate_genome_quantities(population_size, orient_params);
+
+			child_dynamic[iteration]       = this_quantity.child_number;
+			usual_elite_dynamic[iteration] = this_quantity.usual_elite_number;
+			hyper_elite_dynamic[iteration] = this_quantity.hyper_elite_number;
+			best_genome_dynamic[iteration] = this_quantity.best_genome_number;
+		}
+
+		add_to_plot(enumerate<double>(child_dynamic),       { .name = "Children" });
+		add_to_plot(enumerate<double>(usual_elite_dynamic), { .name = "Usual Elite" });
+		add_to_plot(enumerate<double>(hyper_elite_dynamic), { .name = "Hyper Elite" });
+		add_to_plot(enumerate<double>(best_genome_dynamic), { .name = "Best Genome" });
+
+
+		show_plot({ .window_title = "Hazing percent = "s + std::to_string(orient_params.hazing_percent) });
+	}
+
 }

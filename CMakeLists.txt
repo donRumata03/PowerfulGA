@@ -46,7 +46,7 @@ add_executable(GA_test
         tests/local_testing.h
         tests/test_functions.h
         tests/test_functions.cpp
-        tests/ga_util_tests.h tests/lib_test.cpp)
+        tests/ga_util_tests.h tests/lib_test.cpp tests/quantity_tests.h)
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_library})
 target_link_libraries(GA_test GA)

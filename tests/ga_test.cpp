@@ -7,6 +7,8 @@
 
 #include "ga_util_tests.h"
 
+#include "quantity_tests.h"
+
 using namespace GA;
 // using namespace binary_GA;
 
@@ -173,7 +175,7 @@ int main()
 	// simple_ga_test();
 
 
-	ga_test();
+	// ga_test();
 	/// 										GA operations:
 	// fancy_crossover_test();
 	// crossover_wrapper_test();
@@ -184,6 +186,7 @@ int main()
 	// test_quantity_counter_with_big_number();
 	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
+	test_quantity_dynamic_graphing();
 
 	return 0;
 }
