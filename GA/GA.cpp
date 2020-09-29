@@ -126,7 +126,7 @@ namespace GA {
 		for (size_t epoch = 0; epoch < params.epoch_num; epoch++) {
 			/// Mutation
 			for (auto& g : p) mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
-			if (params.cut_mutations) cut_mutations(p, point_ranges);
+			if (params.cut_mutations) params.custom_operations.genome_constraint(p, point_ranges); // cut_mutations(p, point_ranges);
 
 			// if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
 

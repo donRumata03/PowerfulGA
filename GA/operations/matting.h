@@ -45,6 +45,9 @@ namespace GA
 		/// Genome mutation:
 		std::function<void(genome& target_genome, const std::vector<double>& sigmas, double target_gene_number, const normalizer& normaaa)> mutation = mutate;
 
+		/// Genome Constraint function:
+		std::function<void (population& population, const std::vector<std::pair<double, double>>& constraints)> genome_constraint = cut_mutations;
+
 		/// Genome selection isn`t customizable, because, come on, it doesn`t depend on the nature of the genomes but only on the fitness function result and on the method of selection
 
 		/// Pair Distribution is also non-customizable for the same reasons

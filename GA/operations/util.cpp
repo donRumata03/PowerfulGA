@@ -131,7 +131,7 @@ namespace GA
 		// Separate best genome and hyper elite:
 		size_t hyper_elite_number, best_genome_number;
 		if (orient_params.use_best_genome) {
-			best_genome_number = next_eliting_step(non_usual_elite_number, slightly_move_to_half(new_hazing_percent));
+			best_genome_number = next_eliting_step(non_usual_elite_number, slightly_move_to_half(slightly_move_to_half(new_hazing_percent)));
 			hyper_elite_number = non_usual_elite_number - best_genome_number;
 		}
 		else {
