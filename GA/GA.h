@@ -29,6 +29,7 @@ struct GA_params
 	double mutation_percent_sigma = 0;
 	double target_gene_mutation_number = 0;
 	bool cut_mutations = true;
+	std::optional<std::vector<double>> individual_mutation_sigmas; // Allows to specify the mutation sigma individually for each number in genome
 
 	GA::crossover_mode crossover_mode = GA::crossover_mode::low_variance_genetic;
 	std::optional<double> exiting_fitness_value = {};
@@ -39,7 +40,7 @@ struct GA_params
 	size_t threads = std::thread::hardware_concurrency() - 2;
 
 	void set_default_epoch_num(size_t total_computations) {
-		/// TODO: find the optimal fraction by testing:
+		/// TODO: find the optimal fraction by testing!
 		if (total_computations < 100) {
 			double temp_population_size = std::pow(double(total_computations), 0.75);
 			epoch_num = size_t(total_computations / temp_population_size);

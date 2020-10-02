@@ -87,10 +87,13 @@ namespace GA {
 		 */
 
 		std::vector<double> mutation_sigmas;
-		mutation_sigmas.reserve(point_ranges.size());
-		for (auto& range : point_ranges) mutation_sigmas.push_back((range.first - range.second) * params.mutation_percent_sigma);
-		// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
-
+		if (params.individual_mutation_sigmas) mutation_sigmas = *params.individual_mutation_sigmas;
+		else {
+			mutation_sigmas.reserve(point_ranges.size());
+			for (auto &range : point_ranges)
+				mutation_sigmas.push_back((range.first - range.second) * params.mutation_percent_sigma);
+			// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
+		}
 		
 		// Generating initial population
 		p = generate_population(point_ranges, params.population_size);
