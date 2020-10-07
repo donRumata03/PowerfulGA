@@ -38,9 +38,11 @@ namespace GA {
 		}
 	}
 
-	std::pair<double, genome> ga_optimize(const std::function< double(std::vector<double>&) >& fitness_function,
-		const std::vector<std::pair<double, double>>& point_ranges, const GA_params params,
-		const std::function< void(double, double, const genome&) >& informer, std::vector<double>* to_store_fitness)
+	std::pair<double, genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
+	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
+	                                       const std::function<void (double, double, const genome &)> &informer,
+	                                       std::vector<double> *to_store_fitness,
+	                                       const std::function<void (const population &, logging_type)> *logger)
 	{
 		// Unpacking parameters:
 	/*
@@ -127,9 +129,15 @@ namespace GA {
 		genome best_genome;
 
 		for (size_t epoch = 0; epoch < params.epoch_num; epoch++) {
+			if (logger) (*logger)(p, logging_type::new_epoch);
+
 			/// Mutation
 			for (auto& g : p) mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
+			if (logger) (*logger)(p, logging_type::after_mutation);
+
 			if (params.cut_mutations) params.custom_operations.genome_constraint(p, point_ranges); // cut_mutations(p, point_ranges);
+			if (logger) (*logger)(p, logging_type::after_constraining);
+
 
 			// if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
 
@@ -236,7 +244,8 @@ namespace GA {
 			informer(GA_percent, best_fitness, fake_genome);
 		};
 
-		std::pair<double, genome> ga_result = ga_optimize(wrapper_lambda, real_point_ranges, params, informer_wrapper, to_store_fitness);
+		std::pair<double, genome> ga_result = ga_optimize(wrapper_lambda, real_point_ranges, params, informer_wrapper,
+		                                                  to_store_fitness, nullptr);
 		std::pair<double, genome> real_result = { ((generate_fitness_from_loss) ? (1 / ga_result.first) : (ga_result.first)), ga_result.second };
 		return real_result;
 	}

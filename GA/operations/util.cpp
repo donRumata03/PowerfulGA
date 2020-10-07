@@ -200,10 +200,10 @@ namespace GA
 			best_genome_dynamic[iteration] = this_quantity.best_genome_number;
 		}
 
-		add_to_plot(enumerate<double>(child_dynamic),       { .name = "Children" });
-		add_to_plot(enumerate<double>(usual_elite_dynamic), { .name = "Usual Elite" });
-		add_to_plot(enumerate<double>(hyper_elite_dynamic), { .name = "Hyper Elite" });
-		add_to_plot(enumerate<double>(best_genome_dynamic), { .name = "Best Genome" });
+		add_pairs_to_plot(enumerate<double>(child_dynamic),       { .name = "Children" });
+		add_pairs_to_plot(enumerate<double>(usual_elite_dynamic), { .name = "Usual Elite" });
+		add_pairs_to_plot(enumerate<double>(hyper_elite_dynamic), { .name = "Hyper Elite" });
+		add_pairs_to_plot(enumerate<double>(best_genome_dynamic), { .name = "Best Genome" });
 
 
 		show_plot({ .window_title = "Hazing percent = "s + std::to_string(orient_params.hazing_percent) });

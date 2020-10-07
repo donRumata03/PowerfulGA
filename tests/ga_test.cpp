@@ -69,7 +69,7 @@ void ga_test()
 		std::cout << "GA percent: " << percent << "; best error now: " << 0.29 + 1 / best_fitness << "; best genome: " << best_genome << std::endl;
 	};
 	
-	auto [opt, values] = ga_optimize(shaffer_fit, ranges, params, callback);
+	auto [opt, values] = ga_optimize(shaffer_fit, ranges, params, callback, nullptr, nullptr);
 
 	std::cout << "\n\n\nBest function value: " << (0.29 + 1 / opt) << " at parameters: " << values << std::endl;
 }
@@ -85,7 +85,7 @@ void random_test()
 	{
 		to_plot.emplace_back(double(pnt.first), double(pnt.second));
 	}
-	add_to_plot(to_plot, {});
+	add_pairs_to_plot(to_plot, {});
 	std::cout << "Plotting!" << std::endl;
 	show_plot();
 }
@@ -151,7 +151,9 @@ void simple_ga_test()
 		std::cout << "GA percent: " << percent << "; best function value now: " << 3 + 1 / best_fitness << "; best genome: " << best_genome << std::endl;
 	};
 
-	auto [opt, values] = ga_optimize([](const std::vector<double>& vals) { return 1 / abs((vals[0] * vals[0] - 4 * vals[0] + 7) - 3); }, ranges, params, callback);
+	auto [opt, values] = ga_optimize(
+			[] (const std::vector<double> &vals) { return 1 / abs((vals[0] * vals[0] - 4 * vals[0] + 7) - 3); }, ranges,
+			params, callback, nullptr, nullptr);
 
 	std::cout << "\n\n\nBest function value: " << (3 + 1 / opt) << " at parameters: " << values << std::endl;
 }

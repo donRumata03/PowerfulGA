@@ -11,60 +11,67 @@
 
 constexpr bool DEBUG_GA = false;
 
-struct GA_params
-{
-	size_t population_size = 0;
-	size_t epoch_num = 0;
-
-
-
-	/// DELETED: double best_genome_percent = 0.05;
-
-	double hyper_elite_fit_pow = 5;
-	double elite_fit_pow = 2;
-	double parent_fit_pow = 0.3;
-
-	double hazing_percent = 0.4;
-
-	double mutation_percent_sigma = 0;
-	double target_gene_mutation_number = 0;
-	bool cut_mutations = true;
-	std::optional<std::vector<double>> individual_mutation_sigmas; // Allows to specify the mutation sigma individually for each number in genome
-
-	GA::crossover_mode crossover_mode = GA::crossover_mode::low_variance_genetic;
-	std::optional<double> exiting_fitness_value = {};
-
-	GA::GA_operation_set custom_operations = {};
-
-	bool allow_multithreading = false;
-	size_t threads = std::thread::hardware_concurrency() - 2;
-
-	void set_default_epoch_num(size_t total_computations) {
-		/// TODO: find the optimal fraction by testing!
-		if (total_computations < 100) {
-			double temp_population_size = std::pow(double(total_computations), 0.75);
-			epoch_num = size_t(total_computations / temp_population_size);
-			population_size = size_t(temp_population_size);
-		}
-		else {
-			epoch_num = size_t(10. * std::log(double(total_computations)) / std::log(10'000));
-			population_size = total_computations / epoch_num;
-		}
-	}
-};
-
 namespace GA {
+	struct GA_params
+	{
+		size_t population_size = 0;
+		size_t epoch_num = 0;
+
+
+
+		/// DELETED: double best_genome_percent = 0.05;
+
+		double hyper_elite_fit_pow = 5;
+		double elite_fit_pow = 2;
+		double parent_fit_pow = 0.3;
+
+		double hazing_percent = 0.4;
+
+		double mutation_percent_sigma = 0;
+		double target_gene_mutation_number = 0;
+		bool cut_mutations = true;
+		std::optional<std::vector<double>> individual_mutation_sigmas; // Allows to specify the mutation sigma individually for each number in genome
+
+		GA::crossover_mode crossover_mode = GA::crossover_mode::low_variance_genetic;
+		std::optional<double> exiting_fitness_value = {};
+
+		GA::GA_operation_set custom_operations = {};
+
+		bool allow_multithreading = false;
+		size_t threads = std::thread::hardware_concurrency() - 2;
+
+		void set_default_epoch_num(size_t total_computations) {
+			/// TODO: find the optimal fraction by testing!
+			if (total_computations < 100) {
+				double temp_population_size = std::pow(double(total_computations), 0.75);
+				epoch_num = size_t(total_computations / temp_population_size);
+				population_size = size_t(temp_population_size);
+			}
+			else {
+				epoch_num = size_t(10. * std::log(double(total_computations)) / std::log(10'000));
+				population_size = total_computations / epoch_num;
+			}
+		}
+	};
+
+	enum class logging_type
+	{
+		new_epoch,
+		after_mutation,
+		after_constraining,
+	};
+
 	inline void default_GA_informer(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
 		static_assert(is_printable_by_me<const std::vector<double>>::value);
-		std::cout << "GA Percent: " << percent;
+		std::cout << "GA Percent: " << percent << std::endl;
 		// std::cout << " ; Best fitness: " << best_fitness << " ; Best genome: " << best_genome << std::endl;
 	}
 
-	std::pair<double, genome> ga_optimize(
-			const std::function< double(std::vector<double>&) >& fitness_function,
-			const std::vector<std::pair<double, double>>& point_ranges, GA_params params,
-			const std::function< void(double, double, const genome&) >& informer = default_GA_informer,
-		                                  std::vector<double>* to_store_fitness = nullptr);
+	std::pair<double, genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
+	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
+	                                       const std::function<void (double, double, const genome &)> &informer = default_GA_informer,
+	                                       std::vector<double> *to_store_fitness = nullptr,
+	                                       const std::function<void (const population &, logging_type)> *logger = nullptr);
 
 	std::pair<double, genome> log_ga_optimize(
 			const std::function< double(std::vector<double>&) >& target_function,
@@ -75,3 +82,4 @@ namespace GA {
 	);
 
 }
+

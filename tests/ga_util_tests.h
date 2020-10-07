@@ -62,8 +62,8 @@ void fancy_crossover_test()
 	auto smoothed = count_number_density(values1, 0.02, 1000, 1);
 	auto smoothed2 = count_number_density(values2, 0.02, 1000, 1);
 
-	add_to_plot(smoothed, {});
-	add_to_plot(smoothed2, {});
+	add_pairs_to_plot(smoothed, {});
+	add_pairs_to_plot(smoothed2, {});
 	std::cout << "Plotting!" << std::endl;
 
 	show_plot();
