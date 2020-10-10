@@ -1,4 +1,6 @@
+// #include <displaying/print_stl.h>
 #include "GA.h"
+// #include <displaying/print_stl.h>
 
 
 
@@ -15,7 +17,8 @@ namespace GA {
 	
 	bool thread_task_ready = false;
 	
-	void count_fitness_function_thread(const size_t thread_index, const std::function< double(std::vector<double>&) >& fitness_function, const std::pair<size_t, size_t> range)
+	void count_fitness_function_thread(
+			const size_t thread_index, const std::function< double(std::vector<double>&) >& fitness_function, const std::pair<size_t, size_t> range)
 	{
 		// cout << "Thread " << thread_index << " started working! " << range << "\n";
 		while(!thread_task_ready)
@@ -42,7 +45,7 @@ namespace GA {
 	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
 	                                       const std::function<void (double, double, const genome &)> &informer,
 	                                       std::vector<double> *to_store_fitness,
-	                                       const std::function<void (const population &, logging_type)> *logger)
+	                                       const std::function<void (const population &, size_t, logging_type)> *logger)
 	{
 		// Unpacking parameters:
 	/*
@@ -98,7 +101,7 @@ namespace GA {
 		}
 		
 		// Generating initial population
-		p = generate_population(point_ranges, params.population_size);
+		p = params.custom_operations.population_generation(point_ranges, params.population_size);
 		// if constexpr (DEBUG_GA) std::cout << "Initial population: " << p << std::endl << std::endl;
 
 		// Init fitness vectors:
@@ -129,22 +132,26 @@ namespace GA {
 		genome best_genome;
 
 		for (size_t epoch = 0; epoch < params.epoch_num; epoch++) {
-			if (logger) (*logger)(p, logging_type::new_epoch);
+			if (logger) (*logger)(p, epoch, logging_type::new_epoch);
 
 			/// Mutation
-			for (auto& g : p) mutate(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
-			if (logger) (*logger)(p, logging_type::after_mutation);
+			for (auto& g : p) params.custom_operations.mutation(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
+			if (logger) (*logger)(p, epoch, logging_type::after_mutation);
 
 			if (params.cut_mutations) params.custom_operations.genome_constraint(p, point_ranges); // cut_mutations(p, point_ranges);
-			if (logger) (*logger)(p, logging_type::after_constraining);
+			if (logger) (*logger)(p, epoch, logging_type::after_constraining);
 
 
-			// if constexpr (DEBUG_GA) std::cout << "After mutation: " << p << std::endl << std::endl;
+			std::cout << "[GA]: Counting fitness..." << std::endl;
 
-			// Calculating fitnesses : MULTITHREADING!
-			// vector<double> fitnesses(population_size);
+
+			// Calculating fitnesses : MULTITHREADINGLY!
 			if (params.allow_multithreading) {
-				threads_work_collected = false;				
+				threads_work_collected = false;
+
+				// ReSet thread states:
+				std::fill(threads_ready.begin(), threads_ready.end(), false);
+
 				// Say other threads, that it`s time to count:
 				thread_count_time = true;
 
@@ -166,7 +173,10 @@ namespace GA {
 				}
 			}
 
-			
+			std::cout << "[GA]: Counted fitness";
+			// for(auto& fit : fitnesses) std::cout << fit << ", ";
+			// std::cout << "]" << std::endl;
+
 			// Find the best genome and its fitness:
 			auto [_best_fitness, _best_genome] = find_best_genome(p, fitnesses);
 			best_genome = _best_genome;
@@ -197,6 +207,7 @@ namespace GA {
 
 			// Output information:
 			informer(100 * double(epoch) / params.epoch_num, current_fitness, best_genome);
+			if (epoch && logger) (*logger)({ best_genome }, epoch, logging_type::best_genome);
 		}
 		/// ^^^ End Of Main Loop ^^^
 
@@ -212,7 +223,7 @@ namespace GA {
 	
 	// Log Wrapper
 	std::pair<double, genome> log_ga_optimize(const std::function<double(std::vector<double>&)>& target_function, std::vector<std::pair<double, double>>& point_ranges,
-		const GA_params params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
+		const GA_params& params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
 		const std::function< void(double, double, const genome&) >& informer, std::vector<double>* to_store_fitness)
 	{
 

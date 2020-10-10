@@ -59,6 +59,7 @@ namespace GA {
 		new_epoch,
 		after_mutation,
 		after_constraining,
+		best_genome
 	};
 
 	inline void default_GA_informer(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
@@ -71,7 +72,7 @@ namespace GA {
 	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
 	                                       const std::function<void (double, double, const genome &)> &informer = default_GA_informer,
 	                                       std::vector<double> *to_store_fitness = nullptr,
-	                                       const std::function<void (const population &, logging_type)> *logger = nullptr);
+	                                       const std::function<void (const population &, size_t, logging_type)> *logger = nullptr);
 
 	std::pair<double, genome> log_ga_optimize(
 			const std::function< double(std::vector<double>&) >& target_function,

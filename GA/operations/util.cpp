@@ -79,6 +79,7 @@ namespace GA
 		assert(orient_params.hazing_percent < 1 && orient_params.hazing_percent > 0);
 		assert(population_size >= 3);
 
+
 		// double progress_coefficient = square(orient_params.algorithm_progress_percent) * 3; /// Multiplying by 3 to save the average value
 		/// 	because the Integral of x^2 from 0 to 1 is ⅓
 
@@ -97,6 +98,7 @@ namespace GA
 			return size_t(std::clamp(std::round(current_hazing * space_left), 0., double(space_left)));
 		};
 
+		// Percentage manipulation functions:
 		auto get_advanced_hazing = [](double some_hazing) { return sqrt(some_hazing); };
 		auto get_slightly_advanced_hazing = [](double some_hazing) { return pow(some_hazing, 0.7); };
 
@@ -105,9 +107,17 @@ namespace GA
 
 		auto slightly_move_to_half = [](double some_hazing){ return sqrt(0.5 * some_hazing); };
 
-		// Split parents and privileged:
-		size_t all_elite_number = next_eliting_step(population_size, get_slightly_diminished_hazing(new_hazing_percent)); // get_diminished_hazing is to add some data
-		size_t child_number = population_size - all_elite_number;
+
+		/// Best genome:
+		size_t best_genome_number = population_size * std::clamp(cube(new_hazing_percent), 0.05, 0.2);
+		best_genome_number = std::max(best_genome_number, size_t(1));
+		size_t non_best_genome = population_size - best_genome_number;
+
+		/// Split parents and privileged:
+		size_t all_elite_number = next_eliting_step(non_best_genome, get_slightly_diminished_hazing(new_hazing_percent)); // get_diminished_hazing is to add some data
+		size_t child_number = non_best_genome - all_elite_number;
+
+/*
 		if (child_number % 2) // Make it dividable by two: <- why??? IT ISN`T NECESSARY!!!
 		{
 			if (child_number <= population_size - 1) {
@@ -121,7 +131,7 @@ namespace GA
 				all_elite_number++;
 			}
 		}
-
+*/
 		size_t parent_number = child_number * 2;
 
 		// Separate usual elite and higher elite sorts:
@@ -129,17 +139,25 @@ namespace GA
 		size_t usual_elite_number = all_elite_number - non_usual_elite_number;
 
 		// Separate best genome and hyper elite:
-		size_t hyper_elite_number, best_genome_number;
-		if (orient_params.use_best_genome) {
-			best_genome_number = next_eliting_step(non_usual_elite_number, slightly_move_to_half(slightly_move_to_half(new_hazing_percent)));
-			hyper_elite_number = non_usual_elite_number - best_genome_number;
-		}
-		else {
-			hyper_elite_number = non_usual_elite_number;
-			best_genome_number = 0;
-		}
 
-		assert(child_number + usual_elite_number + hyper_elite_number + best_genome_number == population_size);
+		size_t hyper_elite_number = non_usual_elite_number;
+
+		// std::cout << varname(hyper_elite_number) << std::endl;
+		// printvar(non_usual_elite_number);
+		// printvar(usual_elite_number);
+		// printvar(hyper_elite_number);
+
+//		size_t hyper_elite_number, best_genome_number;
+//		if (orient_params.use_best_genome) {
+//			best_genome_number = next_eliting_step(non_usual_elite_number, slightly_move_to_half(slightly_move_to_half(new_hazing_percent)));
+//			hyper_elite_number = non_usual_elite_number - best_genome_number;
+//		}
+//		else {
+//			hyper_elite_number = non_usual_elite_number;
+//			best_genome_number = 0;
+//		}
+
+	assert(child_number + usual_elite_number + hyper_elite_number + best_genome_number == population_size);
 
 
 #ifndef NDEBUG
