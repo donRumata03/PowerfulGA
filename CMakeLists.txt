@@ -57,7 +57,7 @@ add_library(GA
         other_optimization/combi_optimizing.cpp
         other_optimization/combi_optimizing.h
 
-        )
+        GA/base_GA_params.h GA/operations/operations.h)
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 

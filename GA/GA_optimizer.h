@@ -4,10 +4,24 @@
 
 #pragma once
 
+#include "ga_base.h"
 
-class GA_optimizer
+#include "operations/operations.h"
+#include "base_GA_params.h"
+
+
+namespace GA
 {
 
-};
+	struct continuous_GA_params : _base_GA_params
+	{
 
+	};
+
+	class GA_optimizer
+	{
+
+	};
+
+}
 

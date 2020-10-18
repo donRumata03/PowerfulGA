@@ -56,7 +56,7 @@ void ga_test()
 	params.parent_fit_pow = 0.3;
 
 	// Multithreading parameters:
-	params.allow_multithreading = false;
+	params.allow_multithreading = true;
 	params.threads = 10;
 
 	params.crossover_mode = crossover_mode::low_variance_genetic;
