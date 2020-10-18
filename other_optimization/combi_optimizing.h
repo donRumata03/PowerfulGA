@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "GA/GA.h"
+#include "GA/old_GA.h"
 #include "local_optimization.h"
 
 enum class combi_optimization_type {

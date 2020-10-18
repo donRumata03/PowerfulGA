@@ -1,4 +1,4 @@
-#include "GA/GA.h"
+#include "GA/old_GA.h"
 // #include "GA/binary_GA.h"
 #include <iostream>
 

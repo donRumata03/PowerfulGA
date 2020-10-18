@@ -1,6 +1,4 @@
-// #include <displaying/print_stl.h>
-#include "GA.h"
-// #include <displaying/print_stl.h>
+#include "old_GA.h"
 
 
 
@@ -18,12 +16,12 @@ namespace GA {
 	bool thread_task_ready = false;
 	
 	void count_fitness_function_thread(
-			const size_t thread_index, const std::function< double(std::vector<double>&) >& fitness_function, const std::pair<size_t, size_t> range)
+			const size_t thread_index, const std::function< double(std::vector<double>&) >& fitness_function, const std::pair<size_t, size_t>& range)
 	{
 		// cout << "Thread " << thread_index << " started working! " << range << "\n";
 		while(!thread_task_ready)
 		{
-			while(!thread_count_time && !thread_task_ready) { std::this_thread::yield(); }
+			while(!thread_count_time && !thread_task_ready) { /*std::this_thread::yield();*/ }
 
 			if (thread_task_ready)
 			{
@@ -37,7 +35,7 @@ namespace GA {
 
 			threads_ready[thread_index] = true;
 			
-			while (!threads_work_collected) { std::this_thread::yield(); }
+			while (!threads_work_collected) { /*std::this_thread::yield();*/ }
 		}
 	}
 

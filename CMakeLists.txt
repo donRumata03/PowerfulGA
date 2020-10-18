@@ -30,8 +30,8 @@ include_directories(.)
 include_directories(${pythonic_include_directories})
 
 add_library(GA
-        GA/GA.cpp
-        GA/GA.h
+        GA/old_GA.cpp
+        GA/old_GA.h
         GA/ga_base.cpp
         GA/ga_base.h
         other_optimization/local_optimization.cpp
