@@ -61,7 +61,7 @@ void ga_test()
 
 	params.crossover_mode = crossover_mode::low_variance_genetic;
 
-	std::cout << std::thread::hardware_concurrency() << " threads" << std::endl;
+	// std::cout << std::thread::hardware_concurrency() << " threads" << std::endl;
 
 	// std::function<void(double, double, const vector<double>&)> callback = [];
 	auto callback = [](const double percent, const double best_fitness, const std::vector<double>& best_genome)
@@ -163,7 +163,6 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 	system(("chcp " + std::to_string(CP_UTF8)).c_str());
 
-	std::function<void(void)> value = test_GD;
 
 	// std::cout << std::log(10) / std::log(2) << std::endl;
 
@@ -175,9 +174,9 @@ int main()
 
 	/// 										GA itself:
 	// simple_ga_test();
+	ga_test();
 
 
-	// ga_test();
 	/// 										GA operations:
 	// fancy_crossover_test();
 	// crossover_wrapper_test();

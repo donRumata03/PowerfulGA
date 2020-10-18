@@ -30,12 +30,34 @@ include_directories(.)
 include_directories(${pythonic_include_directories})
 
 add_library(GA
+        GA/ga_base.h
+
+        GA/operations/mutation.cpp
+        GA/operations/mutation.h
+        GA/operations/matting.cpp
+        GA/operations/matting.h
+        GA/operations/population_generation.cpp
+        GA/operations/population_generation.h
+        GA/operations/util.cpp
+        GA/operations/util.h
+        GA/operations/crossover.cpp
+        GA/operations/crossover.h
+
+
         GA/old_GA.cpp
         GA/old_GA.h
-        GA/ga_base.cpp
-        GA/ga_base.h
+
+        GA/GA_optimizer.cpp
+        GA/GA_optimizer.h
+
+        performance_testing/performance_distribution_maker.cpp
+        performance_testing/performance_distribution_maker.h
+
         other_optimization/local_optimization.cpp
-        other_optimization/combi_optimizing.cpp other_optimization/combi_optimizing.h performance_testing/performance_distribution_maker.cpp performance_testing/performance_distribution_maker.h GA/operations/mutation.cpp GA/operations/mutation.h GA/operations/matting.cpp GA/operations/matting.h GA/operations/population_generation.cpp GA/operations/population_generation.h GA/operations/util.cpp GA/operations/util.h GA/operations/crossover.cpp GA/operations/crossover.h)
+        other_optimization/combi_optimizing.cpp
+        other_optimization/combi_optimizing.h
+
+        )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
