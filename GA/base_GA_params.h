@@ -66,4 +66,20 @@ namespace GA
 */
 	};
 
+
+	enum class logging_type
+	{
+		new_epoch,
+		after_mutation,
+		after_constraining,
+		best_genome
+	};
+
+	inline void default_GA_informer(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
+		static_assert(is_printable_by_me<const std::vector<double>>::value);
+		std::cout << "GA Percent: " << percent << std::endl;
+		// std::cout << " ; Best fitness: " << best_fitness << " ; Best genome: " << best_genome << std::endl;
+	}
+
+
 }
