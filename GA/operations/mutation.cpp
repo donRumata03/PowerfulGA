@@ -7,7 +7,7 @@
 
 namespace GA
 {
-	void mutate(genome& target_genome, const std::vector<double>& sigmas, const double target_gene_number, const normalizer& normaaa)
+	void mutate(Genome& target_genome, const std::vector<double>& sigmas, const double target_gene_number, const normalizer& normaaa)
 	{
 		auto real_gene_number = static_cast<size_t>(cut(std::round(normaaa.generate(target_gene_number, target_gene_number / 2)), 0, target_genome.size()));
 		std::vector<size_t> mutate_indexes = uniform_int_distribute(0, target_genome.size() - 1, real_gene_number);
@@ -19,7 +19,7 @@ namespace GA
 		}
 	}
 
-	void cut_mutations (population &population, const std::vector<std::pair<double, double>> &constraints)
+	void cut_mutations (Population &population, const std::vector<std::pair<double, double>> &constraints)
 	{
 		for (auto& genome : population) {
 			for (size_t gene_index = 0; gene_index < genome.size(); gene_index++) {

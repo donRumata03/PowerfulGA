@@ -24,7 +24,7 @@ namespace GA
 	{
 	private:
 		// GA params:
-		std::function<double(const genome&)> fitness_function;
+		std::function<double(const Genome&)> fitness_function;
 		continuous_GA_params params;
 
 		std::vector<std::pair<double, double>> point_ranges;
@@ -32,35 +32,24 @@ namespace GA
 		// FeedBack:
 		std::vector<double> fitness_history;
 
-		std::function<void (double, double, const genome &)> informer = default_GA_informer;
-		std::function<void (const population &, size_t, logging_type)>* logger = nullptr; // Isn't responsible for cleaning "your" logger up
+		std::function<void (double, double, const Genome &)> informer = default_GA_informer;
+		std::function<void (const Population &, size_t, logging_type)>* logger = nullptr; // Isn't responsible for cleaning «"your" logger» up
 
 
 	public:
 		/// Setting up the GA:
 
-		GA_optimizer(std::function<double(const genome&)> _fitness_function,
+		GA_optimizer(std::function<double(const Genome&)> _fitness_function,
 			         std::vector<std::pair<double, double>> _point_ranges,
-			         continuous_GA_params _params
-//			         const std::function<void (double, double, const genome &)> &_informer = default_GA_informer,
-//			         std::vector<double>* _to_store_fitness = nullptr,
-//			         const std::function<void (const population &, size_t, logging_type)>* logger = nullptr
-			         )
-						: fitness_function(std::move(_fitness_function)),
-						point_ranges(std::move(_point_ranges)),
-						params(std::move(_params))
-
-		{
-
-		}
+			         continuous_GA_params _params);
 
 		/// Copies the informer!
-		void set_informer(std::function<void (double, double, const genome &)> _informer) {
+		void set_informer(std::function<void (double, double, const Genome &)> _informer) {
 			informer = std::move(_informer);
 		}
 
 		/// Doesn`t copy the logger!
-		void plug_logger(std::function<void (const population &, size_t, logging_type)>& _logger) {
+		void plug_logger(std::function<void (const Population &, size_t, logging_type)>& _logger) {
 			logger = &_logger;
 		}
 
@@ -71,15 +60,35 @@ namespace GA
 		 *
 		 *
 		 */
+		struct CompletionPercent { double fraction; };
 
-		void run_one_iteration();
+		void run_one_iteration(genome_quantities quantities);
+		void run_one_iteration(CompletionPercent completion_percent);
+		void run_one_iteration(size_t max_target_epoch_num);
 		void run_many_iterations(size_t iterations) { for (size_t i = 0; i < iterations; ++i) run_one_iteration(); }
 
-		// Getting run information:
+		/// Getting run status information:
 		[[nodiscard]] const std::vector<double>& get_fitness_history () const
 		{
 			return fitness_history;
 		}
+
+		/// Temporary run-time data:
+		// Initial Configuration:
+		std::vector<double> mutation_sigmas;
+		bool is_multithreaded = false;
+
+		size_t iterations_performed = 0;
+
+		Population population;
+		std::vector<double> fitnesses;
+
+		/// Threading:
+		// std::vector<std::thread> threads;
+		static_thread_pool thread_pool;
+		std::vector<std::pair<size_t, size_t>> thread_task_distribution;
+		std::vector<double> thread_results;
+
 	};
 
 }

@@ -14,17 +14,17 @@ namespace GA {
 
 
 
-	std::pair<double, genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
+	std::pair<double, Genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
 	                                       const std::vector<std::pair<double, double>> &point_ranges, single_run_GA_params params,
-	                                       const std::function<void (double, double, const genome &)> &informer = default_GA_informer,
+	                                       const std::function<void (double, double, const Genome &)> &informer = default_GA_informer,
 	                                       std::vector<double> *to_store_fitness = nullptr,
-	                                       const std::function<void (const population &, size_t, logging_type)> *logger = nullptr);
+	                                       const std::function<void (const Population &, size_t, logging_type)> *logger = nullptr);
 
-	std::pair<double, genome> log_ga_optimize(
+	std::pair<double, Genome> log_ga_optimize(
 			const std::function< double(std::vector<double>&) >& target_function,
 			const std::vector<std::pair<double, double>>& point_ranges, single_run_GA_params params,
 			bool generate_fitness_from_loss = false, std::vector<bool> to_logariphmate = {},
-			const std::function< void(double, double, const genome&) >& informer = nullptr,
+			const std::function< void(double, double, const Genome&) >& informer = nullptr,
 			std::vector<double>* to_store_fitness = nullptr
 	);
 

@@ -6,10 +6,10 @@
 
 namespace GA
 {
-	std::pair<double, genome> find_best_genome(population& pop, const std::vector<double>& fits)
+	std::pair<double, Genome> find_best_genome(Population& pop, const std::vector<double>& fits)
 	{
 		double best_fitness = fits[0];
-		genome* g = pop.data();
+		Genome* g = pop.data();
 		for (size_t index = 0; index < pop.size(); index++) if (best_fitness < fits[index])
 			{
 				best_fitness = fits[index];
@@ -19,10 +19,10 @@ namespace GA
 		return { best_fitness, *g };
 	}
 
-	std::pair<double, genome> find_best_genome(light_population& pop, const std::vector<double>& fits)
+	std::pair<double, Genome> find_best_genome(LightPopulation& pop, const std::vector<double>& fits)
 	{
 		double best_fitness = fits[0];
-		genome* g = pop[0];
+		Genome* g = pop[0];
 		for (size_t index = 0; index < pop.size(); index++) if (best_fitness < fits[index])
 			{
 				best_fitness = fits[index];
@@ -32,9 +32,9 @@ namespace GA
 		return { best_fitness, *g };
 	}
 
-	population materialize_population (const light_population &l_pop)
+	Population materialize_population (const LightPopulation &l_pop)
 	{
-		population res;
+		Population res;
 		res.reserve(l_pop.size());
 
 		for (auto p : l_pop) {

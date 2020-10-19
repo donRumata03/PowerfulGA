@@ -8,6 +8,6 @@
 
 namespace GA
 {
-	population generate_population(const std::vector<std::pair<double, double>>& ranges, size_t amount);
+	Population generate_population(const std::vector<std::pair<double, double>>& ranges, size_t amount);
 }
 

@@ -10,12 +10,12 @@ using namespace GA;
 
 void matting_test()
 {
-	genome g1 = { 2, 0 };
-	genome g2 = { -2, 0 };
-	genome g3 = { 3, 0 };
+	Genome g1 = { 2, 0 };
+	Genome g2 = { -2, 0 };
+	Genome g3 = { 3, 0 };
 
 
-	population p = { g1, g2, g3 };
+	Population p = { g1, g2, g3 };
 
 	std::vector<double> fit = { 1 / parabaloid(g1), 1 / parabaloid(g2), 1 / parabaloid(g3) };
 	std::cout << fit << std::endl;
@@ -37,7 +37,7 @@ void crossover_test()
 	srand(unsigned(time(nullptr)));
 	renew_random();
 
-	parents_t parents = {{{1, 2, 3, 4}, {6, 7, 8, 9}}};
+	Parents parents = {{{ 1, 2, 3, 4}, { 6, 7, 8, 9}}};
 	auto res = GA::perform_dummy_crossover_matting(parents);
 	std::cout << res << std::endl;
 }
@@ -45,8 +45,8 @@ void crossover_test()
 
 void fancy_crossover_test()
 {
-	genome parent1 = { 1, 3 };
-	genome parent2 = { 2, 6 };
+	Genome parent1 = { 1, 3 };
+	Genome parent2 = { 2, 6 };
 
 	// cout << (parent1[0] + parent2[0]) / 2 << " " << (parent1[1] + parent2[1]) / 2 << endl;
 
@@ -71,14 +71,14 @@ void fancy_crossover_test()
 
 void crossover_wrapper_test()
 {
-	genome parent1 = { 1, 3 };
-	genome parent2 = { 2, 6 };
+	Genome parent1 = { 1, 3 };
+	Genome parent2 = { 2, 6 };
 
-	genome parent3 = { 6, 10 };
-	genome parent4 = { 6, 10 };
+	Genome parent3 = { 6, 10 };
+	Genome parent4 = { 6, 10 };
 
 
-	light_parents_t p = {
+	LightParents p = {
 			{&parent1, &parent2},
 			{&parent3, &parent4},
 	};
@@ -103,13 +103,13 @@ void crossover_wrapper_test()
 
 void parent_choosing_test()
 {
-	genome g1 = {1, 4};
-	genome g2 = {1, 5};
-	genome g3 = {3, 6};
-	genome g4 = {0, 7};
-	genome g5 = {-1, 4};
+	Genome g1 = { 1, 4};
+	Genome g2 = { 1, 5};
+	Genome g3 = { 3, 6};
+	Genome g4 = { 0, 7};
+	Genome g5 = { -1, 4};
 
-	light_population pop = {
+	LightPopulation pop = {
 			&g1,
 			&g2,
 			&g3,

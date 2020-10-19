@@ -7,11 +7,11 @@
 
 namespace GA
 {
-	genome mat_parents(const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)
+	Genome mat_parents(const std::pair<Genome*, Genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)
 	{
 		assert(parents.second->size() == parents.first->size());
 		size_t genome_size = parents.first->size();
-		genome res(genome_size);
+		Genome res(genome_size);
 
 		for (size_t gene_index = 0; gene_index < genome_size; gene_index++)
 		{
@@ -111,8 +111,8 @@ namespace GA
 
 
 
-	population launch_crossover(parents_t& parents, const normalizer& normaaaaa, GA::crossover_mode mode) {
-		population res;
+	Population launch_crossover(Parents& parents, const normalizer& normaaaaa, GA::crossover_mode mode) {
+		Population res;
 		res.reserve(parents.size() * 2);
 		for (auto& p : parents) {
 			assert(p.second.size() == p.first.size());
@@ -139,11 +139,11 @@ namespace GA
 	}
 
 
-	population apply_crossover(light_parents_t& parents,
-			const std::function<genome (const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)>& parent_matter,
-			const normalizer& normaaaaa, crossover_mode mode)
+	Population apply_crossover(LightParents& parents,
+	                           const std::function<Genome (const std::pair<Genome*, Genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)>& parent_matter,
+	                           const normalizer& normaaaaa, crossover_mode mode)
 {
-		population res;
+		Population res;
 		res.reserve(parents.size() * 2);
 		for (auto& p : parents) {
 			assert(p.second->size() == p.first->size());
@@ -157,16 +157,16 @@ namespace GA
 	/**
 	 * 			Dummy crossover function, DEPRECATED!
 	 */
-	population perform_dummy_crossover_matting(parents_t & parents) {
+	Population perform_dummy_crossover_matting(Parents & parents) {
 // #pragma message("Deprecated function used!")
-		population res;
+		Population res;
 		res.reserve(parents.size() * 2);
 		for (auto& p : parents) {
 			assert(p.second.size() == p.first.size());
 			size_t crossover_point = randint(size_t(0), p.first.size());
 			// cout << "Crossover point: " << crossover_point << endl;
-			genome & child1 = res.emplace_back();
-			genome & child2 = res.emplace_back();
+			Genome & child1 = res.emplace_back();
+			Genome & child2 = res.emplace_back();
 			child1 = p.first;
 			child2 = p.first;
 

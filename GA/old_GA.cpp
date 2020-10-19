@@ -5,7 +5,7 @@
 namespace GA {
 
 	// TODO: add possibility to run 2 GA's at once!!!
-	population p;
+	Population p;
 	std::vector<double> fitnesses;
 	volatile bool thread_count_time = false;
 	std::vector<bool> threads_ready;
@@ -39,11 +39,11 @@ namespace GA {
 		}
 	}
 
-	std::pair<double, genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
+	std::pair<double, Genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
 	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
-	                                       const std::function<void (double, double, const genome &)> &informer,
+	                                       const std::function<void (double, double, const Genome &)> &informer,
 	                                       std::vector<double> *to_store_fitness,
-	                                       const std::function<void (const population &, size_t, logging_type)> *logger)
+	                                       const std::function<void (const Population &, size_t, logging_type)> *logger)
 	{
 		// Unpacking parameters:
 	/*
@@ -127,7 +127,7 @@ namespace GA {
 
 		/// Beginning of the main loop:
 		double current_fitness = 0;
-		genome best_genome;
+		Genome best_genome;
 
 		for (size_t epoch = 0; epoch < params.epoch_num; epoch++) {
 			if (logger) (*logger)(p, epoch, logging_type::new_epoch);
@@ -220,9 +220,9 @@ namespace GA {
 	}
 	
 	// Log Wrapper
-	std::pair<double, genome> log_ga_optimize(const std::function<double(std::vector<double>&)>& target_function, std::vector<std::pair<double, double>>& point_ranges,
-		const GA_params& params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
-		const std::function< void(double, double, const genome&) >& informer, std::vector<double>* to_store_fitness)
+	std::pair<double, Genome> log_ga_optimize(const std::function<double(std::vector<double>&)>& target_function, std::vector<std::pair<double, double>>& point_ranges,
+	                                          const GA_params& params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
+	                                          const std::function< void(double, double, const Genome&) >& informer, std::vector<double>* to_store_fitness)
 	{
 
 		if (to_logariphmate.empty()) to_logariphmate.assign(point_ranges.size(), false);
@@ -253,9 +253,9 @@ namespace GA {
 			informer(GA_percent, best_fitness, fake_genome);
 		};
 
-		std::pair<double, genome> ga_result = ga_optimize(wrapper_lambda, real_point_ranges, params, informer_wrapper,
+		std::pair<double, Genome> ga_result = ga_optimize(wrapper_lambda, real_point_ranges, params, informer_wrapper,
 		                                                  to_store_fitness, nullptr);
-		std::pair<double, genome> real_result = { ((generate_fitness_from_loss) ? (1 / ga_result.first) : (ga_result.first)), ga_result.second };
+		std::pair<double, Genome> real_result = { ((generate_fitness_from_loss) ? (1 / ga_result.first) : (ga_result.first)), ga_result.second };
 		return real_result;
 	}
 }

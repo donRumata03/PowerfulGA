@@ -6,10 +6,10 @@
 
 namespace GA
 {
-	population generate_population(const std::vector<std::pair<double, double>>& ranges, const size_t amount)
+	Population generate_population(const std::vector<std::pair<double, double>>& ranges, const size_t amount)
 	{
 		size_t genome_size = ranges.size();
-		population res(amount);
+		Population res(amount);
 
 		std::vector<std::vector<double>> genome_randoms(genome_size);
 		for (int i = 0; i < genome_size; i++) {

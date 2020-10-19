@@ -94,7 +94,7 @@ void random_test()
 
 void new_gen_test()
 {
-	population old_gen = {
+	Population old_gen = {
 		{1, 4},
 		{7, 3},
 		{1, 2},

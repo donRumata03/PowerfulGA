@@ -40,20 +40,20 @@ namespace GA
 	struct GA_operation_set
 	{
 		/// Population Generation:
-		std::function<population(const std::vector<std::pair<double, double>>& ranges, size_t amount)> population_generation = generate_population;
+		std::function<Population(const std::vector<std::pair<double, double>>& ranges, size_t amount)> population_generation = generate_population;
 
 		/// Genome mutation:
-		std::function<void(genome& target_genome, const std::vector<double>& sigmas, double target_gene_number, const normalizer& normaaa)> mutation = mutate;
+		std::function<void(Genome& target_genome, const std::vector<double>& sigmas, double target_gene_number, const normalizer& normaaa)> mutation = mutate;
 
 		/// Genome Constraint function:
-		std::function<void (population& population, const std::vector<std::pair<double, double>>& constraints)> genome_constraint = cut_mutations;
+		std::function<void (Population& population, const std::vector<std::pair<double, double>>& constraints)> genome_constraint = cut_mutations;
 
 		/// Genome selection isn`t customizable, because, come on, it doesn`t depend on the nature of the genomes but only on the fitness function result and on the method of selection
 
 		/// Pair Distribution is also non-customizable for the same reasons
 
 		/// Function For actual matting
-		std::function<genome (const std::pair<genome*, genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)> parents_matting = mat_parents;
+		std::function<Genome (const std::pair<Genome*, Genome*>& parents, const normalizer& normaaaaa, const crossover_mode mode)> parents_matting = mat_parents;
 	};
 
 
@@ -66,11 +66,11 @@ namespace GA
 	};
 
 	/// Resultant function that computes the new population:
-	void make_new_generation(population& pop,const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
-			const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations);
+	void make_new_generation(Population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const Genome& best_genome,
+	                         const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations);
 
 	// Function that divides all the population into parent pairs:
-	light_parents_t distribute_pairs(light_population& pop, size_t pair_amount, bool allow_gay_marriage = false); // Actually ", bool allow_SELF_marriage = false"
+	LightParents distribute_pairs(LightPopulation& pop, size_t pair_amount, bool allow_gay_marriage = false); // Actually ", bool allow_SELF_marriage = false"
 
 
 	// Uses Russian roulette to select some pairs of parents:

@@ -9,10 +9,10 @@
 
 namespace GA
 {
-	std::pair<double, genome> find_best_genome(population& pop, const std::vector<double>& fits);
-	std::pair<double, genome> find_best_genome(light_population& pop, const std::vector<double>& fits);
+	std::pair<double, Genome> find_best_genome(Population& pop, const std::vector<double>& fits);
+	std::pair<double, Genome> find_best_genome(LightPopulation& pop, const std::vector<double>& fits);
 
-	population materialize_population(const light_population& l_pop);
+	Population materialize_population(const LightPopulation& l_pop);
 
 	struct genome_quantities
 	{

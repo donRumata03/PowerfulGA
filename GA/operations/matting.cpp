@@ -9,8 +9,8 @@ namespace GA
 {
 
 	/// Resultant function:
-	void make_new_generation(population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const genome& best_genome,
-										const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations)
+	void make_new_generation(Population& pop, const std::vector<double>& fitnesses, const normalizer& normaaaaa, const Genome& best_genome,
+	                         const genome_quantities& quantities, crossover_mode mode, const GA_operation_set& custom_operations)
 	{
 		/// New population is:
 		///
@@ -23,15 +23,15 @@ namespace GA
 		///		 children
 		///
 
-		light_population souls;
+		LightPopulation souls;
 
 		souls.reserve(pop.size());
-		for (genome& val : pop) souls.push_back(&val);
+		for (Genome& val : pop) souls.push_back(&val);
 
-		light_population parents = select_matting_pool(souls, fitnesses, pop.size(), quantities.parent_fit_pow); /// Not the ideal ones, will come through matting
+		LightPopulation parents = select_matting_pool(souls, fitnesses, pop.size(), quantities.parent_fit_pow); /// Not the ideal ones, will come through matting
 
-		light_population light_usual_elite = select_matting_pool(souls, fitnesses, quantities.usual_elite_number, quantities.usual_elite_fit_pow); /// Will be directly added
-		light_population light_hyper_elite = select_matting_pool(souls, fitnesses, quantities.hyper_elite_number, quantities.hyper_elite_fit_pow); /// Will be directly added
+		LightPopulation light_usual_elite = select_matting_pool(souls, fitnesses, quantities.usual_elite_number, quantities.usual_elite_fit_pow); /// Will be directly added
+		LightPopulation light_hyper_elite = select_matting_pool(souls, fitnesses, quantities.hyper_elite_number, quantities.hyper_elite_fit_pow); /// Will be directly added
 
 		auto usual_elite = materialize_population(light_usual_elite);
 		auto hyper_elite = materialize_population(light_hyper_elite);
@@ -39,13 +39,13 @@ namespace GA
 		size_t child_number = pop.size() - quantities.usual_elite_number - quantities.hyper_elite_number - quantities.best_genome_number;
 		assert(child_number == quantities.child_number);
 
-		light_parents_t formed_pairs = distribute_pairs(parents, quantities.child_number);
+		LightParents formed_pairs = distribute_pairs(parents, quantities.child_number);
 
 
 		/// std::vector<genome> pop HAS NOW USELESS DATA!!! => Fill it with what we want
 		/// Its size is exactly what we need!!!
 
-		population children = apply_crossover(formed_pairs, custom_operations.parents_matting, normaaaaa, mode);
+		Population children = apply_crossover(formed_pairs, custom_operations.parents_matting, normaaaaa, mode);
 
 		pop.clear(); // <- Doesn`t decrease the capacity
 
@@ -78,9 +78,9 @@ namespace GA
 	}
 
 
-	light_parents_t distribute_pairs(light_population& pop, const size_t pair_amount, const bool allow_gay_marriage)
+	LightParents distribute_pairs(LightPopulation& pop, const size_t pair_amount, const bool allow_gay_marriage)
 	{
-		light_parents_t result;
+		LightParents result;
 		result.reserve(pair_amount);
 
 		size_t pop_size = pop.size();
