@@ -62,24 +62,20 @@ namespace GA
 		 */
 		struct CompletionPercent { double fraction; };
 
-		void run_one_iteration(const genome_quantities& quantities);
-		void run_one_iteration(CompletionPercent completion_percent);
-		void run_one_iteration(size_t max_target_epoch_num) {
+		/**
+		 * For all the running functions:
+		 * @return: true if current fitness is already big enough, otherwise: false
+		 */
+		bool run_one_iteration(const genome_quantities& quantities);
+		bool run_one_iteration(CompletionPercent completion_percent);
+		bool run_one_iteration(size_t max_target_epoch_num) {
 			return run_one_iteration(CompletionPercent{ double(iterations_performed) / max_target_epoch_num});
 		}
 
-		void run_many_iterations(size_t iterations, const genome_quantities& quantities) {
-			for (size_t i = 0; i < iterations; ++i) {
-				run_one_iteration(quantities);
-			}
-		}
+		bool run_many_iterations(size_t iterations, const genome_quantities& quantities);
+		bool run_many_iterations(size_t iterations, size_t max_target_epoch_num);
 
-		void run_many_iterations(size_t iterations, size_t max_target_epoch_num) {
-			if (iterations_performed + iterations > max_target_epoch_num) throw std::overflow_error("Too big iteration number");
-			for (size_t i = 0; i < iterations; ++i) {
-				run_one_iteration(max_target_epoch_num);
-			}
-		}
+
 
 		/// Getting run status information:
 		[[nodiscard]] const std::vector<double>& get_fitness_history () const
@@ -93,6 +89,10 @@ namespace GA
 //		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private:
+		/// Methods:
+		void _compute_fitness();
+
 
 	private:
 
@@ -106,6 +106,7 @@ namespace GA
 		Population population;
 		Genome best_genome;
 		std::vector<double> fitnesses;
+		std::optional<double> current_fitness = std::nullopt;
 
 		/// Threading:
 		// std::vector<std::thread> threads;
@@ -113,6 +114,8 @@ namespace GA
 		std::vector<std::pair<size_t, size_t>> thread_task_distribution;
 		std::vector<double> thread_results;
 
+		/// Utils:
+		normalizer norma{10000};
 	};
 
 }
