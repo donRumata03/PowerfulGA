@@ -83,6 +83,17 @@ namespace GA
 			return fitness_history;
 		}
 
+
+		[[nodiscard]] const std::vector<double>& get_best_genome () const
+		{
+			return best_genome;
+		}
+
+		[[nodiscard]] const std::optional<double> &get_current_fitness () const
+		{
+			return current_fitness;
+		}
+
 		~GA_optimizer() = default;
 //		{
 //			thread_pool.join();

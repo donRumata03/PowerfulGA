@@ -144,3 +144,4 @@ void GA::GA_optimizer::_compute_fitness ()
 		}
 	}
 }
+

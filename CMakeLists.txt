@@ -57,18 +57,27 @@ add_library(GA
         other_optimization/combi_optimizing.cpp
         other_optimization/combi_optimizing.h
 
-        GA/base_GA_params.h GA/operations/operations.h)
+        GA/base_GA_params.h
+        GA/operations/operations.h
+        )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
 target_link_libraries(GA ${pythonic_static_library})
 
 add_executable(GA_test
-        tests/ga_test.cpp
+        main.cpp
+
         tests/local_testing.h
         tests/test_functions.h
         tests/test_functions.cpp
-        tests/ga_util_tests.h tests/lib_test.cpp tests/quantity_tests.h)
+        tests/ga_util_tests.h
+        tests/lib_test.cpp
+        tests/quantity_tests.h
+        tests/old_GA_test.h
+
+
+        tests/ga_test.h)
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_library})
 target_link_libraries(GA_test GA)
