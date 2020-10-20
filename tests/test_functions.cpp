@@ -69,4 +69,9 @@ std::vector<double> parabaloid_second_derivative (const std::vector<double> &poi
 	return res;
 }
 
+double parabaloid_fitness (std::vector<double> &xs)
+{
+	return 1 / parabaloid(xs);
+}
+
 

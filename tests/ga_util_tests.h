@@ -5,6 +5,7 @@
 #pragma once
 
 #include "GA/old_GA.h"
+#include "test_functions.h"
 
 using namespace GA;
 
@@ -122,5 +123,45 @@ void parent_choosing_test()
 	for (auto& p : res) std::cout << *p.first << " " << *p.second << std::endl;
 }
 
+void random_test()
+{
+	std::vector<size_t> vals;
+	for (size_t i = 0; i < 10000; i++) vals.push_back(randint(0, 5));
+	auto counter = make_Counter(vals);
+	std::cout << counter << std::endl;
+	pms to_plot;
+	for (auto& pnt : get_sorted_elements(counter))
+	{
+		to_plot.emplace_back(double(pnt.first), double(pnt.second));
+	}
+	add_pairs_to_plot(to_plot, {});
+	std::cout << "Plotting!" << std::endl;
+	show_plot();
+}
+
+
+
+void new_gen_test()
+{
+	Population old_gen = {
+			{1, 4},
+			{7, 3},
+			{1, 2},
+			{0, 3},
+			{1, 1.5},
+			{0, 2}
+	};
+
+	normalizer normaaa(1000);
+
+	std::vector<double> fitnesses;
+	for (auto& gene : old_gen) fitnesses.push_back(parabaloid_fitness(gene));
+
+
+	std::cout << "Fitnesses: " << fitnesses << std::endl;
+
+	// cout << make_new_generation(old_gen, fitnesses, normaaa, 2, 0.3, 3) << endl;
+
+}
 
 

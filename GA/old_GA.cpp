@@ -40,7 +40,7 @@ namespace GA {
 	}
 
 	std::pair<double, Genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
-	                                       const std::vector<std::pair<double, double>> &point_ranges, GA_params params,
+	                                       const std::vector<std::pair<double, double>> &point_ranges, const single_run_GA_params& params,
 	                                       const std::function<void (double, double, const Genome &)> &informer,
 	                                       std::vector<double> *to_store_fitness,
 	                                       const std::function<void (const Population &, size_t, logging_type)> *logger)
@@ -90,11 +90,11 @@ namespace GA {
 		 */
 
 		std::vector<double> mutation_sigmas;
-		if (params.individual_mutation_sigmas) mutation_sigmas = *params.individual_mutation_sigmas;
+		if (params.mutation_params.individual_mutation_sigmas) mutation_sigmas = *params.mutation_params.individual_mutation_sigmas;
 		else {
 			mutation_sigmas.reserve(point_ranges.size());
 			for (auto &range : point_ranges)
-				mutation_sigmas.push_back((range.first - range.second) * params.mutation_percent_sigma);
+				mutation_sigmas.push_back((range.first - range.second) * params.mutation_params.mutation_percent_sigma);
 			// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
 		}
 		
@@ -108,14 +108,14 @@ namespace GA {
 		
 		// Making threads
 		std::vector<std::thread> threads;
-		if(params.allow_multithreading)
+		if(params.threading_params.allow_multithreading)
 		{
-			threads_ready.assign(params.threads, false);
+			threads_ready.assign(params.threading_params.threads, false);
 
-			auto task_ranges = distribute_task_ranges(params.population_size, params.threads);
+			auto task_ranges = distribute_task_ranges(params.population_size, params.threading_params.threads);
 			
-			threads.reserve(params.threads);
-			for (size_t thread_index = 0; thread_index < params.threads; thread_index++)
+			threads.reserve(params.threading_params.threads);
+			for (size_t thread_index = 0; thread_index < params.threading_params.threads; thread_index++)
 			{
 				threads.emplace_back(count_fitness_function_thread, thread_index, ref(fitness_function), task_ranges[thread_index]);
 			}
@@ -133,10 +133,10 @@ namespace GA {
 			if (logger) (*logger)(p, epoch, logging_type::new_epoch);
 
 			/// Mutation
-			for (auto& g : p) params.custom_operations.mutation(g, mutation_sigmas, params.target_gene_mutation_number, normaaaaa);
+			for (auto& g : p) params.custom_operations.mutation(g, mutation_sigmas, params.mutation_params.target_gene_mutation_number, normaaaaa);
 			if (logger) (*logger)(p, epoch, logging_type::after_mutation);
 
-			if (params.cut_mutations) params.custom_operations.genome_constraint(p, point_ranges); // cut_mutations(p, point_ranges);
+			if (params.mutation_params.cut_mutations) params.custom_operations.genome_constraint(p, point_ranges); // cut_mutations(p, point_ranges);
 			if (logger) (*logger)(p, epoch, logging_type::after_constraining);
 
 
@@ -144,7 +144,7 @@ namespace GA {
 
 
 			// Calculating fitnesses : MULTITHREADINGLY!
-			if (params.allow_multithreading) {
+			if (params.threading_params.allow_multithreading) {
 				threads_work_collected = false;
 
 				// ReSet thread states:
@@ -186,12 +186,12 @@ namespace GA {
 			// Calculating population quantities:
 			auto population_quantities = calculate_genome_quantities(params.population_size,
 					{
-							params.hazing_percent,
+							params.hazing_params.hazing_percent,
 						double(epoch) / params.epoch_num,
 
-						params.parent_fit_pow,
-						params.elite_fit_pow,
-						params.hyper_elite_fit_pow,
+						params.hazing_params.parent_fit_pow,
+						params.hazing_params.elite_fit_pow,
+						params.hazing_params.hyper_elite_fit_pow,
 						epoch != 0
 					});
 
@@ -209,19 +209,19 @@ namespace GA {
 		}
 		/// ^^^ End Of Main Loop ^^^
 
-		if(params.allow_multithreading) {
+		if(params.threading_params.allow_multithreading) {
 			// Stop other threads:
 			thread_task_ready = true;
 			for (auto &this_thread : threads) this_thread.join();
 		}
 
-		// Here`s the actual result:
+		// Here's the actual result:
 		return { current_fitness, best_genome };
 	}
 	
 	// Log Wrapper
 	std::pair<double, Genome> log_ga_optimize(const std::function<double(std::vector<double>&)>& target_function, std::vector<std::pair<double, double>>& point_ranges,
-	                                          const GA_params& params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
+	                                          const single_run_GA_params& params, const bool generate_fitness_from_loss, std::vector<bool> to_logariphmate,
 	                                          const std::function< void(double, double, const Genome&) >& informer, std::vector<double>* to_store_fitness)
 	{
 

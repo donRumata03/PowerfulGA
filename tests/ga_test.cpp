@@ -12,52 +12,37 @@
 using namespace GA;
 // using namespace binary_GA;
 
-double parabaloid(std::vector<double>& xs)
-{
-	double res = 0;
-	for (double x : xs) res += x * x;
-	return res;
-}
-
-
-double parabaloid_fitness(std::vector<double>& xs)
-{
-	return 1 / parabaloid(xs);
-}
 
 
 
-
-void ga_test()
+void old_ga_test()
 {
 	renew_random();
 	
 	// pms ranges = { { -512, 512 }, { -512, 512 } };
 	std::vector<std::pair<double, double>> ranges = { { -100, 100 }, { -100, 100 } };
 
-	GA_params params;
+	single_run_GA_params params;
 
 	size_t total_computations = 500'000;
 	params.population_size = 20'000;
 	params.epoch_num = total_computations / params.population_size;
 
-	params.set_default_epoch_num(1000'000);
-	std::cout << params.population_size << " " << params.epoch_num << std::endl;
 
 
-	params.hazing_percent = 0.7;
+	params.hazing_params.hazing_percent = 0.7;
 	
-	params.target_gene_mutation_number = 0.1;
-	params.mutation_percent_sigma = 0.01;
-	params.cut_mutations = false;
+	params.mutation_params.target_gene_mutation_number = 0.1;
+	params.mutation_params.mutation_percent_sigma = 0.01;
+	params.mutation_params.cut_mutations = false;
 	// params.best_genome_percent = 0.05;
 
-	params.elite_fit_pow = 2;
-	params.parent_fit_pow = 0.3;
+	params.hazing_params.elite_fit_pow = 2;
+	params.hazing_params.parent_fit_pow = 0.3;
 
 	// Multithreading parameters:
-	params.allow_multithreading = true;
-	params.threads = 10;
+	params.threading_params.allow_multithreading = true;
+	params.threading_params.threads = 10;
 
 	params.crossover_mode = crossover_mode::low_variance_genetic;
 
@@ -66,55 +51,17 @@ void ga_test()
 	// std::function<void(double, double, const vector<double>&)> callback = [];
 	auto callback = [](const double percent, const double best_fitness, const std::vector<double>& best_genome)
 	{
-		std::cout << "GA percent: " << percent << "; best error now: " << 0.29 + 1 / best_fitness << "; best genome: " << best_genome << std::endl;
+		std::cout << "GA percent: " << percent << "; best error now: " << value_by_shaffer_fit(best_fitness) << "; best genome: " << best_genome << std::endl;
 	};
 	
 	auto [opt, values] = ga_optimize(shaffer_fit, ranges, params, callback, nullptr, nullptr);
 
-	std::cout << "\n\n\nBest function value: " << (0.29 + 1 / opt) << " at parameters: " << values << std::endl;
-}
-
-void random_test()
-{
-	std::vector<size_t> vals;
-	for (size_t i = 0; i < 10000; i++) vals.push_back(randint(0, 5));
-	auto counter = make_Counter(vals);
-	std::cout << counter << std::endl;
-	pms to_plot;
-	for (auto& pnt : get_sorted_elements(counter))
-	{
-		to_plot.emplace_back(double(pnt.first), double(pnt.second));
-	}
-	add_pairs_to_plot(to_plot, {});
-	std::cout << "Plotting!" << std::endl;
-	show_plot();
+	std::cout << "\n\n\nBest function value: " << value_by_shaffer_fit(opt) << " at parameters: " << values << std::endl;
 }
 
 
 
-void new_gen_test()
-{
-	Population old_gen = {
-		{1, 4},
-		{7, 3},
-		{1, 2},
-		{0, 3},
-		{1, 1.5},
-		{0, 2}
-	};
-
-	normalizer normaaa(1000);
-
-	std::vector<double> fitnesses;
-	for (auto& gene : old_gen) fitnesses.push_back(parabaloid_fitness(gene));
-
-
-	std::cout << "Fitnesses: " << fitnesses << std::endl;
-	
-	// cout << make_new_generation(old_gen, fitnesses, normaaa, 2, 0.3, 3) << endl;
-	
-}
-
+/*
 void simple_ga_test()
 {
 	renew_random();
@@ -143,7 +90,7 @@ void simple_ga_test()
 	params.threads = 10;
 
 	params.exiting_fitness_value = 1e+10;
-	
+
 	params.crossover_mode = crossover_mode::low_variance_genetic;
 
 	auto callback = [](const double percent, const double best_fitness, const std::vector<double>& best_genome)
@@ -157,14 +104,11 @@ void simple_ga_test()
 
 	std::cout << "\n\n\nBest function value: " << (3 + 1 / opt) << " at parameters: " << values << std::endl;
 }
+*/
 
 int main()
 {
-	SetConsoleOutputCP(CP_UTF8);
-	system(("chcp " + std::to_string(CP_UTF8)).c_str());
-
-
-	// std::cout << std::log(10) / std::log(2) << std::endl;
+	set_utf8_in_console();
 
 	/// 								Local optimization:
 	// test_GD();
@@ -173,8 +117,7 @@ int main()
 	// compare_GD_and_newton();
 
 	/// 										GA itself:
-	// simple_ga_test();
-	ga_test();
+	old_ga_test();
 
 
 	/// 										GA operations:
@@ -187,7 +130,7 @@ int main()
 	// test_quantity_counter_with_big_number();
 	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
-	test_quantity_dynamic_graphing();
+	// test_quantity_dynamic_graphing();
 
 	return 0;
 }
