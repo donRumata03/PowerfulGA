@@ -49,14 +49,35 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 	///
 }
 
+
 /**
  * Computation
  */
 
-void GA::GA_optimizer::run_one_iteration ()
+void GA::GA_optimizer::run_one_iteration (const genome_quantities& quantities)
 {
 
 
 
 	iterations_performed++;
 }
+
+
+/// Helper:
+
+void GA::GA_optimizer::run_one_iteration (GA::GA_optimizer::CompletionPercent completion_percent)
+{
+	genome_quantities quantities = calculate_genome_quantities(params.population_size, {
+			params.hazing_params.hazing_percent,
+			completion_percent.fraction,
+
+			params.hazing_params.parent_fit_pow,
+			params.hazing_params.elite_fit_pow,
+			params.hazing_params.hyper_elite_fit_pow,
+			!best_genome.empty()
+	});
+
+	run_one_iteration(quantities);
+}
+
+
