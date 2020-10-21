@@ -16,7 +16,7 @@ namespace GA {
 
 	std::pair<double, Genome> ga_optimize (const std::function<double (std::vector<double> &)> &fitness_function,
 	                                       const std::vector<std::pair<double, double>> &point_ranges, const single_run_GA_params& params,
-	                                       const std::function<void (double, double, const Genome &)> &informer = default_GA_informer,
+	                                       const std::function<void (double, double, const Genome &)> &informer = default_GA_informer_by_percennt,
 	                                       std::vector<double> *to_store_fitness = nullptr,
 	                                       const std::function<void (const Population &, size_t, logging_type)> *logger = nullptr);
 

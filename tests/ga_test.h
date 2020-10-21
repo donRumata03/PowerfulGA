@@ -7,13 +7,15 @@
 #include "GA/GA_optimizer.h"
 #include "test_functions.h"
 
+#include <pythonic.h>
+
 inline void test_GA() {
 	std::vector<std::pair<double, double>> ranges = { { -100, 100 }, { -100, 100 } };
 
 	GA::continuous_GA_params params;
 
 	size_t total_computations = 500'000;
-	params.population_size = 20'000;
+	params.population_size = 21'000;
 	size_t epochs = total_computations / params.population_size;
 	// params.epoch_num = total_computations / params.population_size;
 
@@ -35,9 +37,11 @@ inline void test_GA() {
 
 	params.crossover_mode = GA::crossover_mode::low_variance_genetic;
 
-	auto callback = [](const double percent, const double best_fitness, const std::vector<double>& best_genome)
+
+	auto callback = [&](const size_t iterations_performed, const double best_fitness, const std::vector<double>& best_genome)
 	{
-		std::cout << "GA percent: " << percent << "; best error now: " << value_by_shaffer_fit(best_fitness) << "; best genome: " << best_genome << std::endl;
+
+		std::cout << "GA: " << percent_plotter(iterations_performed, epochs, 2) << " iterations performed ; best error now: " << value_by_shaffer_fit(best_fitness) << "; best genome: " << best_genome << std::endl;
 	};
 
 	// auto [opt, values] = ga_optimize(shaffer_fit, ranges, params, callback, nullptr, nullptr);

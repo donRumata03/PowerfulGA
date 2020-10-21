@@ -94,7 +94,7 @@ namespace GA {
 		else {
 			mutation_sigmas.reserve(point_ranges.size());
 			for (auto &range : point_ranges)
-				mutation_sigmas.push_back((range.first - range.second) * params.mutation_params.mutation_percent_sigma);
+				mutation_sigmas.push_back((range.second - range.first) * params.mutation_params.mutation_percent_sigma);
 			// if constexpr (DEBUG_GA) std::cout << "Mutation sigmas: " << mutation_sigmas << std::endl << std::endl;
 		}
 		

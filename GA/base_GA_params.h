@@ -8,6 +8,13 @@
 
 namespace GA
 {
+	enum class exception_policy {
+		dont_catch,
+		catch_and_ignore,
+		catch_and_log_fact,
+		catch_and_log_data,
+	};
+
 
 	struct epoch_num_GA_params
 	{
@@ -50,7 +57,12 @@ namespace GA
 		std::optional<double> exiting_fitness_value = {};
 
 		threading_GA_params threading_params;
+
 		GA::GA_operation_set custom_operations = {};
+
+		exception_policy ex_policy = exception_policy::catch_and_log;
+
+
 /*
 		void set_default_epoch_num(size_t total_computations) {
 			if (total_computations < 100) {
@@ -75,10 +87,15 @@ namespace GA
 		best_genome
 	};
 
-	inline void default_GA_informer(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
+	inline void default_GA_informer_by_percennt(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
 		static_assert(is_printable_by_me<const std::vector<double>>::value);
-		std::cout << "GA Percent: " << percent << std::endl;
-		// std::cout << " ; Best fitness: " << best_fitness << " ; Best genome: " << best_genome << std::endl;
+		std::cout << "GA Percent: " << percent << " %; Best fitness: " << best_fitness << std::endl;
+	}
+
+
+	inline void default_GA_informer_by_iteration_number(const size_t iterations_performed, const double best_fitness, const std::vector<double>& best_genome) {
+		static_assert(is_printable_by_me<const std::vector<double>>::value);
+		std::cout << "GA: " << iterations_performed << " iterations performed of ?; Best fitness:" << best_fitness << std::endl;
 	}
 
 

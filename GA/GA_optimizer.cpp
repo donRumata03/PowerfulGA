@@ -3,6 +3,14 @@
 //
 
 #include "GA_optimizer.h"
+#include "displaying/print_stl.h"
+
+std::mutex prnt_mut;
+
+void sf_print(const std::string& to_print) {
+	std::lock_guard<std::mutex> lck (prnt_mut);
+	std::cout << to_print << std::endl;
+}
 
 /**
  * Initialization
@@ -22,7 +30,7 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 	else {
 		mutation_sigmas.reserve(point_ranges.size());
 		for (auto &range : point_ranges) {
-			mutation_sigmas.push_back((range.first - range.second) * params.mutation_params.mutation_percent_sigma);
+			mutation_sigmas.push_back((range.second - range.first) * params.mutation_params.mutation_percent_sigma);
 		}
 	}
 
@@ -36,12 +44,37 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 	is_multithreaded = params.threading_params.allow_multithreading;
 	if (is_multithreaded) {
 		thread_task_distribution = distribute_task_ranges(params.population_size, params.threading_params.threads);
-		thread_results.assign(params.threading_params.threads, 0.);
 
 		thread_pool.init(params.threading_params.threads, [&](size_t thread_index){
-			for (size_t task_index = thread_task_distribution[thread_index].first; task_index < thread_task_distribution[thread_index].second; ++task_index) {
-				thread_results[task_index] = fitness_function(population[task_index]);
+			for (size_t task_index = thread_task_distribution[thread_index].first;
+			     task_index < thread_task_distribution[thread_index].second; ++task_index) {
+				double this_fitness;
+
+				if (params.ex_policy == exception_policy::dont_catch) {
+					this_fitness = fitness_function(population[task_index]);
+				}
+				else {
+					// catch_and_ignore or catch_and_log
+					try {
+						this_fitness = fitness_function(population[task_index]);
+					} catch (std::exception& e) {
+						if (params.ex_policy != exception_policy::catch_and_ignore) {
+							std::cout << console_colors::red <<
+								"Error occurred while counting fitness function: " << e.what() << std::endl;
+
+							if (params.ex_policy == exception_policy::catch_and_log_data) {
+								std::cout << "The parameter is: " << population[task_index] << std::endl;
+							}
+
+							std::cout << console_colors::remove_all_colors;
+						}
+						this_fitness = 0;
+					}
+				}
+				fitnesses[task_index] = this_fitness;
 			}
+
+
 		});
 
 	}
@@ -82,6 +115,8 @@ bool GA::GA_optimizer::run_one_iteration (const genome_quantities& quantities)
 
 	///
 	fitness_history.push_back(*current_fitness);
+	informer(iterations_performed, *current_fitness, best_genome);
+
 	if (params.exiting_fitness_value && *current_fitness > *params.exiting_fitness_value) {
 		return true;
 	}
