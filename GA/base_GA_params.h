@@ -60,7 +60,7 @@ namespace GA
 
 		GA::GA_operation_set custom_operations = {};
 
-		exception_policy ex_policy = exception_policy::catch_and_log;
+		exception_policy ex_policy = exception_policy::catch_and_log_fact;
 
 
 /*

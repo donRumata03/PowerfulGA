@@ -63,7 +63,9 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 								"Error occurred while counting fitness function: " << e.what() << std::endl;
 
 							if (params.ex_policy == exception_policy::catch_and_log_data) {
-								std::cout << "The parameter is: " << population[task_index] << std::endl;
+								std::cout << "The parameter is: ";
+								print(population[task_index]);
+								std::cout << std::endl;
 							}
 
 							std::cout << console_colors::remove_all_colors;
@@ -73,8 +75,6 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 				}
 				fitnesses[task_index] = this_fitness;
 			}
-
-
 		});
 
 	}
