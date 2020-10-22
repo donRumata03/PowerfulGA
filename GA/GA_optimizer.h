@@ -33,7 +33,7 @@ namespace GA
 		std::vector<double> fitness_history;
 
 		std::function<void (size_t, double, const Genome &)> informer = default_GA_informer_by_iteration_number;
-		std::function<void (const Population &, size_t, logging_type)>* logger = nullptr; // Isn't responsible for cleaning «"your" logger» up
+		std::optional<std::function<void (const Population &, size_t, logging_type)>> logger = std::nullopt; // Isn't responsible for cleaning «"your" logger» up
 
 
 	public:
@@ -49,8 +49,8 @@ namespace GA
 		}
 
 		/// Doesn`t copy the logger!
-		void plug_logger(std::function<void (const Population &, size_t, logging_type)>& _logger) {
-			logger = &_logger;
+		void plug_logger(const std::function<void (const Population &, size_t, logging_type)>& _logger) {
+			logger = _logger;
 		}
 
 		/**
@@ -123,7 +123,7 @@ namespace GA
 		// std::vector<std::thread> threads;
 		static_thread_pool thread_pool;
 		std::vector<std::pair<size_t, size_t>> thread_task_distribution;
-		// std::vector<double> thread_results;
+
 
 		/// Utils:
 		normalizer norma{10000};
