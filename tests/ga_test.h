@@ -14,8 +14,8 @@ inline void test_GA() {
 
 	GA::continuous_GA_params params;
 
-	size_t total_computations = 500'000;
-	params.population_size = 21'000;
+	size_t total_computations = 5'000'000;
+	params.population_size = 100'000;
 	size_t epochs = total_computations / params.population_size;
 	// params.epoch_num = total_computations / params.population_size;
 

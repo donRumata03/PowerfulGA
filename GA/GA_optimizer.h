@@ -37,6 +37,8 @@ namespace GA
 
 
 	public:
+		GA_optimizer() = delete;
+
 		/// Setting up the GA:
 
 		GA_optimizer(std::function<double(const Genome&)> _fitness_function,
@@ -92,6 +94,10 @@ namespace GA
 		[[nodiscard]] const std::optional<double> &get_current_fitness () const
 		{
 			return current_fitness;
+		}
+
+		[[nodiscard]] size_t iterations_processed() const {
+			return iterations_performed;
 		}
 
 		~GA_optimizer() = default;

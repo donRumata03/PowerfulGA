@@ -93,6 +93,10 @@ bool GA::GA_optimizer::run_one_iteration (const genome_quantities& quantities)
 	if (logger) (*logger)(population, iterations_performed, logging_type::new_epoch);
 
 	/// Mutate:
+//	std::cout << "Population[0]";
+//	print(population[0]);
+//	std::cout << std::endl;
+
 	for (auto& g : population)
 		params.custom_operations.mutation(g, mutation_sigmas, params.mutation_params.target_gene_mutation_number, norma);
 	if (logger) (*logger)(population, iterations_performed, logging_type::after_mutation);

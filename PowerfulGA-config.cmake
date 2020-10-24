@@ -50,12 +50,21 @@ else()
     message(FATAL_ERROR "Bad CMAKE_BUILD_TYPE (${CMAKE_BUILD_TYPE}). It should be either Release or Debug")
 endif()
 
+# Choose static library name based on operation system:
+if(UNIX)
+    set(PGA_static_library_name libGA.a)
+endif()
+if(WIN32)
+    set(PGA_static_library_name GA.lib)
+endif()
 
-if (EXISTS ${GA_build_dir}/GA.lib)
-    set(PowerfulGA_static_library ${GA_build_dir}/GA.lib)
-    message("Found PowerfulGA static library here: ${PowerfulGA_static_library}")
+set(deducted_PGA_lib_location "${GA_build_dir}/${PGA_static_library_name}")
+
+if (EXISTS deducted_PGA_lib_location)
+    set(PowerfulGA_static_library deducted_PGA_lib_location)
+    message(STATUS "Found PowerfulGA static library here: ${PowerfulGA_static_library}")
 else()
-    message(FATAL_ERROR "Can`t find PowerfulGA static library file in corresponding directory!!! (${GA_build_dir}/GA.lib)")
+    message(FATAL_ERROR "Can`t find PowerfulGA static library file in corresponding directory!!! (${deducted_PGA_lib_location})")
 endif()
 
 set(PowerfulGA_include_directories ${actual_GA_dir})
