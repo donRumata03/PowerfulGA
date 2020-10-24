@@ -2,7 +2,7 @@
 
 
 #include <tests/old_GA_test.h>
-#include <tests/GA_test.h>
+#include <tests/ga_test.h>
 
 int main()
 {

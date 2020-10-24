@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
+
+if (UNIX)
+    message("UNIX => Setting Compiler to gcc-10")
+    set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
+    set(CMAKE_C_COMPILER "/usr/bin/gcc-10")
+endif()
+
+
 project(GA)
 project(GA_test)
 
@@ -23,7 +31,12 @@ endmacro()
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(cotire)
 
+if (WIN32)
 set(Pythonic_DIR D:/pythonic/)
+else()
+set(Pythonic_DIR "$ENV{HOME}/dev/pythonic")
+endif()
+
 find_package(Pythonic)
 
 include_directories(.)
