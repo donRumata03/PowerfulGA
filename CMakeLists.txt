@@ -76,7 +76,7 @@ add_library(GA
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
-target_link_libraries(GA ${pythonic_static_library})
+target_link_libraries(GA ${pythonic_static_libraries})
 
 add_executable(GA_test
         main.cpp

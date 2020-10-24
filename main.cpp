@@ -1,6 +1,3 @@
-
-
-
 #include <tests/old_GA_test.h>
 #include <tests/ga_test.h>
 
