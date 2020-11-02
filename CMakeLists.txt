@@ -92,7 +92,7 @@ add_executable(GA_test
 
         tests/ga_test.h)
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
-target_link_libraries(GA_test ${pythonic_static_library})
+target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)
 
 cotire(GA)
