@@ -11,6 +11,7 @@ int main()
 	// test_gradient_counting();
 	// compare_GD_and_newton();
 
+
 	/// 										GA itself:
 	// old_ga_test();
 	test_GA();
@@ -26,6 +27,7 @@ int main()
 	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
 	// test_quantity_dynamic_graphing();
+
 
 	return 0;
 }

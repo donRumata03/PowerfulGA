@@ -21,14 +21,15 @@ inline void test_GA() {
 
 
 
-	params.hazing_params.hazing_percent = 0.7;
+	params.hazing_params.hazing_percent = 0.3;
 
-	params.mutation_params.target_gene_mutation_number = 0.1;
-	params.mutation_params.mutation_percent_sigma = 0.01;
+	params.mutation_params.target_gene_mutation_number = 0.2;
+	params.mutation_params.mutation_percent_sigma = 0.1;
 	params.mutation_params.cut_mutations = false;
 	// params.best_genome_percent = 0.05;
 
-	params.hazing_params.elite_fit_pow = 2;
+	params.hazing_params.hyper_elite_fit_pow = 3;
+	params.hazing_params.elite_fit_pow = 1;
 	params.hazing_params.parent_fit_pow = 0.3;
 
 	// Multithreading parameters:

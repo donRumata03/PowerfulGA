@@ -32,9 +32,9 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(cotire)
 
 if (WIN32)
-set(Pythonic_DIR D:/pythonic/)
+    set(Pythonic_DIR D:/pythonic)
 else()
-set(Pythonic_DIR "$ENV{HOME}/dev/pythonic")
+    set(Pythonic_DIR "$ENV{HOME}/dev/pythonic")
 endif()
 
 find_package(Pythonic)
