@@ -8,7 +8,7 @@
 
 #include <utility>
 
-double exp_temperature_dynamic(double completion_percent)
+inline double exp_temperature_dynamic(double completion_percent)
 {
 	return std::exp(-3 * completion_percent);
 }
@@ -25,7 +25,10 @@ struct permutational_mutation
 	{
 		auto res = genome;
 
-		auto genes_to_permute = size_t(std::round(std::max(0., quantity_coefficient * quantity)));
+		double transposed_quantity = 1 - (1 - quantity) * 0.9;
+		auto genes_to_permute = size_t(std::round(std::max(0., quantity_coefficient * transposed_quantity)));
+
+		// std::cout << "Permuting " << genes_to_permute << " genes\n";
 
 		for (size_t p_index = 0; p_index < genes_to_permute; ++p_index) {
 			size_t first_index = randint(0, genome.size());

@@ -1,5 +1,6 @@
 #include <tests/old_GA_test.h>
 #include <tests/ga_test.h>
+#include <tests/annealing_tests.h>
 
 int main()
 {
@@ -14,7 +15,7 @@ int main()
 
 	/// 										GA itself:
 	// old_ga_test();
-	test_GA();
+	// test_GA();
 
 	/// 										GA operations:
 	// fancy_crossover_test();
@@ -22,11 +23,18 @@ int main()
 	// parent_choosing_test();
 	// new_gen_test();
 
-	/// Quantity:
+	/// 											GA Quantity:
 	// test_quantity_counter_with_big_number();
 	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
 	// test_quantity_dynamic_graphing();
+
+	/// 										Annealing:
+	// annealing_permutational_mutation_test();
+
+	complete_annealing_test();
+
+	/// 									Performance tests:
 
 
 	return 0;
