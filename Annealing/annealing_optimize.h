@@ -37,8 +37,8 @@ template<class GenomeElement, class GenomeGenerationFunctor, class EnergyFunctor
 std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		const AnnealingOptimizeParameters& params,
 
-		const GenomeGenerationFunctor& genome_generation_functor,
 		const EnergyFunctor& energy_functor,
+		const GenomeGenerationFunctor& genome_generation_functor,
 		const MutationFunctor& mutation_functor,
 		const TemperatureChangingFunctor& temperature_changing_functor)
 {
