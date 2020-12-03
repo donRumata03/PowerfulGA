@@ -6,6 +6,8 @@
 
 #include <pythonic.h>
 
+#include <utility>
+
 double exp_temperature_dynamic(double completion_percent)
 {
 	return std::exp(-3 * completion_percent);
@@ -41,10 +43,13 @@ struct modificational_mutation
 {
 	double typical_gene_mutation_number = 0;
 	double typical_mutation_coefficient = 0;
-	std::optional<std::pair<double, double>> gene_values_restrictions;
+	std::optional<std::pair<double, double>> gene_values_restrictions = std::nullopt;
 
-	modificational_mutation(double typical_gene_number, double typical_mutation_coefficient)
-									: typical_gene_mutation_number(typical_gene_number), typical_mutation_coefficient(typical_mutation_coefficient)
+	modificational_mutation(
+			double typical_gene_number, double typical_mutation_coefficient, std::optional<std::pair<double, double>> restrictions = std::nullopt)
+									: typical_gene_mutation_number(typical_gene_number),
+									typical_mutation_coefficient(typical_mutation_coefficient),
+									gene_values_restrictions(std::move(restrictions))
 	{}
 
 	std::vector<double> operator() (const std::vector<double>& genome, double quantity) const {
@@ -63,6 +68,10 @@ struct modificational_mutation
 		for (size_t mutation_index = 0; mutation_index < gene_mutation_number; ++mutation_index) {
 			size_t gene_position = randint(0, genome.size());
 			res[gene_position] += gene_mutations[mutation_index];
+
+			if (gene_values_restrictions) {
+				res[gene_position] = std::clamp(res[gene_position], (*gene_values_restrictions).first, (*gene_values_restrictions).second);
+			}
 		}
 
 		return res;
