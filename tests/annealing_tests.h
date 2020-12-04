@@ -12,8 +12,8 @@ inline void complete_annealing_test() {
 	auto answer = annealing_optimize<double>(
 			schaffer_function,
 			AnnealingOptimizeParameters{
-				.iterations = 1000,
-				.typical_temperature = 100,
+				.iterations = 100000,
+				.typical_temperature = 0.02,
 				.genes_in_genome = 2,
 			},
 			[](size_t number){
@@ -21,7 +21,7 @@ inline void complete_annealing_test() {
 				std::generate(res.begin(), res.end(), []() { return 200 * (pythonic_random() - 0.5); });
 				return res;
 			},
-			modificational_mutation(0.7, 20, {{-100, 100}}),
+			modificational_mutation(1.5, 20, {{-100, 100}}),
 			exp_temperature_dynamic
 	);
 

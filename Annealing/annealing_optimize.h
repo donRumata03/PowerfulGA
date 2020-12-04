@@ -65,25 +65,26 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	Genome best_genome = p;
 	double best_energy = last_energy;
 
-
+	size_t accepted_gene_count = 0;
 	for (size_t iteration = 0; iteration < params.iterations; ++iteration) {
 		double completion_percent = double(iteration) / params.iterations;
 		double temperature = params.typical_temperature * temperature_changing_functor(completion_percent);
 
-		std::cout <<
-			"Iteration " << iteration <<
-			" : Completion Percent: " << completion_percent <<
-			", temperature: " << temperature << ", Current Genome: " << p;
+//          std::cout <<
+//			"Iteration " << iteration <<
+//			" : Completion Percent: " << completion_percent <<
+//			", temperature: " << temperature << ", Current Genome: " << p;
 
 		Genome mutated = mutation_functor(p, 1 - completion_percent);
 
-		std::cout << ", Mutated genome: " << mutated;
+		// std::cout << ", Mutated genome: " << mutated;
 
 		double this_energy = energy_functor(mutated);
 		double dE = this_energy - last_energy;
 
 		if (dE <= 0 or std::exp(-dE / temperature) > pythonic_random()) {
-			std::cout << "Mutated Genome accepted!";
+			accepted_gene_count++;
+			// std::cout << " => Mutated Genome accepted!";
 
 			p = mutated;
 			last_energy = this_energy;
@@ -98,8 +99,10 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 			}
 		}
 
-		std::cout << std::endl;
+		// std::cout << std::endl;
 	}
+
+	std::cout << "[Annealing optimize]: Accepted genes: " << accepted_gene_count << " / " << params.iterations << std::endl;
 
 	return { best_genome, best_energy };
 }
