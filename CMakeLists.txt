@@ -72,7 +72,15 @@ add_library(GA
 
         GA/base_GA_params.h
         GA/operations/operations.h
-        Annealing/annealing_optimize.cpp Annealing/annealing_optimize.h Annealing/default_annealing_operations.h Annealing/default_annealing_operations.cpp)
+        Annealing/annealing_optimize.cpp
+        Annealing/annealing_optimize.h
+        Annealing/default_annealing_operations.h
+        Annealing/default_annealing_operations.cpp
+
+        lib/libfort/fort.c
+        lib/libfort/fort.h
+        lib/libfort/fort.hpp
+        )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
@@ -89,8 +97,14 @@ add_executable(GA_test
         tests/quantity_tests.h
         tests/old_GA_test.h
 
+        tests/ga_test.h
+        tests/annealing_tests.h
 
-        tests/ga_test.h tests/annealing_tests.h)
+        problem_examples/chess_annealing.cpp
+        problem_examples/chess_annealing.h
+
+
+        )
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)

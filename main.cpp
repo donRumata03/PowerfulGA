@@ -31,8 +31,9 @@ int main()
 
 	/// 										Annealing:
 	// annealing_permutational_mutation_test();
+	// complete_annealing_test();
 
-	complete_annealing_test();
+
 
 	/// 									Performance tests:
 
