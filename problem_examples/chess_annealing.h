@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include "Annealing/annealing_optimize.h"
+
 using li = long long int;
 
-void launch_chess_queen_arranging();
-std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens();
+void launch_chess_queen_arranging(li n);
+std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t max_iterations);
 
 template<class T>
 std::pair<T, T> split_into_pairs(const std::vector<T>& values) {
@@ -46,18 +48,19 @@ void display_chess_positioning(const std::vector<std::pair<li, li>>& figure_posi
 template<class AreBeatingPredicate>
 struct estimate_chess_error
 {
-	static_assert(
-			std::is_invocable_v<
-			        AreBeatingPredicate::compute,
-			        std::pair<li, li>, std::pair<li, li>>,
-			"False AreBeatingPredicate's input parameters"
-	);
+//	static_assert(
+//			std::is_invocable_v<
+//			        AreBeatingPredicate::compute,
+//			        std::pair<li, li>, std::pair<li, li>>,
+//			"False AreBeatingPredicate's input parameters"
+//	);
 	static_assert(std::is_same_v<decltype(
 			AreBeatingPredicate::compute(
 					std::pair<li, li>(), std::pair<li, li>())
 					), bool>,
 					"False AreBeatingPredicate's return type"
 	);
+//
 
 	long long n {};
 	explicit estimate_chess_error(long long _n) : n(_n) {};
