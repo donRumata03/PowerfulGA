@@ -24,7 +24,7 @@ std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t
 				std::shuffle(res.begin(), res.end(), g);
 				return res;
 			},
-			permutational_mutation<li>(2),
+			// TODO: normal permutational_mutation<li>(2),
 			exp_temperature_dynamic
 			);
 
