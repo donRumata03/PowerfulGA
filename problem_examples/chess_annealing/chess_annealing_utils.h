@@ -15,16 +15,39 @@ using li = long long int;
 /**
  * @param figure_type: ♞, ♛, …
  */
-inline void display_chess_positioning(const std::vector<std::vector<bool>>& figure_matrix, const std::string& figure_type = "♛") {
+inline void display_chess_positioning(const std::vector<std::vector<bool>>& figure_matrix, const std::string& figure_type = /*"Queen"*/"♛") {
 	// auto matrix = figure_set_to_matrix(figure_positions);
 	size_t n = figure_matrix.size();
+
+	ft_set_u8strwid_func([](const void *beg, const void *end, size_t *width) -> int {
+			const char *emojis[] = { "♛", "♞" }; // , "❌"
+			// const size_t sz = sizeof(emojis) / sizeof(emojis[0]);
+			const size_t raw_len = (const char *) end - (const char *) beg;
+
+			for (auto & emoji : emojis) {
+				if (memcmp(beg, emoji, std::min(strlen(emoji), raw_len)) == 0) {
+					*width = 2; /* On my terminal emojis have width of 2 chars */
+					return 0;
+				}
+			}
+			return 1;
+		});
+
+	auto formatted_table = fort::utf8_table{};
+	formatted_table.set_border_style(FT_DOUBLE_STYLE);
+	formatted_table << fort::header;
+
 	for (size_t i = 0; i < n; ++i) {
+		formatted_table.column(i).set_cell_text_align(fort::text_align::center);
+		// formatted_table.column(i).set_cell_min_width(5);
+		formatted_table.row(i).set_cell_row_type(fort::row_type::common);
 		for (size_t j = 0; j < n; ++j) {
-			if (j) std::cout << "|";
-			std::cout << (figure_matrix[i][j] ? figure_type : " "/*"❌"*/);
+			// if (j) std::cout << "|";
+			formatted_table << (figure_matrix[i][j] ? figure_type : /*"Nothing"*/" "/*"❌"*/);
 		}
-		std::cout << "\n";
+		formatted_table << fort::endr << fort::separator;
 	}
+	std::cout << formatted_table.to_string() << std::endl;
 }
 
 //////////////////////////////////////////		Converting		////////////////////////////////

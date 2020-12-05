@@ -36,8 +36,9 @@ int main()
 	// complete_annealing_test();
 
 	// launch_chess_queen_arranging(8);
-	test_generation_and_displaying();
 
+	// test_generation_and_displaying();
+	// test_chess_permutating();
 
 	/// 									Performance tests:
 

@@ -13,10 +13,11 @@
 // template<class T>
 inline std::vector<li> generate_initial_chess_figure_positions(li n) {
 	std::vector<li> res(2 * n);
+	std::mt19937 gen (std::random_device{}());
 
 	for (size_t i = 0; i < n; ++i) {
 		res[2 * i] = i;
-		res[2 * i + 1] = randint(0, n);
+		res[2 * i + 1] = randint(0, n, gen);
 	}
 
 	return res;
@@ -84,15 +85,22 @@ public:
 		// Find the size of the zone of possible movement of the figures:
 		li zone_size = resultant_amount / 2;
 
+		std::vector<std::pair<li, li>> new_positions(resultant_amount);
 		for (size_t mutation_index = 0; mutation_index < resultant_amount; ++mutation_index) {
 			auto [old_x, old_y] = res.back();
 
 			auto [new_x, new_y] = generate_free_position_around(res.back(), matrix, { zone_size, zone_size });
 
+			// Delete the old one:
 			matrix[old_x][old_y] = false;
-			matrix[new_x][new_y] = true;
 			res.pop_back();
+
+			// Add the new one:
+			matrix[new_x][new_y] = true;
+			new_positions[mutation_index] = { new_x, new_y };
 		}
+
+		std::copy(new_positions.begin(), new_positions.end(), std::back_inserter(res));
 
 		// return matrix_to_figure_set(matrix);
 		return res;
