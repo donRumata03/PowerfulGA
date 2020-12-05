@@ -129,8 +129,8 @@ struct estimate_chess_error
 	);
 //
 
-	long long n {};
-	explicit estimate_chess_error(long long _n) : n(_n) {};
+//	long long n {};
+//	explicit estimate_chess_error(long long _n) : n(_n) {};
 
 	[[nodiscard]] double compute(const std::vector<std::pair<long long, long long>>& queen_positions) const {
 		size_t beating_count = 0;

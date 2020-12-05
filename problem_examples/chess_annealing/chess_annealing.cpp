@@ -18,7 +18,7 @@ std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t
 //			},
 
 	auto [best_res, best_error] = annealing_optimize<li>(
-			estimate_queens_chess_error(n),
+			estimate_queens_chess_error(),
 			AnnealingOptimizeParameters {
 				.iterations = max_iterations,
 				.exiting_value = 0,

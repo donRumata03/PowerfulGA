@@ -39,6 +39,7 @@ int main()
 
 	// test_generation_and_displaying();
 	// test_chess_permutating();
+	test_chess_error_function();
 
 	/// 									Performance tests:
 
