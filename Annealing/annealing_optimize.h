@@ -66,6 +66,8 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	double best_energy = last_energy;
 
 	size_t accepted_gene_count = 0;
+	bool has_finished_ahead_of_schedule = false;
+	size_t iterations_if_finished_early = 0;
 	for (size_t iteration = 0; iteration < params.iterations; ++iteration) {
 		double completion_percent = double(iteration) / params.iterations;
 		double temperature = params.typical_temperature * temperature_changing_functor(completion_percent);
@@ -95,6 +97,8 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 			}
 
 			if (this_energy <= params.exiting_value) {
+				has_finished_ahead_of_schedule = true;
+				iterations_if_finished_early = iteration;
 				break;
 			}
 		}
@@ -102,7 +106,13 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		// std::cout << std::endl;
 	}
 
-	std::cout << "[Annealing optimize]: Accepted genes: " << accepted_gene_count << " / " << params.iterations << std::endl;
+	std::cout << "[Annealing optimize]: Accepted genes: "
+		<< accepted_gene_count << " / " << (has_finished_ahead_of_schedule ? iterations_if_finished_early : params.iterations);
+	if (has_finished_ahead_of_schedule) {
+		std::cout
+			<< " (has finished before schedule: only " << iterations_if_finished_early << " of " << params.iterations << " iterations are performed)";
+	}
+	std::cout << std::endl;
 
 	return { best_genome, best_energy };
 }
