@@ -35,11 +35,12 @@ int main()
 	// annealing_permutational_mutation_test();
 	// complete_annealing_test();
 
-	// launch_chess_queen_arranging(8);
+
+	launch_chess_queen_arranging(8);
 
 	// test_generation_and_displaying();
 	// test_chess_permutating();
-	test_chess_error_function();
+	// test_chess_error_function();
 
 	/// 									Performance tests:
 

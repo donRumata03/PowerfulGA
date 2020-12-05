@@ -30,7 +30,7 @@ inline void test_chess_permutating()  {
 inline void test_chess_error_function() {
 	auto chess_pole = generate_initial_chess_figure_positions(8);
 
-	auto permutated = chess_permutator(8, 4)(split_into_pairs(chess_pole), 0.5);
+	auto permutated = chess_permutator(8, 4)(split_into_pairs(chess_pole), 1);
 	// std::cout << permutated << std::endl;
 
 	std::cout << "Initial pole: " << std::endl;
@@ -40,7 +40,6 @@ inline void test_chess_error_function() {
 	std::cout << "Permuted: " << std::endl;
 	display_chess_positioning(figure_set_to_matrix(permutated, 8));
 	std::cout << "Error: " << estimate_queens_chess_error().compute(permutated) << std::endl;
-
 }
 
 

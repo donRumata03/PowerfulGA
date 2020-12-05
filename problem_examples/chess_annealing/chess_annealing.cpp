@@ -22,12 +22,12 @@ std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t
 			AnnealingOptimizeParameters {
 				.iterations = max_iterations,
 				.exiting_value = 0,
-				.typical_temperature = 1.,
+				.typical_temperature = 6,
 				.genes_in_genome = static_cast<size_t>(n * 2),
 			},
 			generate_initial_chess_figure_positions,
 			[&](const auto& genome, double amount) {
-				return unpack_pairs(chess_permutator(n, 3)(split_into_pairs(genome), amount));
+				return unpack_pairs(chess_permutator(n, 6.0)(split_into_pairs(genome), amount));
 			},
 			exp_temperature_dynamic
 			);
@@ -36,7 +36,7 @@ std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t
 	std::vector<std::pair<li, li>> decompressed_res = split_into_pairs(best_res);
 
 	if (best_error != 0) {
-		std::cout << "Can't find a solution, but here's the best of the found ones:" << std::endl;
+		std::cout << "Can't find a solution, but here's the best of the found ones (error: " << best_error << "):" << std::endl;
 		display_chess_positioning(figure_set_to_matrix(decompressed_res, n));
 		return {};
 	}
@@ -46,7 +46,7 @@ std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t
 
 void launch_chess_queen_arranging (li n)
 {
-	auto res = arrange_chess_queens(n, 1000);
+	auto res = arrange_chess_queens(n, 500'000);
 
 	if (!res) {
 		std::cout << "Didn't find any solutions!" << std::endl;

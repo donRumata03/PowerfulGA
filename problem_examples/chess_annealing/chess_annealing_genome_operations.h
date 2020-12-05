@@ -12,12 +12,15 @@
 
 // template<class T>
 inline std::vector<li> generate_initial_chess_figure_positions(li n) {
-	std::vector<li> res(2 * n);
+	assert(!(n % 2));
+	li figures = n / 2;
+
+	std::vector<li> res(n);
 	std::mt19937 gen (std::random_device{}());
 
-	for (size_t i = 0; i < n; ++i) {
+	for (size_t i = 0; i < figures; ++i) {
 		res[2 * i] = i;
-		res[2 * i + 1] = randint(0, n, gen);
+		res[2 * i + 1] = randint(0, figures, gen);
 	}
 
 	return res;
