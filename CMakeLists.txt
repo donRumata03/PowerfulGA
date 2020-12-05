@@ -92,19 +92,19 @@ add_executable(GA_test
         tests/local_testing.h
         tests/test_functions.h
         tests/test_functions.cpp
-        tests/ga_util_tests.h
+        tests/GA/ga_util_tests.h
         tests/lib_test.cpp
-        tests/quantity_tests.h
-        tests/old_GA_test.h
+        tests/GA/quantity_tests.h
+        tests/GA/old_GA_test.h
 
-        tests/ga_test.h
-        tests/annealing_tests.h
+        tests/GA/ga_test.h
+        tests/annealing/annealing_tests.h
 
-        problem_examples/chess_annealing.cpp
-        problem_examples/chess_annealing.h
+        problem_examples/chess_annealing/chess_annealing.cpp
+        problem_examples/chess_annealing/chess_annealing.h
 
 
-        )
+        problem_examples/chess_annealing/chess_annealing_utils.h problem_examples/chess_annealing/chess_annealing_genome_operations.h tests/annealing/chess_operation_tests.h)
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)

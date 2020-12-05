@@ -5,7 +5,7 @@
 #pragma once
 
 #include "GA/GA_optimizer.h"
-#include "test_functions.h"
+#include "tests/test_functions.h"
 
 #include <pythonic.h>
 

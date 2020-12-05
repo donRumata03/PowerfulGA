@@ -5,7 +5,7 @@
 #pragma once
 
 #include "GA/old_GA.h"
-#include "test_functions.h"
+#include "tests/test_functions.h"
 
 using namespace GA;
 

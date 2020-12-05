@@ -6,7 +6,7 @@
 
 #include <Annealing/annealing_optimize.h>
 
-#include "test_functions.h"
+#include "tests/test_functions.h"
 
 inline void complete_annealing_test() {
 	auto answer = annealing_optimize<double>(

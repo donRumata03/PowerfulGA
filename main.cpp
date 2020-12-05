@@ -1,6 +1,8 @@
-#include <tests/old_GA_test.h>
-#include <tests/ga_test.h>
-#include <tests/annealing_tests.h>
+#include <tests/GA/old_GA_test.h>
+#include <tests/GA/ga_test.h>
+#include <tests/annealing/annealing_tests.h>
+#include <problem_examples/chess_annealing/chess_annealing.h>
+#include <tests/annealing/chess_operation_tests.h>
 
 int main()
 {
@@ -33,6 +35,8 @@ int main()
 	// annealing_permutational_mutation_test();
 	// complete_annealing_test();
 
+	// launch_chess_queen_arranging(8);
+	test_generation_and_displaying();
 
 
 	/// 									Performance tests:

@@ -10,7 +10,7 @@
 
 inline double exp_temperature_dynamic(double completion_percent)
 {
-	return std::exp(-3 * completion_percent);
+	return std::exp(-3.5 * completion_percent);
 }
 
 template <class T>

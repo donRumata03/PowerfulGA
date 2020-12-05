@@ -7,9 +7,9 @@
 #include "tests/local_testing.h"
 #include "tests/test_functions.h"
 
-#include "tests/ga_util_tests.h"
+#include "tests/GA/ga_util_tests.h"
 
-#include "tests/quantity_tests.h"
+#include "quantity_tests.h"
 
 using namespace GA;
 // using namespace binary_GA;
