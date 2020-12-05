@@ -32,9 +32,9 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(cotire)
 
 if (WIN32)
-set(Pythonic_DIR D:/pythonic/)
+    set(Pythonic_DIR D:/pythonic)
 else()
-set(Pythonic_DIR "$ENV{HOME}/dev/pythonic")
+    set(Pythonic_DIR "$ENV{HOME}/dev/pythonic")
 endif()
 
 find_package(Pythonic)
@@ -72,6 +72,14 @@ add_library(GA
 
         GA/base_GA_params.h
         GA/operations/operations.h
+        Annealing/annealing_optimize.cpp
+        Annealing/annealing_optimize.h
+        Annealing/default_annealing_operations.h
+        Annealing/default_annealing_operations.cpp
+
+        lib/libfort/fort.c
+        lib/libfort/fort.h
+        lib/libfort/fort.hpp
         )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
@@ -84,15 +92,21 @@ add_executable(GA_test
         tests/local_testing.h
         tests/test_functions.h
         tests/test_functions.cpp
-        tests/ga_util_tests.h
+        tests/GA/ga_util_tests.h
         tests/lib_test.cpp
-        tests/quantity_tests.h
-        tests/old_GA_test.h
+        tests/GA/quantity_tests.h
+        tests/GA/old_GA_test.h
+
+        tests/GA/ga_test.h
+        tests/annealing/annealing_tests.h
+
+        problem_examples/chess_annealing/chess_annealing.cpp
+        problem_examples/chess_annealing/chess_annealing.h
 
 
-        tests/ga_test.h)
+        problem_examples/chess_annealing/chess_annealing_utils.h problem_examples/chess_annealing/chess_annealing_genome_operations.h tests/annealing/chess_operation_tests.h)
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
-target_link_libraries(GA_test ${pythonic_static_library})
+target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)
 
 cotire(GA)

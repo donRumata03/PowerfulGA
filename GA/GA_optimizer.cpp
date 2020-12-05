@@ -54,7 +54,7 @@ GA::GA_optimizer::GA_optimizer (std::function<double (const Genome &)> _fitness_
 					this_fitness = fitness_function(population[task_index]);
 				}
 				else {
-					// catch_and_ignore or catch_and_log
+					// catch_and_ignore or catch and log somehow
 					try {
 						this_fitness = fitness_function(population[task_index]);
 					} catch (std::exception& e) {
