@@ -80,7 +80,9 @@ add_library(GA
         lib/libfort/fort.c
         lib/libfort/fort.h
         lib/libfort/fort.hpp
-        performance_testing/optimization_algorithm.cpp performance_testing/OptimizationAlgorithm.h)
+        performance_testing/optimization_algorithm.h
+
+        )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
@@ -104,7 +106,11 @@ add_executable(GA_test
         problem_examples/chess_annealing/chess_annealing.h
 
 
-        problem_examples/chess_annealing/chess_annealing_utils.h problem_examples/chess_annealing/chess_annealing_genome_operations.h tests/annealing/chess_operation_tests.h)
+        problem_examples/chess_annealing/chess_annealing_utils.h
+        problem_examples/chess_annealing/chess_annealing_genome_operations.h
+        tests/annealing/chess_operation_tests.h
+
+        )
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)
