@@ -80,7 +80,7 @@ add_library(GA
         lib/libfort/fort.c
         lib/libfort/fort.h
         lib/libfort/fort.hpp
-        )
+        performance_testing/optimization_algorithm.cpp performance_testing/OptimizationAlgorithm.h)
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
