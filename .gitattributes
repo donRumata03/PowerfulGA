@@ -1,0 +1,4 @@
+* linguist-vendored
+*.cpp linguist-vendored=false
+CMakeLists.txt linguist-vendored=false
+PowerfulGAConfig.cmake linguist-vendored=false
