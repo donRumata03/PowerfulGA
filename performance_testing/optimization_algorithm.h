@@ -17,6 +17,9 @@ class OptimizationAlgorithm
 	/// Evaluate the algorithm:
 	virtual void run() = 0;
 
+	/// True if the algorithm succeed to reach the given value
+	virtual bool success() = 0;
+
 	/// The function should have stored the dynamic of the target function in time
 	/// This function returns that dynamic
 	virtual std::vector<std::pair<size_t, double>> get_target_function_dynamic() = 0;
