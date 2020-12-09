@@ -77,6 +77,7 @@ namespace GA
 		bool run_many_iterations(size_t iterations, const genome_quantities& quantities);
 		bool run_many_iterations(size_t iterations, size_t max_target_epoch_num);
 
+		bool run_all_iterations(size_t iterations) { return run_many_iterations(iterations, iterations); }
 
 
 		/// Getting run status information:
@@ -132,7 +133,7 @@ namespace GA
 
 
 		/// Utils:
-		normalizer norma{10000};
+		normalizer norma{ 10000 }; // Actually, it's «Norma-a-a-aaa…» (watch https://www.youtube.com/watch?v=duvlWEJJmU0)
 	};
 
 }

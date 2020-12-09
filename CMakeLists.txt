@@ -63,8 +63,8 @@ add_library(GA
         GA/GA_optimizer.cpp
         GA/GA_optimizer.h
 
-        performance_testing/performance_distribution_maker.cpp
-        performance_testing/performance_distribution_maker.h
+        optimization_benchmarking/performance_distribution_maker.cpp
+        optimization_benchmarking/performance_distribution_maker.h
 
         other_optimization/local_optimization.cpp
         other_optimization/combi_optimizing.cpp
@@ -80,9 +80,9 @@ add_library(GA
         lib/libfort/fort.c
         lib/libfort/fort.h
         lib/libfort/fort.hpp
-        performance_testing/optimization_algorithm.h
+        optimization_benchmarking/optimization_algorithm.h
 
-        )
+        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.cpp optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.h)
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
