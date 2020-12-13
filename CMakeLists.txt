@@ -82,7 +82,7 @@ add_library(GA
         lib/libfort/fort.hpp
         optimization_benchmarking/optimization_algorithm.h
 
-        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.cpp optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.h)
+        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.cpp optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.h optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.cpp optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.h)
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 

@@ -20,7 +20,14 @@ struct AnnealingOptimizeParameters
 	size_t genes_in_genome = 0;
 };
 
+template<class GenomeElement>
+struct AnnealingOptimizationOutput {
+	std::vector<GenomeElement> best_genome;
+	double best_energy = std::numeric_limits<double>::infinity();
 
+	std::vector<double> current_energy_dynamic;
+	std::vector<double> best_energy_dynamic;
+};
 
 /**
  *
@@ -34,7 +41,7 @@ struct AnnealingOptimizeParameters
  */
 template<class GenomeElement, class EnergyFunctor, class GenomeGenerationFunctor,
 		class MutationFunctor, class TemperatureChangingFunctor>
-std::pair<std::vector<GenomeElement>, double> annealing_optimize(
+AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 		const EnergyFunctor& energy_functor,
 		const AnnealingOptimizeParameters& params,
 
@@ -42,7 +49,6 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		const MutationFunctor& mutation_functor,
 		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic)
 {
-
 	using Genome = std::vector<GenomeElement>;
 
 	static_assert(std::is_invocable_v<EnergyFunctor, Genome>, "False EnergyFunctor's input parameters");
@@ -58,6 +64,8 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	static_assert(std::is_same_v<decltype(genome_generation_functor(size_t())), Genome>, "False GenomeGenerationFunctor's return type");
 
 
+	std::vector<double> current_energy_history(params.iterations);
+	std::vector<double> best_energy_history(params.iterations);
 
 	Genome p = genome_generation_functor(params.genes_in_genome);
 	double last_energy = energy_functor(p);
@@ -101,6 +109,9 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 				iterations_if_finished_early = iteration;
 				break;
 			}
+
+			current_energy_history[iteration] = this_energy;
+			best_energy_history[iteration] = best_energy;
 		}
 
 		// std::cout << std::endl;
@@ -114,7 +125,13 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	}
 	std::cout << std::endl;
 
-	return { best_genome, best_energy };
+	return {
+		best_genome,
+		best_energy,
+
+		current_energy_history,
+		best_energy_history,
+	};
 }
 
 
