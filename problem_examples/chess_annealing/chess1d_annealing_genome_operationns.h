@@ -21,10 +21,10 @@ namespace chess1d
 		return res;
 	}
 
-	inline void mutate_one (std::vector<li>& positions, size_t steps)
-	{
 
-	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////					Basic Error computing 									////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template <class AreCollidingPredicate>
 	class base_error_computer
@@ -48,7 +48,7 @@ namespace chess1d
 			recompute_error();
 		}
 
-		void experience_mutation (size_t figure_index, li new_position)
+		void experience_mutation (size_t figure_index, li new_position) override
 		{
 			li old_position = current_genome[figure_index];
 
@@ -72,7 +72,7 @@ namespace chess1d
 			current_genome[figure_index] = new_position;
 		}
 
-		[[nodiscard]] li get_beating_amount () const
+		[[nodiscard]] li get_beating_amount () const override
 		{
 			return current_beating_amount;
 		}
@@ -122,6 +122,73 @@ namespace chess1d
 		// (4 total)
 		std::vector<std::vector<li>> for_diagonals;
 
-	}
+	};
+
+//	inline void mutate_one (std::vector<li>& positions, size_t steps)
+//	{
+//
+//	}
+
+	class final_error_computer
+	{
+	public:
+		double operator() (const std::vector<li>& genome) {
+			if (!computer) {
+				// Initialize computer:
+				computer.emplace(genome);
+			}
+
+			return double(computer->get_beating_amount());
+		}
+
+		void be_informed_about_change(size_t figure_index, li new_position) {
+			computer->experience_mutation(figure_index, new_position);
+		}
+
+	private:
+		std::optional<error_computer_O_n<are_queens_colliding>> computer = std::nullopt;
+	};
+
+	class chess1d_permutator
+	{
+		double permute_intensiveness_factor = 0;
+		// base_error_computer<AreCollidingPredicate>* error_controller = nullptr;
+		final_error_computer* error_controller = nullptr;
+
+	public:
+		explicit chess1d_permutator(double _permute_intensiveness_factor)
+				: permute_intensiveness_factor(_permute_intensiveness_factor)
+		{}
+
+		void plug_mutation_controller(final_error_computer* controller) {
+			error_controller = controller;
+		}
+
+		std::vector<li> operator() (const std::vector<li>& old_genome, double amount) const {
+			std::vector<li> res = old_genome;
+			li n = old_genome.size();
+
+			double target_figure_number = amount * permute_intensiveness_factor;
+			double target_movement_distance = amount * permute_intensiveness_factor;
+
+			auto figure_number = size_t(std::round(target_figure_number));
+
+			for (size_t mutation_index = 0; mutation_index < figure_number; ++mutation_index) {
+				size_t mutating_figure_index = randint(0, n, std::mt19937{std::random_device{}()});
+
+				double generated_distance = normal_distribute(0, target_movement_distance * 1.5, 1)[0];
+				auto pos_change = li(std::round(generated_distance));
+
+				li new_pos = std::clamp(res[mutating_figure_index] + pos_change, 0LL, n);
+				res[mutating_figure_index] = new_pos;
+
+				if (error_controller) {
+					error_controller->be_informed_about_change(mutating_figure_index, new_pos);
+				}
+			}
+
+			return res;
+		}
+	};
 
 }
