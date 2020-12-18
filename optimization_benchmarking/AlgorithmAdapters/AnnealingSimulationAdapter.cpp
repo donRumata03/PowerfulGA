@@ -4,10 +4,12 @@
 
 #include "AnnealingSimulationAdapter.h"
 
+#include <utility>
+
 
 AnnealingSimulationAdapter::AnnealingSimulationAdapter (const AnnealingOptimizeParameters& params,
-														const std::function<double(const std::vector<double>&)>& _energy_function)
-		: temp_params(params), energy_function(_energy_function) {
+														std::function<double(const std::vector<double>&)>  _energy_function)
+		: temp_params(params), energy_function(std::move(_energy_function)) {
 
 }
 
@@ -23,12 +25,17 @@ void AnnealingSimulationAdapter::set_exiting_value (double value)
 
 void AnnealingSimulationAdapter::run ()
 {
+	// TODO: provide these parameters to the mutator:
+	// double typical_gene_number, double typical_mutation_coefficient, std::pair<double, double> restrictions
+
+	assert(bool(mutator));
+
 	result = annealing_optimize<double>(
 			energy_function,
 			temp_params,
 			[](auto argument_number){  },
-			mutator,
-
+			*mutator,
+			exp_temperature_dynamic
 			);
 }
 

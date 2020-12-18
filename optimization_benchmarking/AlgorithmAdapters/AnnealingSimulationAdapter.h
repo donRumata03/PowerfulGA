@@ -9,7 +9,7 @@
 
 class AnnealingSimulationAdapter : OptimizationAlgorithm
 {
-	explicit AnnealingSimulationAdapter(const AnnealingOptimizeParameters& params, const std::function<double(const std::vector<double>&)>& _energy_function);
+	explicit AnnealingSimulationAdapter(const AnnealingOptimizeParameters& params, std::function<double(const std::vector<double>&)>  _energy_function);
 
 	void set_computations (size_t computations) override;
 	void set_exiting_value (double value) override;
@@ -19,8 +19,8 @@ class AnnealingSimulationAdapter : OptimizationAlgorithm
 
 	// size_t iterations_planned {};
 	AnnealingOptimizeParameters temp_params {};
-	modificational_mutation mutator {};
-	std::function<double(const std::vector<double>&)>& energy_function;
+	std::shared_ptr<modificational_mutation> mutator {};
+	std::function<double(const std::vector<double>&)> energy_function;
 
 	AnnealingOptimizationOutput<double> result {};
 };
