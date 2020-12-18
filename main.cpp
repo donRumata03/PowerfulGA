@@ -2,7 +2,7 @@
 #include <tests/GA/ga_test.h>
 #include <tests/annealing/annealing_tests.h>
 #include <problem_examples/chess_annealing/chess_annealing.h>
-#include <tests/annealing/chess_operation_tests.h>
+#include <tests/annealing/chess2d_operation_tests.h>
 
 int main()
 {
@@ -35,12 +35,18 @@ int main()
 	// annealing_permutational_mutation_test();
 	// complete_annealing_test();
 
+	/// 										Chess 2d
 
-	launch_chess_queen_arranging(8);
+	// chess2d::test_generation_and_displaying();
+	// chess2d::test_chess_permutating();
+	// chess2d::test_chess_error_function();
 
-	// test_generation_and_displaying();
-	// test_chess_permutating();
-	// test_chess_error_function();
+	chess2d::launch_chess_queen_arranging(8);
+
+	///										Chess 1d
+
+
+	/// 								Path length optimization
 
 	/// 									Performance tests:
 
