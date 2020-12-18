@@ -102,3 +102,17 @@ std::vector<T> unpack_pairs(const std::vector<std::pair<T, T>>& pairs) {
 	return res;
 }
 
+std::vector<std::pair<li, li>> enumerate_chess_figures(const std::vector<li>& figure_positions) {
+	std::vector<std::pair<li, li>> res(figure_positions.size());
+
+//	std::transform(figure_positions.begin(), figure_positions.end(), res.begin(), [](){
+//
+//	});
+
+	for (size_t i = 0; i < figure_positions.size(); ++i) {
+		res[i] = { i, figure_positions[i] };
+	}
+
+	return res;
+}
+
