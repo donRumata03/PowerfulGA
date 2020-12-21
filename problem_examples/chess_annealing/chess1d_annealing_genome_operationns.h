@@ -132,7 +132,7 @@ namespace chess1d
 	class final_error_computer
 	{
 	public:
-		double operator() (const std::vector<li>& genome) {
+		double operator() (const std::vector<li>& genome) const {
 			if (!computer) {
 				// Initialize computer:
 				computer.emplace(genome);
@@ -146,7 +146,7 @@ namespace chess1d
 		}
 
 	private:
-		std::optional<error_computer_O_n<are_queens_colliding>> computer = std::nullopt;
+		mutable std::optional<error_computer_O_n<are_queens_colliding>> computer = std::nullopt;
 	};
 
 	class chess1d_permutator

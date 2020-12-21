@@ -41,7 +41,15 @@ namespace chess1d
 
 	void launch_chess_queen_arranging (li n)
 	{
+		auto res = arrange_chess_queens(n, 10'000);
 
+		if (!res) {
+			std::cout << "Didn't find any solutions!" << std::endl;
+			return;
+		}
+
+		std::cout << "Found a solution (!):" << std::endl;
+		display_chess_positioning(indexed_positions_to_matrix(*res));
 	}
 
 	void output_python_code_below_n (li n)

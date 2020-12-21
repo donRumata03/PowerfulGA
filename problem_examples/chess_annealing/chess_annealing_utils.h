@@ -116,7 +116,7 @@ std::vector<T> unpack_pairs(const std::vector<std::pair<T, T>>& pairs) {
 	return res;
 }
 
-std::vector<std::pair<li, li>> enumerate_chess_figures(std::vector<li> figure_positions) {
+inline std::vector<std::pair<li, li>> enumerate_chess_figures(std::vector<li> figure_positions) {
 	std::vector<std::pair<li, li>> res(figure_positions.size());
 
 //	std::transform(figure_positions.begin(), figure_positions.end(), res.begin(), [](){

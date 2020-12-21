@@ -41,10 +41,11 @@ int main()
 	// chess2d::test_chess_permutating();
 	// chess2d::test_chess_error_function();
 
-	chess2d::launch_chess_queen_arranging(8);
+	// chess2d::launch_chess_queen_arranging(8);
 
 	///										Chess 1d
 
+	chess1d::launch_chess_queen_arranging(8);
 
 	/// 								Path length optimization
 
