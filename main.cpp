@@ -3,6 +3,7 @@
 #include <tests/annealing/annealing_tests.h>
 #include <problem_examples/chess_annealing/chess_annealing.h>
 #include <tests/annealing/chess2d_operation_tests.h>
+#include <tests/annealing/chess1d_annealing_test.h>
 
 int main()
 {
@@ -44,8 +45,10 @@ int main()
 	// chess2d::launch_chess_queen_arranging(8);
 
 	///										Chess 1d
+	// Tests
+	chess1d::test_chess_generation ();
 
-	chess1d::launch_chess_queen_arranging(15);
+	// chess1d::launch_chess_queen_arranging(15);
 
 	/// 								Path length optimization
 
