@@ -3,3 +3,8 @@
 //
 
 #include "path_minimizing.h"
+
+void launch_path_minimizing ()
+{
+
+}

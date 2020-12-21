@@ -6,4 +6,5 @@
 
 #include "path_minimizing_utils.h"
 
+void launch_path_minimizing();
 

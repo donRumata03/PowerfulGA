@@ -3,6 +3,7 @@
 //
 
 #include "chess_annealing.h"
+#include "chess1d_annealing_genome_operationns.h"
 
 
 namespace chess1d
@@ -10,6 +11,23 @@ namespace chess1d
 
 	std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t max_iterations)
 	{
+		auto[best_res, best_error] = annealing_optimize<size_t>(
+				final_error_computer(),
+				AnnealingOptimizeParameters {
+						.iterations = max_iterations,
+						.exiting_value = 0,
+						.typical_temperature = 6,
+						.genes_in_genome = static_cast<size_t>(n * 2),
+				},
+				generate_initial_chess_figure_positions,
+				[&] (const auto& genome, double amount) {
+					return unpack_pairs(chess_permutator(n, 6.0)(split_into_pairs(genome), amount));
+				},
+				exp_temperature_dynamic
+		);
+
+
+
 		return std::optional<std::vector<std::pair<li, li>>>();
 	}
 

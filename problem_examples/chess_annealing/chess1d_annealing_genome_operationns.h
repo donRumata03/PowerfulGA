@@ -174,12 +174,14 @@ namespace chess1d
 			auto figure_number = size_t(std::round(target_figure_number));
 
 			for (size_t mutation_index = 0; mutation_index < figure_number; ++mutation_index) {
-				size_t mutating_figure_index = randint(0, n, std::mt19937{std::random_device{}()});
+				auto gen = std::mt19937{std::random_device{}()};
+				auto mutating_figure_index = size_t(randint(0LL, n, gen));
 
 				double generated_distance = normal_distribute(0, target_movement_distance * 1.5, 1)[0];
 				auto pos_change = li(std::round(generated_distance));
 
-				li new_pos = std::clamp(res[mutating_figure_index] + pos_change, 0LL, n);
+				li new_pos = std::clamp(li
+						(res[mutating_figure_index]) + pos_change, 0LL, n - 1);
 				res[mutating_figure_index] = new_pos;
 
 				if (error_controller) {
