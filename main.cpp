@@ -45,7 +45,7 @@ int main()
 
 	///										Chess 1d
 
-	chess1d::launch_chess_queen_arranging(8);
+	chess1d::launch_chess_queen_arranging(15);
 
 	/// 								Path length optimization
 

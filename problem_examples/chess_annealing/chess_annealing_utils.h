@@ -26,7 +26,12 @@ inline void display_chess_positioning(const std::vector<std::vector<bool>>& figu
 
 			for (auto & emoji : emojis) {
 				if (memcmp(beg, emoji, std::min(strlen(emoji), raw_len)) == 0) {
-					*width = 2; /* On my terminal emojis have width of 2 chars */
+
+#ifdef PYTHONIC_IS_LINUX
+					*width = 1; /* It's 1 char on Ubuntu */
+#else
+					*width = 2; /* It's 1 char in Windows */
+#endif
 					return 0;
 				}
 			}
