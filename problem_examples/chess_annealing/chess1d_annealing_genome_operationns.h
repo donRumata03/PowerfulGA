@@ -172,6 +172,7 @@ namespace chess1d
 			double target_movement_distance = amount * permute_intensiveness_factor;
 
 			auto figure_number = size_t(std::round(target_figure_number));
+			std::cout << "Mutating " << figure_number << " figures (" << "target_movement_distance is " << target_movement_distance << "): " << std::endl;
 
 			for (size_t mutation_index = 0; mutation_index < figure_number; ++mutation_index) {
 				auto gen = std::mt19937{std::random_device{}()};
@@ -182,7 +183,14 @@ namespace chess1d
 
 				li new_pos = std::clamp(li
 						(res[mutating_figure_index]) + pos_change, 0LL, n - 1);
+
+				std::cout << "\t moving figure №" << mutating_figure_index
+				          << " from " << res[mutating_figure_index]
+				          << " to " << new_pos
+				          << std::endl;
+
 				res[mutating_figure_index] = new_pos;
+
 
 				if (error_controller) {
 					error_controller->be_informed_about_change(mutating_figure_index, new_pos);
