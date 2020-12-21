@@ -3,8 +3,7 @@
 //
 
 #include "path_minimizing_utils.h"
-
-
+#include "pythonic.h"
 
 std::vector<size_t> generate_path (size_t number)
 {
@@ -56,8 +55,14 @@ double transfer_range (double value, std::pair<double, double> from_range, std::
 
 size_t distance_by_amount (double amount, size_t size)
 {
+	double target_distance = transfer_range(amount,
+								{ 0., 1. },
+								{ std::max(1., double(size) * 0.05), double(size) * 0.35 });
+
+	double generated_distance = normal_distribute(target_distance, target_distance, 1)[0];
+
 	auto distance = size_t(std::clamp(
-			li(std::round(transfer_range(amount, { 0, 1 }, { 1, double(size) * 0.5 })))
+			li(std::round(generated_distance))
 			, 1LL, li(size) - 1));
 
 	return distance;

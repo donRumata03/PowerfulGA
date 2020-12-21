@@ -11,7 +11,7 @@ namespace chess1d
 
 	std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t max_iterations)
 	{
-		auto[best_res, best_error] = annealing_optimize<size_t>(
+		auto[best_res, best_error] = annealing_optimize<li>(
 				final_error_computer(),
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
