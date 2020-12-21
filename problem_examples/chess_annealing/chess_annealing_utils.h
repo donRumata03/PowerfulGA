@@ -52,6 +52,20 @@ inline void display_chess_positioning(const std::vector<std::vector<bool>>& figu
 
 //////////////////////////////////////////		Converting		////////////////////////////////
 
+inline std::vector<std::vector<bool>> indexed_positions_to_matrix(const std::vector<li>& indexed_positions) {
+	std::vector<std::vector<bool>> matrix(indexed_positions.size());
+
+	for (size_t i = 0; i < indexed_positions.size(); ++i) {
+		matrix[i].assign(indexed_positions.size(), false);
+
+		matrix[i][indexed_positions[i]] = true;
+	}
+
+	return matrix;
+}
+
+
+
 inline std::vector<std::vector<bool>> figure_set_to_matrix(const std::vector<std::pair<li, li>>& figure_positions, li n) {
 	std::vector<std::vector<bool>> matrix(n);
 	for (size_t i = 0; i < n; ++i) {

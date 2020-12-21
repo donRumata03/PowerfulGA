@@ -9,26 +9,34 @@
 namespace chess1d
 {
 
-	std::optional<std::vector<std::pair<li, li>>> arrange_chess_queens (li n, size_t max_iterations)
+	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations)
 	{
+		final_error_computer error_computer;
+		chess1d_permutator permutator(3.);
+		permutator.plug_mutation_controller(&error_computer);
+
 		auto[best_res, best_error] = annealing_optimize<li>(
-				final_error_computer(),
+				error_computer,
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
 						.exiting_value = 0,
 						.typical_temperature = 6,
-						.genes_in_genome = static_cast<size_t>(n * 2),
+						.genes_in_genome = static_cast<size_t>(n),
 				},
 				generate_initial_chess_figure_positions,
-				[&] (const auto& genome, double amount) {
-					return unpack_pairs(chess_permutator(n, 6.0)(split_into_pairs(genome), amount));
-				},
+				permutator,
 				exp_temperature_dynamic
 		);
 
+		if (best_error != 0) {
+			std::cout << "Can't find a solution, but here's the best of the found ones (error: " << best_error << "):"
+			          << std::endl;
+			display_chess_positioning(indexed_positions_to_matrix(best_res));
 
+			return std::nullopt;
+		}
 
-		return std::optional<std::vector<std::pair<li, li>>>();
+		return best_res;
 	}
 
 	void launch_chess_queen_arranging (li n)
@@ -36,7 +44,7 @@ namespace chess1d
 
 	}
 
-	void output_python_code_below (li n)
+	void output_python_code_below_n (li n)
 	{
 
 	}
