@@ -15,7 +15,7 @@ namespace chess1d
 		chess1d_permutator permutator(4.5);
 		// permutator.plug_mutation_controller(&error_computer);
 
-		auto[best_res, best_error] = annealing_optimize<li>(
+		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
 				error_computer,
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
@@ -75,7 +75,7 @@ namespace chess2d
 //				return res;
 //			},
 
-		auto[best_res, best_error] = annealing_optimize<li>(
+		auto[best_res, best_error] = annealing_optimize<li, void>(
 				chess2d_error<are_queens_colliding>(),
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,

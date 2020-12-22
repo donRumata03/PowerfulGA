@@ -9,7 +9,7 @@
 #include "tests/test_functions.h"
 
 inline void complete_annealing_test() {
-	auto answer = annealing_optimize<double>(
+	auto answer = annealing_optimize<double, void>(
 			schaffer_function,
 			AnnealingOptimizeParameters{
 				.iterations = 100000,

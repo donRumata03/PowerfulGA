@@ -58,15 +58,19 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	static_assert(std::is_same_v<decltype(genome_generation_functor(size_t())), Genome>, "False GenomeGenerationFunctor's return type");
 
 	constexpr bool requires_recounting_support = not std::is_same_v<temp_MutationDescriptor, void>;
-	constexpr bool recounting_is_available = std::is_invocable_v<EnergyFunctor, Genome, temp_MutationDescriptor, double>;
+	using MutationDescriptor = typename std::conditional<requires_recounting_support, temp_MutationDescriptor, char8_t>::type; // char8_t is just a small type…
+	constexpr bool recounting_is_available =
+			requires_recounting_support and
+			std::is_invocable_v<EnergyFunctor, const Genome&, const MutationDescriptor*, std::optional<double>>;
+
 
 	if constexpr (requires_recounting_support and not recounting_is_available) {
-		static_assert(false, "If descriptor type is set to not void, recounting should be available");
+		static_assert(recounting_is_available, "If descriptor type is set to not void, recounting should be available");
 	}
 	if constexpr (requires_recounting_support) {
 		static_assert(std::is_same_v<decltype(mutation_functor.get_last_mutation_descriptor()), temp_MutationDescriptor>);
 	}
-	using MutationDescriptor = std::conditional<requires_recounting_support, temp_MutationDescriptor, char8_t>; // char8_t is just a small type…
+
 
 
 	Genome p = genome_generation_functor(params.genes_in_genome);
@@ -76,7 +80,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	double best_energy = last_energy;
 
 	MutationDescriptor last_mutation_descriptor;
-	Genome temp_genome;
+	// Genome temp_genome;
 
 	size_t accepted_gene_count = 0;
 	bool has_finished_ahead_of_schedule = false;
@@ -97,8 +101,8 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		// std::cout << ", Mutated genome: " << mutated;
 
 		double this_energy;
-		if (requires_recounting_support) {
-			this_energy = energy_functor(p, last_mutation_descriptor, this_energy);
+		if constexpr (requires_recounting_support) {
+			this_energy = energy_functor(p, &last_mutation_descriptor, this_energy);
 		}
 		else {
 			this_energy = energy_functor(mutated);
