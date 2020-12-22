@@ -48,7 +48,8 @@ int main()
 	// Tests
 
 	// chess1d::test_chess_generation ();
-	chess1d::test_simple_chess_mutation ();
+	// chess1d::test_simple_chess_mutation ();
+	chess1d::test_dynamic_error_computing();
 
 	// chess1d::launch_chess_queen_arranging(15);
 

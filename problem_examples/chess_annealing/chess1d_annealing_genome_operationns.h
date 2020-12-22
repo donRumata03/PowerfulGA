@@ -151,6 +151,8 @@ namespace chess1d
 
 	class chess1d_permutator
 	{
+		// TODO: allow swapping mutation
+
 		double permute_intensiveness_factor = 0;
 		// base_error_computer<AreCollidingPredicate>* error_controller = nullptr;
 		final_error_computer* error_controller = nullptr;

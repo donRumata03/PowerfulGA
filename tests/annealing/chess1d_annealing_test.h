@@ -34,4 +34,21 @@ namespace chess1d
 		display_chess_positioning(indexed_positions_to_matrix(mutated));
 	}
 
+	inline void test_dynamic_error_computing() {
+		chess1d_permutator permutator(3.);
+		final_error_computer computer;
+
+		permutator.plug_mutation_controller(&computer);
+
+		auto current_genome = generate_initial_chess_figure_positions(13);
+		for (li i = 0; i < 10; i++) {
+			display_chess_positioning(indexed_positions_to_matrix(current_genome));
+			std::cout << current_genome << " : error: " << computer.operator()(current_genome)
+				<< ", error should be: " << base_queens_chess_error::compute(enumerate_chess_figures(current_genome))
+			<< std::endl;
+			current_genome = permutator.operator()(current_genome, 0.7);
+		}
+
+	}
+
 }
