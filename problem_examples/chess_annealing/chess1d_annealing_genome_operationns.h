@@ -140,6 +140,12 @@ namespace chess1d
 		};
 		using mutation_descriptor = std::vector<permutation_info>;
 
+		enum class permutation_type {
+			movement,
+			swapping
+		};
+		static constexpr permutation_type current_permutation_type = permutation_type::swapping;
+
 		// TODO: allow swapping mutation
 	private:
 
@@ -157,30 +163,52 @@ namespace chess1d
 			std::vector<li> res = old_genome;
 			li n = old_genome.size();
 
-			double target_figure_number = amount * permute_intensiveness_factor;
-			double target_movement_distance = amount * permute_intensiveness_factor;
+			if constexpr (current_permutation_type == permutation_type::movement) {
+				double target_figure_number = amount * permute_intensiveness_factor;
+				double target_movement_distance = amount * permute_intensiveness_factor;
 
-			auto figure_number = size_t(std::round(target_figure_number));
-			std::cout << "Mutating " << figure_number << " figures (" << "target_movement_distance is " << target_movement_distance << "): " << std::endl;
+				auto figure_number = size_t(std::round(target_figure_number));
+				// std::cout << "Mutating " << figure_number << " figures (" << "target_movement_distance is " << target_movement_distance << "): " << std::endl;
 
-			for (size_t mutation_index = 0; mutation_index < figure_number; ++mutation_index) {
-				auto gen = std::mt19937{std::random_device{}()};
-				auto mutating_figure_index = size_t(randint(0LL, n, gen));
+				for (size_t mutation_index = 0; mutation_index < figure_number; ++mutation_index) {
+					auto gen = std::mt19937 { std::random_device {}() };
+					auto mutating_figure_index = size_t(randint(0LL, n, gen));
 
-				double generated_distance = normal_distribute(0, target_movement_distance * 1.5, 1)[0];
-				auto pos_change = li(std::round(generated_distance));
+					double generated_distance = normal_distribute(0, target_movement_distance * 1.5, 1)[0];
+					auto pos_change = li(std::round(generated_distance));
 
-				li new_pos = std::clamp(li
-						                        (res[mutating_figure_index]) + pos_change, 0LL, n - 1);
+					li new_pos = std::clamp(li
+							                        (res[mutating_figure_index]) + pos_change, 0LL, n - 1);
 
-				std::cout << "\t moving figure №" << mutating_figure_index
-				          << " from " << res[mutating_figure_index]
-				          << " to " << new_pos
-				          << std::endl;
+					// std::cout << "\t moving figure №" << mutating_figure_index
+					//           << " from " << res[mutating_figure_index]
+					//           << " to " << new_pos
+					//           << std::endl;
 
-				res[mutating_figure_index] = new_pos;
+					res[mutating_figure_index] = new_pos;
 
-				last_mutation_descriptor.push_back({ .figure_index = mutating_figure_index, .new_position = new_pos });
+					last_mutation_descriptor.push_back(
+							{ .figure_index = mutating_figure_index, .new_position = new_pos });
+				}
+			}
+			else {
+				// Swapping mutation:
+				double target_figure_number = permute_intensiveness_factor * amount;
+				double target_pairs = target_figure_number / 2;
+				double generated_pair_number = normal_distribute(target_pairs, target_pairs / 3, 1)[0];
+				auto pairs_to_swap = size_t(std::clamp(generated_pair_number, 0., double(n - 1)));
+
+				std::mt19937 gen{ std::random_device{}() };
+				for (size_t mutation_index = 0; mutation_index < pairs_to_swap; ++mutation_index) {
+
+					size_t first = randint(0ULL, size_t(n), gen);
+					size_t second = randint(0ULL, size_t(n), gen);
+
+					last_mutation_descriptor.push_back({ .figure_index = first, .new_position = res[second] });
+					last_mutation_descriptor.push_back({ .figure_index = second, .new_position = res[first] });
+
+					std::swap(res[first], res[second]);
+				}
 			}
 
 			return res;

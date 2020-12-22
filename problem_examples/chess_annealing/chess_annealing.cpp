@@ -12,7 +12,7 @@ namespace chess1d
 	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations)
 	{
 		final_error_computer error_computer;
-		chess1d_permutator permutator(4.5);
+		chess1d_permutator permutator(3. * n / 8);
 		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
@@ -20,7 +20,7 @@ namespace chess1d
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
 						.exiting_value = 0,
-						.typical_temperature = 4,
+						.typical_temperature = 5. * n / 20,
 						.genes_in_genome = static_cast<size_t>(n),
 				},
 				generate_initial_chess_figure_positions,
