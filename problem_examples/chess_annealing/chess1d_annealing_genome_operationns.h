@@ -129,35 +129,19 @@ namespace chess1d
 //
 //	}
 
-	class final_error_computer
-	{
-	public:
-		double operator() (const std::vector<li>& genome) const {
-			if (!computer) {
-				// Initialize computer:
-				computer.emplace(genome);
-			}
-
-			return double(computer->get_beating_amount());
-		}
-
-		void be_informed_about_change(size_t figure_index, li new_position) {
-			computer->experience_mutation(figure_index, new_position);
-		}
-
-	private:
-		mutable std::optional<error_computer_O_n<are_queens_colliding>> computer = std::nullopt;
-	};
+	// class chess1d_permutator;
 
 	class chess1d_permutator
 	{
-		// TODO: allow swapping mutation
+	public:
 		struct permutation_info {
 			size_t figure_index {};
 			li new_position {};
 		};
-
 		using mutation_descriptor = std::vector<permutation_info>;
+
+		// TODO: allow swapping mutation
+	private:
 
 		double permute_intensiveness_factor = 0;
 		mutable mutation_descriptor last_mutation_descriptor;
@@ -187,7 +171,7 @@ namespace chess1d
 				auto pos_change = li(std::round(generated_distance));
 
 				li new_pos = std::clamp(li
-						(res[mutating_figure_index]) + pos_change, 0LL, n - 1);
+						                        (res[mutating_figure_index]) + pos_change, 0LL, n - 1);
 
 				std::cout << "\t moving figure №" << mutating_figure_index
 				          << " from " << res[mutating_figure_index]
@@ -205,6 +189,42 @@ namespace chess1d
 		[[nodiscard]] mutation_descriptor get_last_mutation_descriptor() const {
 			return last_mutation_descriptor;
 		}
+	};
+
+	class final_error_computer
+	{
+	public:
+		double operator() (const std::vector<li>& genome,
+					const chess1d_permutator::mutation_descriptor* info = nullptr, std::optional<double> previous_error = std::nullopt) const {
+
+			if (info and previous_error) {
+				// O(n) recounting:
+				// (If only 3 arguments are provided, the genome is «old genome»)
+
+				auto computer = error_computer_O_n<are_queens_colliding>(genome);
+				for(auto& mutation : *info) {
+					computer.experience_mutation(mutation.figure_index, mutation.new_position);
+				}
+
+				return computer.get_beating_amount();
+			}
+			else if (info or previous_error) {
+				throw std::runtime_error("Can't compute error: no info or no previous_error");
+			}
+
+			// Simple O(n^2) recounting:
+			// If only one argument is provided, it's «new genome»
+			return base_chess_error<are_queens_colliding>::compute(
+					enumerate_chess_figures(genome)
+			);
+		}
+
+//		void be_informed_about_change(size_t figure_index, li new_position) {
+//			computer->experience_mutation(figure_index, new_position);
+//		}
+
+	private:
+		// mutable std::optional<error_computer_O_n<are_queens_colliding>> computer = std::nullopt;
 	};
 
 }
