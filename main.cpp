@@ -52,8 +52,31 @@ int main()
 	// chess1d::test_dynamic_error_computing();
 
 
+	std::vector<chess1d::total_chess_annealing_parameters> parameters = {
+			{
+				7.5,
+				1.0
+			},
+			{
+				10.,
+				1.0
+			},
+			{
+					12.5,
+					1.0
+			},
+			{
+				15.,
+						1.0
+			}
 
-	chess1d::launch_chess_queen_arranging(100);
+
+	};
+
+	chess1d::test_chess_queen_arranging_for_parameters(50, 10'000, 50, parameters);
+	// chess1d::launch_chess_queen_arranging(100);
+
+
 
 	/// 								Path length optimization
 

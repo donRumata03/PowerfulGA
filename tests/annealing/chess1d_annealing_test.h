@@ -5,6 +5,7 @@
 
 #pragma once
 
+// #include <pythonic.h>
 #include "problem_examples/chess_annealing/chess1d_annealing_genome_operationns.h"
 
 namespace chess1d
@@ -13,7 +14,7 @@ namespace chess1d
 	{
 		auto genome = generate_initial_chess_figure_positions(8);
 
-		std::cout << genome << std::endl;
+		// std::cout << genome << std::endl;
 		display_chess_positioning(indexed_positions_to_matrix(genome));
 	}
 

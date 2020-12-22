@@ -9,10 +9,10 @@
 namespace chess1d
 {
 
-	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations)
+	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations, bool output_debug)
 	{
 		final_error_computer error_computer;
-		chess1d_permutator permutator(3. * n / 8);
+		chess1d_permutator permutator(2. * n / 8);
 		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
@@ -29,11 +29,13 @@ namespace chess1d
 		);
 
 		if (best_error != 0) {
-			std::cout << "Can't find a solution, but here's the best of the found ones (error: " << best_error << "):"
-			          << std::endl;
+			if (output_debug) {
+				std::cout << "Can't find a solution, but here's the best of the found ones (error: " << best_error
+				          << "):"
+				          << std::endl;
 
-			if (n <= 20) display_chess_positioning(indexed_positions_to_matrix(best_res));
-
+				if (n <= 20) display_chess_positioning(indexed_positions_to_matrix(best_res));
+			}
 			return std::nullopt;
 		}
 
@@ -44,7 +46,7 @@ namespace chess1d
 	{
 		std::cout << "Trying to get answer for n = " << n << std::endl;
 
-		auto res = arrange_chess_queens(n, 100'000);
+		auto res = arrange_chess_queens(n, 100'000, true);
 
 		if (!res) {
 			std::cout << "Didn't find any solutions!" << std::endl;
@@ -54,6 +56,41 @@ namespace chess1d
 		std::cout << "Found a solution (!):" << std::endl;
 		if (n <= 20) {
 			display_chess_positioning(indexed_positions_to_matrix(*res));
+		}
+	}
+
+
+
+	void test_chess_queen_arranging_for_parameters (li n, size_t max_iterations, size_t repetitions,
+	                                                const std::vector<total_chess_annealing_parameters>& parameters)
+	{
+		std::cout << "N: " << n << ", iterations: " << max_iterations << std::endl;
+
+		std::vector<size_t> res;
+
+		for (auto& parameter_set : parameters) {
+
+
+			size_t successful_tries = 0;
+			for (size_t i = 0; i < repetitions; ++i) {
+				auto this_res = arrange_chess_queens(n, max_iterations, false);
+
+				if (this_res) successful_tries++;
+			}
+			res.push_back(successful_tries);
+		}
+
+		std::cout << console_colors::green << "______________________________" << console_colors::remove_all_colors << std::endl;
+
+		for (size_t i = 0; i < parameters.size(); ++i) {
+			auto& parameter_set = parameters[i];
+			auto successful_tries = res[i];
+
+			std::cout << "Trying parameter set {";
+			parameter_set.print(std::cout);
+			std::cout << "}: ";
+
+			std::cout << "Successful tries: " << successful_tries << " of " << repetitions << std::endl;
 		}
 	}
 
