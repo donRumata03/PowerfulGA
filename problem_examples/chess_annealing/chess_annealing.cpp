@@ -20,7 +20,7 @@ namespace chess1d
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
 						.exiting_value = 0,
-						.typical_temperature = 5. * n / 20,
+						.typical_temperature = 0.01 * n,
 						.genes_in_genome = static_cast<size_t>(n),
 				},
 				generate_initial_chess_figure_positions,
@@ -31,7 +31,8 @@ namespace chess1d
 		if (best_error != 0) {
 			std::cout << "Can't find a solution, but here's the best of the found ones (error: " << best_error << "):"
 			          << std::endl;
-			display_chess_positioning(indexed_positions_to_matrix(best_res));
+
+			if (n <= 20) display_chess_positioning(indexed_positions_to_matrix(best_res));
 
 			return std::nullopt;
 		}
@@ -41,6 +42,8 @@ namespace chess1d
 
 	void launch_chess_queen_arranging (li n)
 	{
+		std::cout << "Trying to get answer for n = " << n << std::endl;
+
 		auto res = arrange_chess_queens(n, 100'000);
 
 		if (!res) {
@@ -49,7 +52,9 @@ namespace chess1d
 		}
 
 		std::cout << "Found a solution (!):" << std::endl;
-		display_chess_positioning(indexed_positions_to_matrix(*res));
+		if (n <= 20) {
+			display_chess_positioning(indexed_positions_to_matrix(*res));
+		}
 	}
 
 	void output_python_code_below_n (li n)

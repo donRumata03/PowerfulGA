@@ -16,7 +16,10 @@ namespace chess1d
 		std::vector<li> res(n);
 		std::mt19937 gen(std::random_device {}());
 
-		std::generate(res.begin(), res.end(), [n, &gen] () { return randint(0, n, gen); });
+		// std::generate(res.begin(), res.end(), [n, &gen] () { return randint(0, n, gen); });
+
+		std::iota(res.begin(), res.end(), 0);
+		std::shuffle(res.begin(), res.end(), gen);
 
 		return res;
 	}
