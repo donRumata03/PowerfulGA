@@ -152,21 +152,24 @@ namespace chess1d
 	class chess1d_permutator
 	{
 		// TODO: allow swapping mutation
+		struct permutation_info {
+			size_t figure_index {};
+			li new_position {};
+		};
+
+		using mutation_descriptor = std::vector<permutation_info>;
 
 		double permute_intensiveness_factor = 0;
-		// base_error_computer<AreCollidingPredicate>* error_controller = nullptr;
-		final_error_computer* error_controller = nullptr;
+		mutable mutation_descriptor last_mutation_descriptor;
 
 	public:
 		explicit chess1d_permutator(double _permute_intensiveness_factor)
 				: permute_intensiveness_factor(_permute_intensiveness_factor)
 		{}
 
-		void plug_mutation_controller(final_error_computer* controller) {
-			error_controller = controller;
-		}
-
 		std::vector<li> operator() (const std::vector<li>& old_genome, double amount) const {
+			last_mutation_descriptor.clear();
+
 			std::vector<li> res = old_genome;
 			li n = old_genome.size();
 
@@ -193,13 +196,14 @@ namespace chess1d
 
 				res[mutating_figure_index] = new_pos;
 
-
-				if (error_controller) {
-					error_controller->be_informed_about_change(mutating_figure_index, new_pos);
-				}
+				last_mutation_descriptor.push_back({ .figure_index = mutating_figure_index, .new_position = new_pos });
 			}
 
 			return res;
+		}
+
+		[[nodiscard]] mutation_descriptor get_last_mutation_descriptor() const {
+			return last_mutation_descriptor;
 		}
 	};
 
