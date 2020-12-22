@@ -13,7 +13,7 @@ namespace chess1d
 	{
 		final_error_computer error_computer;
 		chess1d_permutator permutator(4.5);
-		permutator.plug_mutation_controller(&error_computer);
+		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li>(
 				error_computer,
