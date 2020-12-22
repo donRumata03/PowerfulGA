@@ -4,7 +4,7 @@
 
 #include "chess_annealing.h"
 #include "chess1d_annealing_genome_operationns.h"
-
+#include "problem_examples/path_minimizing/path_minimizing_utils.h"
 
 namespace chess1d
 {
@@ -12,7 +12,7 @@ namespace chess1d
 	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations, bool output_debug)
 	{
 		final_error_computer error_computer;
-		chess1d_permutator permutator(2. * n / 8);
+		chess1d_permutator permutator(n * 0.2);
 		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
@@ -20,7 +20,7 @@ namespace chess1d
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
 						.exiting_value = 0,
-						.typical_temperature = 0.01 * n,
+						.typical_temperature = ::transfer_range(double(n), { 0., 200. }, { 1., 3.5 }),
 						.genes_in_genome = static_cast<size_t>(n),
 				},
 				generate_initial_chess_figure_positions,
@@ -46,7 +46,7 @@ namespace chess1d
 	{
 		std::cout << "Trying to get answer for n = " << n << std::endl;
 
-		auto res = arrange_chess_queens(n, 100'000, true);
+		auto res = arrange_chess_queens(n, 200'000, true);
 
 		if (!res) {
 			std::cout << "Didn't find any solutions!" << std::endl;
@@ -69,7 +69,7 @@ namespace chess1d
 		std::vector<size_t> res;
 
 		for (auto& parameter_set : parameters) {
-
+			std::cout << console_colors::yellow << "______________________________" << console_colors::remove_all_colors << std::endl;
 
 			size_t successful_tries = 0;
 			for (size_t i = 0; i < repetitions; ++i) {
@@ -94,10 +94,174 @@ namespace chess1d
 		}
 	}
 
+	void launch_parameter_testing ()
+	{
+
+		std::vector<chess1d::total_chess_annealing_parameters> parameters_for_20 = {
+
+				{
+						4.,
+						0.1
+				},
+				{
+						4.,
+						0.2
+				},
+				{
+						4.,
+						0.3
+				},
+				{
+						4.,
+						0.5
+				},
+				{
+						4.,
+						1.0
+				},
+				{
+						4.,
+						2.0
+				},
+				{
+						4.,
+						3.0
+				},
+
+		};
+
+		// {
+		//						10.,
+		//						1.0
+		//				},
+		// Are ≈ optimal for 50
+		std::vector<chess1d::total_chess_annealing_parameters> parameters_for_50 = {
+
+				{
+						10.,
+						0.3
+				},
+				{
+						10.,
+						0.5
+				},
+				{
+						10.,
+						1.0
+				},
+				{
+						10.,
+						2.0
+				},
+				{
+						10.,
+						3.0
+				},
+
+		};
+
+
+
+		std::vector<chess1d::total_chess_annealing_parameters> parameters_for_100 = {
+				{
+						20.,
+						0.44
+				},
+				{
+						20.,
+						0.66
+				},
+				{
+						20.,
+						1.0
+				},
+				{
+						20.,
+						1.5
+				},
+				{
+						20.,
+						2.0
+				},
+				{
+						20.,
+						3.0
+				},
+		};
+
+
+		//              {
+		//						26.,
+		//						2.0
+		//				},
+		// Are optimal for 130
+
+		std::vector<chess1d::total_chess_annealing_parameters> parameters_for_130 = {
+//				{
+//						26.,
+//						0.44
+//				},
+				{
+						26.,
+						1.0
+				},
+				{
+						26.,
+						2.0
+				},
+//				{
+//						26.,
+//						3.0
+//				},
+		};
+
+		std::vector<chess1d::total_chess_annealing_parameters> parameters_for_200 = {
+//				{
+//						40.,
+//						1.0
+//				},
+//				{
+//						40.,
+//						2.0
+//				},
+//				{
+//						26.,
+//						2.5
+//				},
+				{
+						26.,
+						3.0
+				},
+				{
+						26.,
+						4.0
+				},
+				{
+						32.,
+						6.0
+				},
+				{
+						40.,
+						10.0
+				},
+
+		};
+
+
+		size_t n = 200;
+		auto &parameters = parameters_for_200;
+		size_t iterations = 500'000;
+		size_t repetitions = 7;
+
+		chess1d::test_chess_queen_arranging_for_parameters(n, iterations, repetitions, parameters);
+
+	}
+
 	void output_python_code_below_n (li n)
 	{
 
 	}
+
 }
 
 
