@@ -11,7 +11,8 @@ namespace chess1d
 
 	std::optional<std::vector<li>>
 	arrange_chess_queens (li n, size_t max_iterations, bool output_debug, std::vector<double> *for_usual_fitness,
-	                      std::vector<double> *for_best_fitness, double* for_res)
+	                      std::vector<double> *for_best_fitness, double *for_res,
+	                      std::vector<double> *for_vague_fitness)
 	{
 
 		/*
@@ -43,6 +44,7 @@ namespace chess1d
 				permutator,
 				custom_exp_temperature_dynamic(9.),
 				output_debug,
+				for_vague_fitness,
 				for_usual_fitness,
 				for_best_fitness
 		);
@@ -69,7 +71,7 @@ namespace chess1d
 	{
 		std::cout << "Trying to get answer for n = " << n << std::endl;
 
-		auto res = arrange_chess_queens(n, 200'000, true);
+		auto res = arrange_chess_queens(n, 200'000, true, nullptr, nullptr, nullptr, nullptr);
 
 		if (!res) {
 			std::cout << "Didn't find any solutions!" << std::endl;
@@ -96,7 +98,7 @@ namespace chess1d
 
 			size_t successful_tries = 0;
 			for (size_t i = 0; i < repetitions; ++i) {
-				auto this_res = arrange_chess_queens(n, max_iterations, false);
+				auto this_res = arrange_chess_queens(n, max_iterations, false, nullptr, nullptr, nullptr, nullptr);
 
 				if (this_res) successful_tries++;
 			}
@@ -289,7 +291,7 @@ namespace chess1d
 	std::optional<std::vector<li>> launch_chess_annealing_with_automatic_iterations (li n)
 	{
 		li iterations = get_default_iterations(n); // transfer_range(double(n), { 0., 200. }, { 20'000, 500'000 });
-		return arrange_chess_queens(n, iterations, false);
+		return arrange_chess_queens(n, iterations, false, nullptr, nullptr, nullptr, nullptr);
 	}
 
 	void output_python_code_below_n (li n, const std::string& output_file)
@@ -322,11 +324,14 @@ namespace chess1d
 		double for_err = -1;
 		std::vector<double> for_usual_fitness;
 		std::vector<double> for_best_fitness;
+		std::vector<double> for_vague_fitness;
+
 		for_usual_fitness.reserve(iterations);
 		for_best_fitness.reserve(iterations);
+		for_vague_fitness.reserve(iterations);
 
 		std::cout << "Arranging " << n << " chess queens (" << iterations << " iterations)…";
-		auto res = arrange_chess_queens(n, iterations, true, &for_usual_fitness, &for_best_fitness, &for_err);
+		auto res = arrange_chess_queens(n, iterations, true, &for_usual_fitness, &for_best_fitness, &for_err, &for_vague_fitness);
 		std::cout << "Done!" << std::endl;
 		if (res) {
 			std::cout << console_colors::green << "Finished SUCCESSFULLY!" << console_colors::remove_all_colors << std::endl;
@@ -341,9 +346,12 @@ namespace chess1d
 
 		auto usual_enumerated = enumerate<double>(for_usual_fitness);
 		auto best_enumerated = enumerate<double>(for_best_fitness);
+		auto vague_enumerated = enumerate<double>(for_vague_fitness);
 
+		add_pairs_to_plot(vague_enumerated, { .name = "Vague Error Dynamic" });
 		add_pairs_to_plot(usual_enumerated, { .name = "Error Dynamic" });
 		add_pairs_to_plot(best_enumerated, { .name = "Best Error Dynamic" });
+
 
 		show_plot();
 	}

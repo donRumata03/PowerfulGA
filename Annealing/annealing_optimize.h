@@ -44,6 +44,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		const TemperatureChangingFunctor& temperature_changing_functor = default_exp_temperature_dynamic,
 
 		bool output_debug_information = true,
+		std::vector<double>* for_vague_history = nullptr,
 		std::vector<double>* for_usual_history = nullptr,
 		std::vector<double>* for_best_history = nullptr
 
@@ -157,6 +158,9 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		}
 
 
+		if (for_vague_history) {
+			for_vague_history->push_back(this_energy);
+		}
 		if (for_usual_history) {
 			for_usual_history->push_back(last_energy);
 		}
