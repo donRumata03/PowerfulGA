@@ -40,7 +40,13 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 
 		const GenomeGenerationFunctor& genome_generation_functor,
 		const MutationFunctor& mutation_functor,
-		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic, bool output_debug_information = true)
+		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic,
+
+		bool output_debug_information = true,
+		std::vector<double>* for_usual_history = nullptr,
+		std::vector<double>* for_best_history = nullptr
+
+				)
 {
 
 	using Genome = std::vector<GenomeElement>;
@@ -127,7 +133,12 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 				break;
 			}
 		}
-
+		if (for_usual_history) {
+			for_usual_history->push_back(this_energy);
+		}
+		if(for_best_history) {
+			for_best_history->push_back(best_energy);
+		}
 		// std::cout << std::endl;
 	}
 

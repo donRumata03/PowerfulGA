@@ -199,7 +199,7 @@ namespace chess1d
 				double target_figure_number = permute_intensiveness_factor * amount;
 				double target_pairs = target_figure_number / 2;
 				double generated_pair_number = normal_distribute(target_pairs, target_pairs / 3, 1)[0];
-				auto pairs_to_swap = size_t(std::clamp(generated_pair_number, 0., double(n - 1)));
+				auto pairs_to_swap = size_t(std::clamp(generated_pair_number, 1., double(n - 1)));
 
 				std::mt19937 gen{ std::random_device{}() };
 				for (size_t mutation_index = 0; mutation_index < pairs_to_swap; ++mutation_index) {
