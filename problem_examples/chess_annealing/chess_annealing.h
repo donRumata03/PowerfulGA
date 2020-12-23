@@ -14,7 +14,7 @@ namespace chess1d
 {
 	std::optional<std::vector<li>>
 	arrange_chess_queens (li n, size_t max_iterations, bool output_debug, std::vector<double> *for_usual_fitness = nullptr,
-	                      std::vector<double> *for_best_fitness = nullptr);
+	                      std::vector<double> *for_best_fitness = nullptr, double* for_res = nullptr);
 
 	void launch_chess_queen_arranging (li n);
 

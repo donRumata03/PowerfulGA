@@ -11,7 +11,7 @@ namespace chess1d
 
 	std::optional<std::vector<li>>
 	arrange_chess_queens (li n, size_t max_iterations, bool output_debug, std::vector<double> *for_usual_fitness,
-	                      std::vector<double> *for_best_fitness)
+	                      std::vector<double> *for_best_fitness, double* for_res)
 	{
 		final_error_computer error_computer;
 		chess1d_permutator permutator(n * 0.2);
@@ -27,11 +27,15 @@ namespace chess1d
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				custom_exp_temperature_dynamic(5),
+				custom_exp_temperature_dynamic(6.5),
 				output_debug,
 				for_usual_fitness,
 				for_best_fitness
 		);
+
+		if(for_res) {
+			*for_res = best_error;
+		}
 
 		if (best_error != 0) {
 			if (output_debug) {
@@ -299,16 +303,27 @@ namespace chess1d
 
 	void visualize_fitness_dynamic (li n)
 	{
-		size_t iterations = 100'000; // get_default_iterations(n);
+		size_t iterations = 150'000; // get_default_iterations(n);
 
+		double for_err = -1;
 		std::vector<double> for_usual_fitness;
 		std::vector<double> for_best_fitness;
 		for_usual_fitness.reserve(iterations);
 		for_best_fitness.reserve(iterations);
 
 		std::cout << "Arranging " << n << " chess queens (" << iterations << " iterations)…";
-		auto res = arrange_chess_queens(n, iterations, false, &for_usual_fitness, &for_best_fitness);
+		auto res = arrange_chess_queens(n, iterations, false, &for_usual_fitness, &for_best_fitness, &for_err);
 		std::cout << "Done!" << std::endl;
+		if (res) {
+			std::cout << console_colors::green << "Finished SUCCESSFULLY!" << console_colors::remove_all_colors << std::endl;
+		}
+		else {
+			// final_error_computer computer;
+
+			std::cout << console_colors::red <<
+				"Finished with error function in the end: " << for_err << "!"
+			<< console_colors::remove_all_colors << std::endl;
+		}
 
 		auto usual_enumerated = enumerate<double>(for_usual_fitness);
 		auto best_enumerated = enumerate<double>(for_best_fitness);
