@@ -153,18 +153,21 @@ namespace chess1d
 	private:
 
 		double permute_intensiveness_factor = 0;
+		double intensity_exponent = 0;
 		mutable mutation_descriptor last_mutation_descriptor;
 
 	public:
-		explicit chess1d_permutator(double _permute_intensiveness_factor)
-				: permute_intensiveness_factor(_permute_intensiveness_factor)
+		explicit chess1d_permutator(double _permute_intensiveness_factor, double _intensity_exponent = 0)
+				: permute_intensiveness_factor(_permute_intensiveness_factor), intensity_exponent(_intensity_exponent)
 		{}
 
-		std::vector<li> operator() (const std::vector<li>& old_genome, double amount) const {
+		std::vector<li> operator() (const std::vector<li>& old_genome, double raw_amount) const {
 			last_mutation_descriptor.clear();
 
 			std::vector<li> res = old_genome;
 			li n = old_genome.size();
+
+			double amount = std::exp(-intensity_exponent * (1 - raw_amount));
 
 			if constexpr (current_permutation_type == permutation_type::movement) {
 				double target_figure_number = amount * permute_intensiveness_factor;
@@ -200,6 +203,8 @@ namespace chess1d
 				double target_pairs = target_figure_number / 2;
 				double generated_pair_number = normal_distribute(target_pairs, target_pairs / 3, 1)[0];
 				auto pairs_to_swap = size_t(std::clamp(generated_pair_number, 1., double(n - 1)));
+
+				// std::cout << "At raw amount: " << raw_amount << "-> Target pairs: " << target_pairs << "; Generated pairs: " << generated_pair_number << std::endl;
 
 				std::mt19937 gen{ std::random_device{}() };
 				for (size_t mutation_index = 0; mutation_index < pairs_to_swap; ++mutation_index) {

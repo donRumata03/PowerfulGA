@@ -13,8 +13,21 @@ namespace chess1d
 	arrange_chess_queens (li n, size_t max_iterations, bool output_debug, std::vector<double> *for_usual_fitness,
 	                      std::vector<double> *for_best_fitness, double* for_res)
 	{
+
+		/*
+		 * f(0.9) = 1
+		 * f(0) is told
+		 */
+
+		double intensiveness_factor = n * 3. / 200.;
+		double permutation_pow = std::log(intensiveness_factor) / 0.8;
+		if (output_debug) {
+			std::cout << "Permutation pow: " << permutation_pow << "; Intensiveness: " << intensiveness_factor << std::endl;
+		}
+
+
 		final_error_computer error_computer;
-		chess1d_permutator permutator(n * 0.015 /*0.2*/);
+		chess1d_permutator permutator(intensiveness_factor, permutation_pow);
 		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
@@ -27,7 +40,7 @@ namespace chess1d
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				custom_exp_temperature_dynamic(8),
+				custom_exp_temperature_dynamic(5.),
 				output_debug,
 				for_usual_fitness,
 				for_best_fitness
@@ -312,7 +325,7 @@ namespace chess1d
 		for_best_fitness.reserve(iterations);
 
 		std::cout << "Arranging " << n << " chess queens (" << iterations << " iterations)…";
-		auto res = arrange_chess_queens(n, iterations, false, &for_usual_fitness, &for_best_fitness, &for_err);
+		auto res = arrange_chess_queens(n, iterations, true, &for_usual_fitness, &for_best_fitness, &for_err);
 		std::cout << "Done!" << std::endl;
 		if (res) {
 			std::cout << console_colors::green << "Finished SUCCESSFULLY!" << console_colors::remove_all_colors << std::endl;

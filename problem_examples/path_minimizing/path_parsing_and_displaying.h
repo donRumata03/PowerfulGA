@@ -7,6 +7,8 @@
 
 #include <pythonic.h>
 
+
+
 inline std::vector<std::vector<bool>> parse_way_matrix(const std::string& str) {
 	std::vector<std::vector<bool>> res;
 
@@ -44,4 +46,6 @@ inline std::vector<std::vector<bool>> parse_way_matrix(const std::string& str) {
 			}
 		}
 	}
+
+	return res;
 }
