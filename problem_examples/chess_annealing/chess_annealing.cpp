@@ -20,7 +20,7 @@ namespace chess1d
 		 */
 
 		double intensiveness_factor = n * 3. / 200.;
-		double permutation_pow = std::log(intensiveness_factor) / 0.8;
+		double permutation_pow = std::log(intensiveness_factor) / 0.9;
 		if (output_debug) {
 			std::cout << "Permutation pow: " << permutation_pow << "; Intensiveness: " << intensiveness_factor << std::endl;
 		}
@@ -35,12 +35,13 @@ namespace chess1d
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
 						.exiting_value = 0,
-						.typical_temperature = ::transfer_range(double(n), { 0., 200. }, { 1., 3.5 }),
+						.typical_temperature = n * 0.2 / 200., // ::transfer_range(double(n), { 0., 200. }, { 1., 3.5 }),
 						.genes_in_genome = static_cast<size_t>(n),
+						.resurrect_after_iterations = max_iterations * 0.1,
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				custom_exp_temperature_dynamic(5.),
+				custom_exp_temperature_dynamic(9.),
 				output_debug,
 				for_usual_fitness,
 				for_best_fitness

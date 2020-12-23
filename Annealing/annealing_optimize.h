@@ -18,6 +18,7 @@ struct AnnealingOptimizeParameters
 	double typical_temperature = 1;
 
 	size_t genes_in_genome = 0;
+	std::optional<size_t> resurrect_after_iterations = std::nullopt;
 };
 
 
@@ -91,6 +92,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 	size_t accepted_gene_count = 0;
 	bool has_finished_ahead_of_schedule = false;
 	size_t iterations_if_finished_early = 0;
+	auto iteration_of_last_improvement = size_t(-1);
 	for (size_t iteration = 0; iteration < params.iterations; ++iteration) {
 		double completion_percent = double(iteration) / params.iterations;
 		double temperature = params.typical_temperature * temperature_changing_functor(completion_percent);
@@ -123,6 +125,8 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 			last_energy = this_energy;
 
 			if (this_energy < best_energy) {
+				iteration_of_last_improvement = iteration;
+
 				best_genome = mutated;
 				best_energy = this_energy;
 			}
@@ -133,8 +137,28 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 				break;
 			}
 		}
+		else {
+			// No improvement:
+			if (params.resurrect_after_iterations and iteration_of_last_improvement != size_t(-1)) {
+				// Maybe reset!
+				size_t iterations_from_last_change = iteration - iteration_of_last_improvement;
+				if (iterations_from_last_change >= *params.resurrect_after_iterations) {
+					std::cout << "Iteration " << iteration << ": resurrecting genome from iteration " << iteration_of_last_improvement << std::endl;
+
+					// Resurrect best genome:
+					last_energy = best_energy;
+					p = best_genome;
+
+					// Say that there is no need for soon change
+					iteration_of_last_improvement = iteration;
+
+				}
+			}
+		}
+
+
 		if (for_usual_history) {
-			for_usual_history->push_back(this_energy);
+			for_usual_history->push_back(last_energy);
 		}
 		if(for_best_history) {
 			for_best_history->push_back(best_energy);
