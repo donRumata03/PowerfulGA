@@ -51,6 +51,12 @@ namespace chess1d
 			recompute_error();
 		}
 
+		explicit error_computer_O_n (const std::vector<li>& initial_genome, li initial_error) : n(initial_genome.size())
+		{
+			current_genome = initial_genome;
+			current_beating_amount = initial_error;
+		}
+
 		void experience_mutation (size_t figure_index, li new_position) override
 		{
 			li old_position = current_genome[figure_index];
@@ -149,7 +155,6 @@ namespace chess1d
 		};
 		static constexpr permutation_type current_permutation_type = permutation_type::swapping;
 
-		// TODO: allow swapping mutation
 	private:
 
 		double permute_intensiveness_factor = 0;
@@ -237,7 +242,7 @@ namespace chess1d
 				// O(n) recounting:
 				// (If only 3 arguments are provided, the genome is «old genome»)
 
-				auto computer = error_computer_O_n<are_queens_colliding>(genome);
+				auto computer = error_computer_O_n<are_queens_colliding>(genome, li(*previous_error));
 				for(auto& mutation : *info) {
 					computer.experience_mutation(mutation.figure_index, mutation.new_position);
 				}

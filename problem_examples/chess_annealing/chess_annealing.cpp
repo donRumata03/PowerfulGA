@@ -319,7 +319,7 @@ namespace chess1d
 
 	void visualize_fitness_dynamic (li n)
 	{
-		size_t iterations = 15'000; // get_default_iterations(n);
+		size_t iterations = 100'000; // get_default_iterations(n);
 
 		double for_err = -1;
 		std::vector<double> for_usual_fitness;

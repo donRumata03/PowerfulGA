@@ -111,7 +111,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 
 		double this_energy;
 		if constexpr (requires_recounting_support) {
-			this_energy = energy_functor(p, &last_mutation_descriptor, this_energy);
+			this_energy = energy_functor(p, &last_mutation_descriptor, last_energy);
 		}
 		else {
 			this_energy = energy_functor(mutated);
