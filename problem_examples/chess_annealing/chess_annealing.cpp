@@ -9,7 +9,9 @@
 namespace chess1d
 {
 
-	std::optional<std::vector<li>> arrange_chess_queens (li n, size_t max_iterations, bool output_debug)
+	std::optional<std::vector<li>>
+	arrange_chess_queens (li n, size_t max_iterations, bool output_debug, std::vector<double> *for_usual_fitness,
+	                      std::vector<double> *for_best_fitness)
 	{
 		final_error_computer error_computer;
 		chess1d_permutator permutator(n * 0.2);
@@ -26,7 +28,9 @@ namespace chess1d
 				generate_initial_chess_figure_positions,
 				permutator,
 				exp_temperature_dynamic,
-				output_debug
+				output_debug,
+				for_usual_fitness,
+				for_best_fitness
 		);
 
 		if (best_error != 0) {
@@ -258,9 +262,15 @@ namespace chess1d
 
 	}
 
+	size_t get_default_iterations (li n)
+	{
+		li iterations = li(std::round(transfer_range(double(n), { 0., 200. }, { 20'000, 500'000 })));
+		return size_t(std::max(iterations, 0LL));
+	}
+
 	std::optional<std::vector<li>> launch_chess_annealing_with_automatic_iterations (li n)
 	{
-		li iterations = transfer_range(double(n), { 0., 200. }, { 20'000, 500'000 });
+		li iterations = get_default_iterations(n); // transfer_range(double(n), { 0., 200. }, { 20'000, 500'000 });
 		return arrange_chess_queens(n, iterations, false);
 	}
 
@@ -285,6 +295,28 @@ namespace chess1d
 		}
 
 		output_stream.close();
+	}
+
+	void visualize_fitness_dynamic (li n)
+	{
+		size_t iterations = 100'000; // get_default_iterations(n);
+
+		std::vector<double> for_usual_fitness;
+		std::vector<double> for_best_fitness;
+		for_usual_fitness.reserve(iterations);
+		for_best_fitness.reserve(iterations);
+
+		std::cout << "Arranging " << n << " chess queens (" << iterations << " iterations)…";
+		auto res = arrange_chess_queens(n, iterations, false, &for_usual_fitness, &for_best_fitness);
+		std::cout << "Done!" << std::endl;
+
+		auto usual_enumerated = enumerate<double>(for_usual_fitness);
+		auto best_enumerated = enumerate<double>(for_best_fitness);
+
+		add_pairs_to_plot(usual_enumerated, { .name = "Error Dynamic" });
+		add_pairs_to_plot(best_enumerated, { .name = "Best Error Dynamic" });
+
+		show_plot();
 	}
 
 }
