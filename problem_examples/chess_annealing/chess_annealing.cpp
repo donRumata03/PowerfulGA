@@ -14,7 +14,7 @@ namespace chess1d
 	                      std::vector<double> *for_best_fitness, double* for_res)
 	{
 		final_error_computer error_computer;
-		chess1d_permutator permutator(n * 0.2);
+		chess1d_permutator permutator(n * 0.015 /*0.2*/);
 		// permutator.plug_mutation_controller(&error_computer);
 
 		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
@@ -27,7 +27,7 @@ namespace chess1d
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				custom_exp_temperature_dynamic(6.5),
+				custom_exp_temperature_dynamic(8),
 				output_debug,
 				for_usual_fitness,
 				for_best_fitness
@@ -303,7 +303,7 @@ namespace chess1d
 
 	void visualize_fitness_dynamic (li n)
 	{
-		size_t iterations = 150'000; // get_default_iterations(n);
+		size_t iterations = 15'000; // get_default_iterations(n);
 
 		double for_err = -1;
 		std::vector<double> for_usual_fitness;

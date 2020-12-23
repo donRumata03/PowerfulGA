@@ -58,10 +58,12 @@ int main()
 
 	// std::cout << *chess1d::launch_chess_annealing_with_automatic_iterations(150) << std::endl;
 	// chess1d::output_python_code_below_n(200, R"(D:\Projects\Utilities\GA\problem_examples\chess_annealing\output_data.txt)");
-	chess1d::visualize_fitness_dynamic (200);
+	// chess1d::visualize_fitness_dynamic (200);
 
 
 	/// 								Path length optimization
+
+
 
 	/// 									Performance tests:
 
