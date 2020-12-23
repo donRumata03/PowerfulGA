@@ -27,7 +27,7 @@ namespace chess1d
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				exp_temperature_dynamic,
+				custom_exp_temperature_dynamic(5),
 				output_debug,
 				for_usual_fitness,
 				for_best_fitness
@@ -350,7 +350,7 @@ namespace chess2d
 				[&] (const auto& genome, double amount) {
 					return unpack_pairs(chess_permutator(n, 6.0)(split_into_pairs(genome), amount));
 				},
-				exp_temperature_dynamic
+				default_exp_temperature_dynamic
 		);
 
 		// double error = best_error;

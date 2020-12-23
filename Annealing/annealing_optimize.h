@@ -40,7 +40,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 
 		const GenomeGenerationFunctor& genome_generation_functor,
 		const MutationFunctor& mutation_functor,
-		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic,
+		const TemperatureChangingFunctor& temperature_changing_functor = default_exp_temperature_dynamic,
 
 		bool output_debug_information = true,
 		std::vector<double>* for_usual_history = nullptr,

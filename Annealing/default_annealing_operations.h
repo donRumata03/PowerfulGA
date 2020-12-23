@@ -8,10 +8,18 @@
 
 #include <utility>
 
-inline double exp_temperature_dynamic(double completion_percent, double intensity = 3.5)
+
+
+inline double base_exp_temperature_dynamic(double completion_percent, double intensity = 3.5)
 {
 	return std::exp(-intensity * completion_percent);
 }
+
+inline double default_exp_temperature_dynamic(double completion_percent)
+{
+	return base_exp_temperature_dynamic(completion_percent);
+}
+
 
 class custom_exp_temperature_dynamic
 {
@@ -19,7 +27,7 @@ public:
 	explicit custom_exp_temperature_dynamic(double _intensity) : intensity(_intensity) {}
 
 	double operator() (double completion_percent) const {
-		return exp_temperature_dynamic(completion_percent, intensity);
+		return base_exp_temperature_dynamic(completion_percent, intensity);
 	}
 private:
 	double intensity;
