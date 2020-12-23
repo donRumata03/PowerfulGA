@@ -38,7 +38,9 @@ namespace chess1d
 	void launch_parameter_testing();
 
 	void test_chess_queen_arranging_for_parameters(li n, size_t max_iterations, size_t repetitions, const std::vector<total_chess_annealing_parameters>& parameters);
-	void output_python_code_below_n(li n);
+
+	std::optional<std::vector<li>> launch_chess_annealing_with_automatic_iterations(li n);
+	void output_python_code_below_n (li n, const std::string& output_file);
 }
 
 

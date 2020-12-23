@@ -40,7 +40,7 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 
 		const GenomeGenerationFunctor& genome_generation_functor,
 		const MutationFunctor& mutation_functor,
-		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic)
+		const TemperatureChangingFunctor& temperature_changing_functor = exp_temperature_dynamic, bool output_debug_information = true)
 {
 
 	using Genome = std::vector<GenomeElement>;
@@ -131,13 +131,17 @@ std::pair<std::vector<GenomeElement>, double> annealing_optimize(
 		// std::cout << std::endl;
 	}
 
-	std::cout << "[Annealing optimize]: Accepted genes: "
-		<< accepted_gene_count << " / " << (has_finished_ahead_of_schedule ? iterations_if_finished_early : params.iterations);
-	if (has_finished_ahead_of_schedule) {
-		std::cout
-			<< " (has finished before schedule: only " << iterations_if_finished_early << " of " << params.iterations << " iterations are performed)";
+	if (output_debug_information) {
+		std::cout << "[Annealing optimize]: Accepted genes: "
+		          << accepted_gene_count << " / "
+		          << (has_finished_ahead_of_schedule ? iterations_if_finished_early : params.iterations);
+		if (has_finished_ahead_of_schedule) {
+			std::cout
+					<< " (has finished before schedule: only " << iterations_if_finished_early << " of "
+					<< params.iterations << " iterations are performed)";
+		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 
 	return { best_genome, best_energy };
 }

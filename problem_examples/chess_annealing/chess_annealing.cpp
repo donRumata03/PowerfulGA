@@ -25,7 +25,8 @@ namespace chess1d
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
-				exp_temperature_dynamic
+				exp_temperature_dynamic,
+				output_debug
 		);
 
 		if (best_error != 0) {
@@ -257,9 +258,33 @@ namespace chess1d
 
 	}
 
-	void output_python_code_below_n (li n)
+	std::optional<std::vector<li>> launch_chess_annealing_with_automatic_iterations (li n)
 	{
+		li iterations = transfer_range(double(n), { 0., 200. }, { 20'000, 500'000 });
+		return arrange_chess_queens(n, iterations, false);
+	}
 
+	void output_python_code_below_n (li n, const std::string& output_file)
+	{
+		std::ofstream output_stream;
+		if (!output_file.empty()) {
+			output_stream.open(output_file);
+		}
+
+		for (li i = 4; i <= n; ++i) {
+			bool success = false;
+
+			while(!success) {
+				auto this_try = launch_chess_annealing_with_automatic_iterations(i);
+				success = bool(this_try);
+				if (success) {
+					std::cout << i << " : " << *this_try << ", " << std::endl;
+					output_stream << i << " : " << *this_try << ", " << std::endl;
+				}
+			}
+		}
+
+		output_stream.close();
 	}
 
 }
