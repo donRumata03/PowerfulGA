@@ -8,10 +8,22 @@
 
 #include <utility>
 
-inline double exp_temperature_dynamic(double completion_percent)
+inline double exp_temperature_dynamic(double completion_percent, double intensity = 3.5)
 {
-	return std::exp(-3.5 * completion_percent);
+	return std::exp(-intensity * completion_percent);
 }
+
+class custom_exp_temperature_dynamic
+{
+public:
+	explicit custom_exp_temperature_dynamic(double _intensity) : intensity(_intensity) {}
+
+	double operator() (double completion_percent) const {
+		return exp_temperature_dynamic(completion_percent, intensity);
+	}
+private:
+	double intensity;
+};
 
 template <class T>
 struct permutational_mutation
