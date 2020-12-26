@@ -5,6 +5,7 @@
 #include <tests/annealing/chess2d_operation_tests.h>
 #include <tests/annealing/chess1d_annealing_test.h>
 #include <problem_examples/path_minimizing/path_minimizing_utils.h>
+#include <tests/annealing/path_optimizing_util_tests.h>
 
 int main()
 {
@@ -58,11 +59,16 @@ int main()
 
 	// std::cout << *chess1d::launch_chess_annealing_with_automatic_iterations(150) << std::endl;
 	// chess1d::output_python_code_below_n(200, R"(D:\Projects\Utilities\GA\problem_examples\chess_annealing\output_data.txt)");
-	chess1d::visualize_fitness_dynamic (500);
+	// chess1d::visualize_fitness_dynamic (500);
 
 
 	/// 								Path length optimization
 
+	std::cout << powerful_ga_config_file_path << std::endl;
+	std::cout << powerful_ga_base_dir << std::endl;
+	std::cout << powerful_ga_base_dir.parent_path() << std::endl;
+	std::cout << fs::path{powerful_ga_config_file_path}.parent_path() << std::endl;
+	test_opening_and_parsing();
 
 
 	/// 									Performance tests:
