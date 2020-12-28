@@ -35,6 +35,7 @@ class DummyPathLengthCounter
 {
 	std::vector<point> encoding;
 
+public:
 	explicit DummyPathLengthCounter(std::vector<point> _encoding) : encoding(std::move(_encoding)) {}
 
 	double operator () (const std::vector<size_t>& index_sequence);

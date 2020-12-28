@@ -18,8 +18,18 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 {
 	auto point_encoding = path_matrix_to_points(way_matrix);
 
-	auto [best_sequence, best_error] = annealing_optimize<size_t, void>(
+	///
+	auto path_length_counter = DummyPathLengthCounter(point_encoding);
 
+	auto [best_sequence, best_error] = annealing_optimize<size_t, void>(
+				[&path_length_counter](const std::vector<size_t>& point_permutation) -> double {
+					return error_by_distance( path_length_counter(point_permutation) );
+					},
+				{
+					// TODO: add parameters
+				},
+				generate_path,
+				mutate_path
 			);
 
 
