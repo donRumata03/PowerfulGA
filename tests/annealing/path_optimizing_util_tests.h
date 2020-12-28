@@ -22,5 +22,8 @@ inline void test_visualizing() {
 
 	add_points_to_plot(points, { .type = "scatter" });
 	show_plot();
+}
+
+inline void test_path_to_answer_converting() {
 
 }

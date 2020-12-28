@@ -72,3 +72,8 @@ inline std::vector<point> path_matrix_to_points(const std::vector<std::vector<bo
 	return res;
 }
 
+
+inline std::string path_points_to_answer(const std::vector<point>& path_points) {
+	// TODO!
+}
+
