@@ -25,12 +25,12 @@ struct AnnealingOptimizeParameters
 
 /**
  *
- * @tparam GenomeElement: Function always operates on std::vector<T>, where T is GenomeElement
- * @param energy_functor: should return a quantitative characteristics od
- * @param mutation_functor: is responsible of being called with «const Genome&, double» and should return new Genome,
+ * @tparam GenomeElement Function always operates on std::vector<T>, where T is GenomeElement
+ * @param energy_functor should return a quantitative characteristics od
+ * @param mutation_functor is responsible of being called with «const Genome&, double» and should return new Genome,
  * 												mutated as much as its second argument says,
  * 													it's being smoothly changed from 1 to 0
- * @param temperature_changing_functor: Outputs Temperature at particular time point (from 0 to 1) and is expected to output values from 0 to 1
+ * @param temperature_changing_functor Outputs Temperature at particular time point (from 0 to 1) and is expected to output values from 0 to 1
  * @return
  */
 template<class GenomeElement, class temp_MutationDescriptor, class EnergyFunctor, class GenomeGenerationFunctor,
