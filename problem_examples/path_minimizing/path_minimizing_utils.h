@@ -20,26 +20,28 @@ std::vector<output_element> index_to_point_path(const std::vector<size_t>& index
 std::vector<size_t> generate_path(size_t number);
 
 
-//////////////////////////////    Counting:  //////////////////////////////
+//////////////////////////////    Counting / Error function:  //////////////////////////////
 double count_path_length(const std::vector<point>& points);
 
+double fitness_by_distance (double distance);
+double error_by_distance (double distance);
+
+double distance_by_fitness (double fitness);
+double distance_by_error (double error);
+
+
+/// Just counts path length each time:
 class DummyPathLengthCounter
 {
 	std::vector<point> encoding;
 
 	explicit DummyPathLengthCounter(std::vector<point> _encoding) : encoding(std::move(_encoding)) {}
 
-	double operator () (const std::vector<size_t>& index_sequence) {
-		double res = 0;
-		for (size_t i = 1; i < index_sequence.size(); ++i) {
-			res += point::dist(encoding[index_sequence[i]], encoding[index_sequence[i - 1]]);
-		}
-
-		return res;
-	}
+	double operator () (const std::vector<size_t>& index_sequence);
 };
 
 
+/// Is able to cleverly recount path after certain types of mutations:
 class PathLengthCounter
 {
 	double current_path_length {};
@@ -156,3 +158,5 @@ std::vector<output_element> index_to_point_path (const std::vector<size_t>& inde
 
 	return res;
 }
+
+
