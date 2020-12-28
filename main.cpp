@@ -70,7 +70,7 @@ int main()
 
 	// test_opening_and_parsing();
 	// test_visualizing();
-	launch_path_minimizing();
+	launch_path_minimizing(0);
 
 	/// 									Performance tests:
 

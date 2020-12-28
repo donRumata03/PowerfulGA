@@ -128,7 +128,7 @@ void reversing_mutate (std::vector<genome_element>& points, size_t distance)
 
 
 template<class genome_element>
-std::vector<point> mutate_path (const std::vector<genome_element>& points, double amount)
+std::vector<genome_element> mutate_path (const std::vector<genome_element>& points, double amount)
 {
 	auto res = points;
 	auto dist = distance_by_amount(amount, points.size());
