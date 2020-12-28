@@ -20,12 +20,12 @@ inline std::vector<std::vector<bool>> parse_way_matrix(const std::string& str) {
 
 	auto splitted_lines = split_lines(str);
 	for (auto& l : splitted_lines) {
-		auto words = split_words(l);
+		auto words = split(l, { ' ' }); // split_words(l);
 		for (auto& word : words) {
 			word = cut_spaces(word);
 			if (is_in('#', word) and is_in('.', word)) {
 				// This is the word we're looking for!
-				auto v = res.emplace_back();
+				auto& v = res.emplace_back();
 
 				for (auto c : word) {
 					if (c == '#') {

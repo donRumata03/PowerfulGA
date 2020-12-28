@@ -12,6 +12,9 @@
 
 inline void test_opening_and_parsing() {
 	std::string input = *read_file(path_minimizing_data_path);
+	std::cout << "Parsing data: \n" << input << std::endl;
+
+
 	auto matrix = parse_way_matrix(input);
 	std::cout << matrix << std::endl;
 
