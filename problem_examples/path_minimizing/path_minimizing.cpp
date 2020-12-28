@@ -33,12 +33,15 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 					.resurrect_after_iterations = iterations * 0.1,
 				},
 				generate_path,
-				mutate_path<size_t>
+				[](const std::vector<size_t>& genome, double amount) -> std::vector<size_t> {
+					return mutate_path<size_t>(genome, amount);
+				},
+				default_exp_temperature_dynamic
 			);
 
 
 
-	return { distance_by_error(best_error), index_to_point_path(best_sequence, point_encoding) };
+	return { index_to_point_path(best_sequence, point_encoding), distance_by_error(best_error) };
 }
 
 void launch_path_minimizing (size_t iterations)
