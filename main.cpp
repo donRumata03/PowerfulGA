@@ -1,3 +1,5 @@
+#include "powerful_ga_config.h"
+
 #include <tests/GA/old_GA_test.h>
 #include <tests/GA/ga_test.h>
 #include <tests/annealing/annealing_tests.h>
@@ -6,6 +8,8 @@
 #include <tests/annealing/chess1d_annealing_test.h>
 #include <problem_examples/path_minimizing/path_minimizing_utils.h>
 #include <tests/annealing/path_optimizing_util_tests.h>
+
+
 
 int main()
 {

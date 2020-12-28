@@ -10,7 +10,7 @@
 #include <powerful_ga_config.h>
 
 inline std::filesystem::path path_minimizing_data_path = \
-		powerful_ga_base_dir / "path_minimizing" / "statement_data.txt";
+		powerful_ga_base_dir / "problem_examples" / "path_minimizing" / "statement_data.txt";
 // R"(D:\Projects\Utilities\GA\problem_examples\path_minimizing\statement_data.txt)";
 
 inline std::vector<std::vector<bool>> parse_way_matrix(const std::string& str) {
