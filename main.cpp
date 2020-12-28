@@ -68,7 +68,8 @@ int main()
 
 	/// 								Path length optimization
 
-	test_opening_and_parsing();
+	// test_opening_and_parsing();
+	test_visualizing();
 
 
 	/// 									Performance tests:

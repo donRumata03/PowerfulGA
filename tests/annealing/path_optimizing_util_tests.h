@@ -11,16 +11,16 @@
 
 
 inline void test_opening_and_parsing() {
-	std::string input = *read_file(path_minimizing_data_path);
-	std::cout << "Parsing data: \n" << input << std::endl;
-
-
-	auto matrix = parse_way_matrix(input);
+	auto matrix = get_default_matrix();
 	std::cout << matrix << std::endl;
 
 	std::cout << "Points: " << path_matrix_to_points(matrix) << std::endl;
 }
 
 inline void test_visualizing() {
+	auto points = path_matrix_to_points(get_default_matrix());
+
+	add_points_to_plot(points, { .type = "scatter" });
+	show_plot();
 
 }
