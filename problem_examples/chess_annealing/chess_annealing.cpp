@@ -38,7 +38,7 @@ namespace chess1d
 						.exiting_value = 0,
 						.typical_temperature = n * 0.2 / 200., // ::transfer_range(double(n), { 0., 200. }, { 1., 3.5 }),
 						.genes_in_genome = static_cast<size_t>(n),
-						.resurrect_after_iterations = max_iterations * 0.1,
+						.resurrect_after_iterations = size_t(std::round(max_iterations * 0.1)),
 				},
 				generate_initial_chess_figure_positions,
 				permutator,
