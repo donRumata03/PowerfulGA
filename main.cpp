@@ -68,10 +68,6 @@ int main()
 
 	/// 								Path length optimization
 
-	std::cout << powerful_ga_config_file_path << std::endl;
-	std::cout << powerful_ga_base_dir << std::endl;
-	std::cout << powerful_ga_base_dir.parent_path() << std::endl;
-	std::cout << fs::path{powerful_ga_config_file_path}.parent_path() << std::endl;
 	test_opening_and_parsing();
 
 

@@ -53,3 +53,22 @@ inline std::vector<std::vector<bool>> parse_way_matrix(const std::string& str) {
 
 	return res;
 }
+
+inline std::vector<point> path_matrix_to_points(const std::vector<std::vector<bool>>& matrix) {
+	std::vector<point> res;
+
+	size_t y_index = 0;
+	for (auto& row : matrix) {
+		size_t x_index = 0;
+		for(const auto& position : row) {
+			if (position) {
+				res.emplace_back(double(x_index), double(y_index));
+			}
+			x_index++;
+		}
+		y_index++;
+	}
+
+	return res;
+}
+
