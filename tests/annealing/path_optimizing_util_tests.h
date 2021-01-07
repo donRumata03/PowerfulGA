@@ -14,7 +14,7 @@ inline void test_opening_and_parsing() {
 	auto matrix = get_default_matrix();
 	std::cout << matrix << std::endl;
 
-	std::cout << "Points: " << path_matrix_to_points(matrix) << std::endl;
+	std::cout << "Points (" << path_matrix_to_points(matrix).size() << "): " << path_matrix_to_points(matrix) << std::endl;
 }
 
 inline void test_visualizing() {

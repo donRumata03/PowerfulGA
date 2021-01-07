@@ -140,6 +140,8 @@ std::vector<genome_element> mutate_path (const std::vector<genome_element>& poin
 		reversing_mutate(res, dist);
 	}
 
+	assert(res.size() == points.size());
+
 	return res;
 }
 

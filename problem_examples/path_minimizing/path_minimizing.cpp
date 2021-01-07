@@ -28,7 +28,7 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 				{
 					.iterations = iterations,
 					.exiting_value = 0.,
-					.typical_temperature = 0.,
+					.typical_temperature = 1.5,
 					.genes_in_genome = point_encoding.size(),
 					.resurrect_after_iterations = iterations * 0.1,
 				},
@@ -39,7 +39,7 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 				default_exp_temperature_dynamic
 			);
 
-
+	std::cout << best_sequence.size() << " " << best_sequence << std::endl;
 
 	return { index_to_point_path(best_sequence, point_encoding), distance_by_error(best_error) };
 }
@@ -51,10 +51,14 @@ void launch_path_minimizing (size_t iterations)
 //	std::cout << matrix << std::endl;
 	auto matrix = get_default_matrix();
 
-	auto [best_points, best_error] = minimize_path(matrix, iterations);
+	auto [best_points, best_distance] = minimize_path(matrix, iterations);
 
 	std::cout
-		<< "Optimized, best path length is: " << distance_by_error(best_error)
-		<< ", best score is " << fitness_by_distance(distance_by_error(best_error))
+		<< "Optimized, best path length is: " << best_distance
+		<< ", best error is: " << error_by_distance(best_distance)
+		<< ", best score is: " << fitness_by_distance(best_distance)
 	<< std::endl;
+
+	add_points_to_plot(best_points);
+	show_plot();
 }
