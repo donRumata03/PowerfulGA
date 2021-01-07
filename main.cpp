@@ -70,7 +70,13 @@ int main()
 
 	// test_opening_and_parsing();
 	// test_visualizing();
-	test_range_generation();
+
+	// test_range_generation();
+	// test_distance_generation();
+
+	test_reversing_mutation();
+	// test_moving_mutation();
+
 	// launch_path_minimizing(100'000'000);
 
 	/// 									Performance tests:

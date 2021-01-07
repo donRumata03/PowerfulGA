@@ -33,12 +33,25 @@ inline void test_range_generation() {
 	}
 }
 
+inline void test_distance_generation() {
+	auto size = 513;
+	double amount = 0.;
+
+	for (size_t i = 0; i < 20; ++i) {
+		std::cout << distance_by_amount(amount, size) << std::endl;
+	}
+}
+
+
 inline void test_reversing_mutation() {
 	auto points = path_matrix_to_points(get_default_matrix());
 
+	auto dist = distance_by_amount(0.5, points.size());
 
 
-	add_points_to_plot(points, { .type = "scatter" });
+	// reversing_mutate()
+
+	// add_points_to_plot(points, { .type = "scatter" });
 	show_plot();
 
 }
