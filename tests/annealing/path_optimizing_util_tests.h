@@ -24,6 +24,30 @@ inline void test_visualizing() {
 	show_plot();
 }
 
-inline void test_path_to_answer_converting() {
+inline void test_range_generation() {
+	size_t point_number = 10;
+	size_t distance = 2;
 
+	for (size_t i = 0; i < 20; ++i) {
+		std::cout << generate_range(point_number, distance) << std::endl;
+	}
+}
+
+inline void test_reversing_mutation() {
+	auto points = path_matrix_to_points(get_default_matrix());
+
+
+
+	add_points_to_plot(points, { .type = "scatter" });
+	show_plot();
+
+}
+
+inline void test_moving_mutation() {
+
+}
+
+
+inline void test_path_to_answer_converting() {
+	// TODO
 }
