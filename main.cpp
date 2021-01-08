@@ -74,7 +74,8 @@ int main()
 	// test_range_generation();
 	// test_distance_generation();
 
-	test_reversing_mutation();
+	// test_reversing_mutation_full_path();
+	// test_reversing_mutation_short_path();
 	// test_moving_mutation();
 
 	// launch_path_minimizing(100'000'000);

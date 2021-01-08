@@ -123,6 +123,7 @@ template<class genome_element>
 void reversing_mutate (std::vector<genome_element>& points, size_t distance)
 {
 	auto [start_point, end_point] = generate_range(points.size(), distance);
+	std::cout << "Reversing from " << start_point << " to " << end_point << std::endl;
 	std::reverse(points.begin() + start_point, points.begin() + end_point + 1);
 }
 
