@@ -76,10 +76,39 @@ inline void test_reversing_mutation_short_path() {
 	std::cout << "After mutation: " << indexes << std::endl;
 }
 
+/// ################################################################################
 
 
-inline void test_moving_mutation() {
+inline void test_moving_mutation_full_path() {
+	auto points = path_matrix_to_points(get_default_matrix());
 
+	auto dist = distance_by_amount(0.5, points.size());
+	std::cout << "Distance is: " << dist << std::endl;
+
+	std::cout << "Before mutation: " << points << std::endl;
+	add_points_to_plot(points, { .type = "plot" });
+
+	moving_mutate(points, dist);
+
+	std::cout << "After mutation: " << points << std::endl;
+	add_points_to_plot(points, { .type = "plot" });
+
+	show_plot();
+}
+
+
+inline void test_moving_mutation_short_path() {
+	std::vector<size_t> indexes(10);
+	std::iota(indexes.begin(), indexes.end(), 0);
+
+	auto dist = distance_by_amount(0.5, indexes.size());
+	std::cout << "Distance is: " << dist << std::endl;
+
+	std::cout << "Before mutation: " << indexes << std::endl;
+
+	moving_mutate(indexes, dist);
+
+	std::cout << "After mutation: " << indexes << std::endl;
 }
 
 

@@ -14,6 +14,7 @@
 int main()
 {
 	set_utf8_in_console();
+	srand(std::random_device{}());
 
 	/// 								Local optimization:
 	// test_GD();
@@ -76,7 +77,9 @@ int main()
 
 	// test_reversing_mutation_full_path();
 	// test_reversing_mutation_short_path();
-	// test_moving_mutation();
+	// ____________________________________
+	test_moving_mutation_full_path();
+	// test_moving_mutation_short_path();
 
 	// launch_path_minimizing(100'000'000);
 

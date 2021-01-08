@@ -97,6 +97,10 @@ void moving_mutate (std::vector<genome_element>& points, size_t distance)
 {
 	auto [start_point, end_point] = generate_range(points.size(), distance);
 	bool direction = bool(randint(0, 102341) % 2);
+//	std::cout
+//		<< "Direction: " << std::boolalpha << direction
+//		<< " Range: [" << start_point << "; " << end_point << "]"
+//	<< std::endl;
 
 	if (direction) {
 		// Move the left one to the right corner:
@@ -111,7 +115,7 @@ void moving_mutate (std::vector<genome_element>& points, size_t distance)
 		// Move the right one to the left corner:
 		auto old_element = points[end_point];
 
-		for (size_t old_index = end_point - 1; old_index <= start_point; old_index--) {
+		for (size_t old_index = end_point - 1; old_index >= start_point; old_index--) {
 			points[old_index + 1] = points[old_index];
 		}
 
@@ -123,7 +127,9 @@ template<class genome_element>
 void reversing_mutate (std::vector<genome_element>& points, size_t distance)
 {
 	auto [start_point, end_point] = generate_range(points.size(), distance);
-	std::cout << "Reversing from " << start_point << " to " << end_point << std::endl;
+
+	// Debug: // std::cout << "Reversing from " << start_point << " to " << end_point << std::endl;
+
 	std::reverse(points.begin() + start_point, points.begin() + end_point + 1);
 }
 
