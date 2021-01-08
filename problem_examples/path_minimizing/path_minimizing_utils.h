@@ -115,7 +115,7 @@ void moving_mutate (std::vector<genome_element>& points, size_t distance)
 		// Move the right one to the left corner:
 		auto old_element = points[end_point];
 
-		for (size_t old_index = end_point - 1; old_index >= start_point; old_index--) {
+		for (li old_index = li(end_point - 1); old_index >= li(start_point); old_index--) {
 			points[old_index + 1] = points[old_index];
 		}
 
@@ -140,7 +140,7 @@ std::vector<genome_element> mutate_path (const std::vector<genome_element>& poin
 	auto res = points;
 	auto dist = distance_by_amount(amount, points.size());
 
-	if (pythonic_random() > 0.5) {
+	if (pythonic_random() < 0.3) {
 		moving_mutate(res, dist);
 	}
 	else {

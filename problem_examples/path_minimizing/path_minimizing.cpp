@@ -30,13 +30,13 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 					.exiting_value = 0.,
 					.typical_temperature = 1.5,
 					.genes_in_genome = point_encoding.size(),
-					.resurrect_after_iterations = iterations * 0.1,
+					.resurrect_after_iterations = size_t(std::round(iterations * 0.1)),
 				},
 				generate_path,
 				[](const std::vector<size_t>& genome, double amount) -> std::vector<size_t> {
 					return mutate_path<size_t>(genome, amount);
 				},
-				default_exp_temperature_dynamic
+				custom_exp_temperature_dynamic(3.)
 			);
 
 	std::cout << best_sequence.size() << " " << best_sequence << std::endl;

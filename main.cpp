@@ -78,10 +78,10 @@ int main()
 	// test_reversing_mutation_full_path();
 	// test_reversing_mutation_short_path();
 	// ____________________________________
-	test_moving_mutation_full_path();
+	// test_moving_mutation_full_path();
 	// test_moving_mutation_short_path();
 
-	// launch_path_minimizing(100'000'000);
+	launch_path_minimizing(1'000'000);
 
 	/// 									Performance tests:
 
