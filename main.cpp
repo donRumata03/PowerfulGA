@@ -83,7 +83,10 @@ int main()
 
 	// test_path_to_answer_converting();
 
-	launch_path_minimizing(1'000'000);
+	// launch_path_minimizing(100'000'000); /// 8 minutes
+	launch_path_minimizing(3'750'000'000); /// 5 hours
+
+
 
 	/// 									Performance tests:
 

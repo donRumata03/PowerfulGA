@@ -36,7 +36,7 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 				[](const std::vector<size_t>& genome, double amount) -> std::vector<size_t> {
 					return mutate_path<size_t>(genome, amount);
 				},
-				custom_exp_temperature_dynamic(3.)
+				custom_exp_temperature_dynamic(3.5)
 			);
 
 	std::cout << best_sequence.size() << " " << best_sequence << std::endl;
@@ -44,6 +44,11 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 	return { index_to_point_path(best_sequence, point_encoding), distance_by_error(best_error) };
 }
 
+
+/**
+  * 8 minutes : 100'000'000 iterations
+  * => 5 hours <=> 300 minutes : ≈ 100'000'000 * 37.5 iterations = 3'750'000'000 iterations
+*/
 void launch_path_minimizing (size_t iterations)
 {
 //	std::string input = *read_file(path_minimizing_data_path);

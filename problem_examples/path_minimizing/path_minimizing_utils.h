@@ -140,7 +140,7 @@ std::vector<genome_element> mutate_path (const std::vector<genome_element>& poin
 	auto res = points;
 	auto dist = distance_by_amount(amount, points.size());
 
-	if (pythonic_random() < 0.3) {
+	if (pythonic_random() < 0.5) {
 		moving_mutate(res, dist);
 	}
 	else {
