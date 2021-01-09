@@ -72,8 +72,31 @@ inline std::vector<point> path_matrix_to_points(const std::vector<std::vector<bo
 	return res;
 }
 
+inline std::string path_point_to_code(std::pair<li, li> point) {
+	std::string letter;
+	li for_letter = point.first;
+	if(for_letter < 26) {
+		letter = std::string {char('a' + char(for_letter))};
+	}
+	else{
+		letter = std::string {char('A' + char(for_letter - 26))};
+	}
+	std::string digit = std::to_string(52 - point.second);
+
+	return letter + digit;
+}
+
 
 inline std::string path_points_to_answer(const std::vector<point>& path_points) {
-	// TODO!
+	// std::vector<double> real_ys(path_points.size());
+	// std::transform(path_points.begin(), path_points.end(), real_ys.begin(), [](const point& pnt){ return pnt.x; });
+	// std::cout << *std::max_element(real_ys.begin(), real_ys.end()) << std::endl;
+
+	std::vector<std::string> res_strings(path_points.size());
+	std::transform(path_points.begin(), path_points.end(), res_strings.begin(), [](const point& pnt){
+		return path_point_to_code(std::pair{ li(std::round(pnt.x)), li(std::round(pnt.y)) });
+	});
+
+	return join(" ", res_strings);
 }
 

@@ -59,6 +59,11 @@ void launch_path_minimizing (size_t iterations)
 		<< ", best score is: " << fitness_by_distance(best_distance)
 	<< std::endl;
 
+	std::cout << "________________________________________________________" << std::endl;
+	std::cout << path_points_to_answer(best_points) <<  std::endl;
+
+	write_file(path_points_to_answer(best_points), powerful_ga_base_dir / "problem_examples" / "path_minimizing" / "output.txt");
+
 	add_points_to_plot(best_points);
 	show_plot();
 }

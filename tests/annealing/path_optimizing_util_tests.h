@@ -113,5 +113,6 @@ inline void test_moving_mutation_short_path() {
 
 
 inline void test_path_to_answer_converting() {
-	// TODO
+	std::cout << path_point_to_code({ 0, 0 }) << std::endl;
+	std::cout << path_point_to_code({ 51, 51 }) << std::endl;
 }

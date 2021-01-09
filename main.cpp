@@ -81,6 +81,8 @@ int main()
 	// test_moving_mutation_full_path();
 	// test_moving_mutation_short_path();
 
+	// test_path_to_answer_converting();
+
 	launch_path_minimizing(1'000'000);
 
 	/// 									Performance tests:
