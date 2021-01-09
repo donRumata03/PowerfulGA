@@ -26,7 +26,12 @@ inline void display_chess_positioning(const std::vector<std::vector<bool>>& figu
 
 			for (auto & emoji : emojis) {
 				if (memcmp(beg, emoji, std::min(strlen(emoji), raw_len)) == 0) {
-					*width = 2; /* On my terminal emojis have width of 2 chars */
+
+#ifdef PYTHONIC_IS_LINUX
+					*width = 1; /* It's 1 char on Ubuntu */
+#else
+					*width = 2; /* It's 1 char in Windows */
+#endif
 					return 0;
 				}
 			}
@@ -51,6 +56,20 @@ inline void display_chess_positioning(const std::vector<std::vector<bool>>& figu
 }
 
 //////////////////////////////////////////		Converting		////////////////////////////////
+
+inline std::vector<std::vector<bool>> indexed_positions_to_matrix(const std::vector<li>& indexed_positions) {
+	std::vector<std::vector<bool>> matrix(indexed_positions.size());
+
+	for (size_t i = 0; i < indexed_positions.size(); ++i) {
+		matrix[i].assign(indexed_positions.size(), false);
+
+		matrix[i][indexed_positions[i]] = true;
+	}
+
+	return matrix;
+}
+
+
 
 inline std::vector<std::vector<bool>> figure_set_to_matrix(const std::vector<std::pair<li, li>>& figure_positions, li n) {
 	std::vector<std::vector<bool>> matrix(n);
@@ -97,6 +116,20 @@ std::vector<T> unpack_pairs(const std::vector<std::pair<T, T>>& pairs) {
 //		res[2 * i] = pairs[i].first;
 //		res[2 * i + 1] = pairs[i].second;
 		std::tie(res[2 * i], res[2 * i + 1]) = pairs[i];
+	}
+
+	return res;
+}
+
+inline std::vector<std::pair<li, li>> enumerate_chess_figures(std::vector<li> figure_positions) {
+	std::vector<std::pair<li, li>> res(figure_positions.size());
+
+//	std::transform(figure_positions.begin(), figure_positions.end(), res.begin(), [](){
+//
+//	});
+
+	for (size_t i = 0; i < figure_positions.size(); ++i) {
+		res[i] = { i, figure_positions[i] };
 	}
 
 	return res;

@@ -9,20 +9,20 @@
 #include "tests/test_functions.h"
 
 inline void complete_annealing_test() {
-	auto answer = annealing_optimize<double>(
+	auto answer = annealing_optimize<double, void>(
 			schaffer_function,
-			AnnealingOptimizeParameters{
-				.iterations = 100000,
-				.typical_temperature = 0.02,
-				.genes_in_genome = 2,
+			AnnealingOptimizeParameters {
+					.iterations = 100000,
+					.typical_temperature = 0.02,
+					.genes_in_genome = 2,
 			},
-			[](size_t number){
+			[] (size_t number) {
 				std::vector<double> res(number);
-				std::generate(res.begin(), res.end(), []() { return 200 * (pythonic_random() - 0.5); });
+				std::generate(res.begin(), res.end(), [] () { return 200 * (pythonic_random() - 0.5); });
 				return res;
 			},
-			modificational_mutation(1.5, 20, {{-100, 100}}),
-			exp_temperature_dynamic
+			modificational_mutation(1.5, 20, {{ -100, 100 }}),
+			default_exp_temperature_dynamic
 	);
 
 	std::cout << answer << std::endl;
