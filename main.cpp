@@ -8,7 +8,7 @@
 #include <tests/annealing/chess1d_annealing_test.h>
 #include <problem_examples/path_minimizing/path_minimizing_utils.h>
 #include <tests/annealing/path_optimizing_util_tests.h>
-
+#include <tests/benchmarking/GA_adapter_test.h>
 
 
 int main()
@@ -84,12 +84,13 @@ int main()
 	// test_path_to_answer_converting();
 
 	// launch_path_minimizing(100'000'000); /// 8 minutes
-	launch_path_minimizing(3'750'000'000); /// 5 hours
+	// launch_path_minimizing(3'750'000'000); /// 5 hours
 
 
 
 	/// 									Performance tests:
 
+	GA_adapter_test();
 
 	return 0;
 }
