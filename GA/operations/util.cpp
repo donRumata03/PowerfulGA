@@ -227,4 +227,22 @@ namespace GA
 		show_plot({ .window_title = "Hazing percent = "s + std::to_string(orient_params.hazing_percent) });
 	}
 
+	ComputationDistribution distribute_computations_defaultly (size_t target_all_computations, double epoch_pow)
+	{
+		assert(0 <= epoch_pow);
+		assert(epoch_pow <= 1);
+
+		double target_epochs = pow(double(target_all_computations), epoch_pow);
+		double target_population_size = double(target_all_computations) / target_epochs;
+
+		auto resultant_epochs = size_t(std::round(target_epochs));
+		auto resultant_population_size = size_t(std::round(target_population_size);
+
+		return ComputationDistribution{
+			.all_computations = resultant_epochs * resultant_population_size,
+			.population_size = resultant_population_size,
+			.epoch_number = resultant_epochs,
+		};
+	}
+
 }

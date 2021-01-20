@@ -56,5 +56,23 @@ namespace GA
 	 */
 	void view_quantity_dynamic(size_t population_size, genome_quantity_orientation orient_params);
 
+	//////////////////////////////////////////
+
+	/// all_computations is always equal to $ population_size \cdot epoch_number $
+	struct ComputationDistribution {
+		size_t all_computations {};
+
+		size_t population_size {};
+		size_t epoch_number {};
+	};
+
+	/**
+	 * @param epoch_pow: from 0 to 1, epoch_number ≈ all_computations^epoch_pow
+	 */
+	ComputationDistribution distribute_computations_defaultly(size_t target_all_computations, double epoch_pow);
+
+	/*
+	 * Deprecated
+	 */
 	void renew_random();
 }
