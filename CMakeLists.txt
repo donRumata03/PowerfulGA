@@ -114,8 +114,6 @@ add_executable(GA_test
 
 
         problem_examples/chess_annealing/chess_annealing_utils.h
-        problem_examples/chess_annealing/chess_annealing_genome_operations.h
-        tests/annealing/chess_operation_tests.h
 
         problem_examples/chess_annealing/chess2d_annealing_genome_operations.h
         tests/annealing/chess2d_operation_tests.h
