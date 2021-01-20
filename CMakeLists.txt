@@ -80,9 +80,16 @@ add_library(GA
         lib/libfort/fort.c
         lib/libfort/fort.h
         lib/libfort/fort.hpp
+
         optimization_benchmarking/optimization_algorithm.h
 
-        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.cpp optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.h optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.cpp optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.h)
+        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.cpp
+        optimization_benchmarking/AlgorithmAdapters/GeneticAlgorithmAdapter.h
+        optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.cpp
+        optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.h
+        
+        powerful_ga_config.h
+        )
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 
@@ -110,7 +117,23 @@ add_executable(GA_test
         problem_examples/chess_annealing/chess_annealing_genome_operations.h
         tests/annealing/chess_operation_tests.h
 
+        problem_examples/chess_annealing/chess2d_annealing_genome_operations.h
+        tests/annealing/chess2d_operation_tests.h
+        problem_examples/chess_annealing/common_chess_genome_operationns.h
+
+
+        problem_examples/chess_annealing/chess1d_annealing_genome_operationns.h
+        problem_examples/path_minimizing/path_minimizing.cpp
+        problem_examples/path_minimizing/path_minimizing.h
+        problem_examples/path_minimizing/path_minimizing_utils.cpp
+        problem_examples/path_minimizing/path_minimizing_utils.h
+        tests/annealing/chess1d_annealing_test.h
+        problem_examples/path_minimizing/path_parsing_and_displaying.h
+        tests/annealing/path_optimizing_util_tests.h
+        
+        
         )
+
 # add_debug_release_library(GA_test D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 target_link_libraries(GA_test ${pythonic_static_libraries})
 target_link_libraries(GA_test GA)
