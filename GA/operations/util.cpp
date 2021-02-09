@@ -236,7 +236,7 @@ namespace GA
 		double target_population_size = double(target_all_computations) / target_epochs;
 
 		auto resultant_epochs = size_t(std::round(target_epochs));
-		auto resultant_population_size = size_t(std::round(target_population_size);
+		auto resultant_population_size = size_t(std::round(target_population_size));
 
 		return ComputationDistribution{
 			.all_computations = resultant_epochs * resultant_population_size,

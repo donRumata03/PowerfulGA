@@ -21,7 +21,7 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 	///
 	auto path_length_counter = DummyPathLengthCounter(point_encoding);
 
-	auto [best_sequence, best_error] = annealing_optimize<size_t, void>(
+	auto annealing_res = annealing_optimize<size_t, void>(
 				[&path_length_counter](const std::vector<size_t>& point_permutation) -> double {
 					return error_by_distance( path_length_counter(point_permutation) );
 				},
@@ -38,6 +38,8 @@ std::pair<std::vector<point>, double> minimize_path (const std::vector<std::vect
 				},
 				custom_exp_temperature_dynamic(3.5)
 			);
+	auto[best_sequence, best_error] = std::tie(annealing_res.best_genome, annealing_res.best_energy);
+
 
 	std::cout << best_sequence.size() << " " << best_sequence << std::endl;
 

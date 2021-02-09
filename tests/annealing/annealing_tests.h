@@ -25,7 +25,7 @@ inline void complete_annealing_test() {
 			default_exp_temperature_dynamic
 	);
 
-	std::cout << answer << std::endl;
+	std::cout << "Best result: " << answer.best_energy << " (at " << answer.best_genome << ")" << std::endl;
 }
 
 /// Operations testing:

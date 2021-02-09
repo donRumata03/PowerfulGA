@@ -30,13 +30,13 @@ void AnnealingSimulationAdapter::run ()
 
 	assert(bool(mutator));
 
-	result = annealing_optimize<double>(
-			energy_function,
-			temp_params,
-			[](auto argument_number){  },
-			*mutator,
-			exp_temperature_dynamic
-			);
+//	result = annealing_optimize<double>(
+//			energy_function,
+//			temp_params,
+//			[](auto argument_number) -> {  },
+//			*mutator,
+//			default_exp_temperature_dynamic
+//			);
 }
 
 bool AnnealingSimulationAdapter::success ()

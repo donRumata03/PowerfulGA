@@ -31,7 +31,7 @@ namespace chess1d
 		chess1d_permutator permutator(intensiveness_factor, permutation_pow);
 		// permutator.plug_mutation_controller(&error_computer);
 
-		auto[best_res, best_error] = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
+		auto annealing_res = annealing_optimize<li, chess1d_permutator::mutation_descriptor>(
 				error_computer,
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
@@ -48,6 +48,7 @@ namespace chess1d
 				for_usual_fitness,
 				for_best_fitness
 		);
+		auto[best_res, best_error] = std::tie(annealing_res.best_genome, annealing_res.best_energy);
 
 		if(for_res) {
 			*for_res = best_error;
@@ -375,7 +376,7 @@ namespace chess2d
 //				return res;
 //			},
 
-		auto[best_res, best_error] = annealing_optimize<li, void>(
+		auto annealing_res = annealing_optimize<li, void>(
 				chess2d_error<are_queens_colliding>(),
 				AnnealingOptimizeParameters {
 						.iterations = max_iterations,
@@ -389,6 +390,8 @@ namespace chess2d
 				},
 				default_exp_temperature_dynamic
 		);
+		auto[best_res, best_error] = std::tie(annealing_res.best_genome, annealing_res.best_energy);
+
 
 		// double error = best_error;
 		std::vector<std::pair<li, li>> decompressed_res = split_into_pairs(best_res);
