@@ -5,6 +5,9 @@
 #pragma once
 
 #include "operations/operations.h"
+#include "optimization_commons/logging_type.h"
+
+
 
 namespace GA
 {
@@ -79,13 +82,6 @@ namespace GA
 	};
 
 
-	enum class logging_type
-	{
-		new_epoch,
-		after_mutation,
-		after_constraining,
-		best_genome
-	};
 
 	inline void default_GA_informer_by_percennt(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
 		static_assert(is_printable_by_me<const std::vector<double>>::value);

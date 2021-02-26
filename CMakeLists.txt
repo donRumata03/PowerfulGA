@@ -89,7 +89,7 @@ add_library(GA
         optimization_benchmarking/AlgorithmAdapters/AnnealingSimulationAdapter.h
         
         powerful_ga_config.h
-        )
+        optimization_commons/logging_type.h)
 
 # add_debug_release_library(GA D:/pythonic/cmake-build-debug/pythonic.lib D:/pythonic/cmake-build-release/pythonic.lib)
 

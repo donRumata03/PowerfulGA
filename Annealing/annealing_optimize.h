@@ -6,6 +6,8 @@
 
 #include <pythonic.h>
 #include "default_annealing_operations.h"
+#include "optimization_commons/logging_type.h"
+
 
 
 struct AnnealingOptimizeParameters
@@ -53,8 +55,9 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 		bool output_debug_information = true,
 		std::vector<double>* for_vague_history = nullptr,
 		std::vector<double>* for_usual_history = nullptr,
-		std::vector<double>* for_best_history = nullptr
+		std::vector<double>* for_best_history = nullptr,
 
+		std::function<void (const std::vector<GenomeElement>&, size_t)>* logger = nullptr
 				)
 {
 	using Genome = std::vector<GenomeElement>;
@@ -138,6 +141,11 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 
 				best_genome = mutated;
 				best_energy = this_energy;
+
+				// Inform logger:
+				if (logger) {
+					(*logger)(best_genome, iteration);
+				}
 			}
 
 			if (this_energy <= params.exiting_value) {
@@ -179,6 +187,9 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 			for_best_history->push_back(best_energy);
 		}
 		// std::cout << std::endl;
+		if (logger) {
+			logger->operator()();
+		}
 	}
 
 	if (output_debug_information) {
