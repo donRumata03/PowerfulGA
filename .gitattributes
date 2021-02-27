@@ -1,13 +1,12 @@
-*.cpp linguist-language=Rust
-*.hpp linguist-language=Rust
-*.h linguist-language=Rust
+*.cpp linguist-language=C++
+*.hpp linguist-language=C++
+*.h linguist-language=C++
 
 * linguist-vendored
 
 *.cpp linguist-vendored=false
 *.hpp linguist-vendored=false
 *.h linguist-vendored=false
-
 
 
 
