@@ -1,4 +1,13 @@
 * linguist-vendored
+
 *.cpp linguist-vendored=false
+*.hpp linguist-vendored=false
+*.h linguist-vendored=false
+
+*.cpp linguist-language=Rust
+*.hpp linguist-language=Rust
+*.h linguist-language=Rust
+
+
 CMakeLists.txt linguist-vendored=false
 PowerfulGAConfig.cmake linguist-vendored=false
