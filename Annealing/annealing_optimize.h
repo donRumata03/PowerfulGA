@@ -57,7 +57,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 		std::vector<double>* for_usual_history = nullptr,
 		std::vector<double>* for_best_history = nullptr,
 
-		std::function<void (const std::vector<GenomeElement>&, size_t)>* logger = nullptr
+		std::optional<std::function<void (const std::vector<GenomeElement>&, size_t)>> logger = std::nullopt
 				)
 {
 	using Genome = std::vector<GenomeElement>;
