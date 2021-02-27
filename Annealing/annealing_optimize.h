@@ -153,9 +153,6 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 				iterations_if_finished_early = iteration;
 				break;
 			}
-
-			current_energy_history[iteration] = this_energy;
-			best_energy_history[iteration] = best_energy;
 		}
 		else {
 			// No improvement:
@@ -176,6 +173,8 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 			}
 		}
 
+		current_energy_history[iteration] = this_energy;
+		best_energy_history[iteration] = best_energy;
 
 		if (for_vague_history) {
 			for_vague_history->push_back(this_energy);
@@ -190,6 +189,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 		if (logger) {
 			logger->operator()();
 		}
+
 	}
 
 	if (output_debug_information) {
