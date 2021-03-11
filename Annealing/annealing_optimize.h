@@ -28,6 +28,7 @@ struct AnnealingOptimizationOutput {
 	std::vector<GenomeElement> best_genome;
 	double best_energy = std::numeric_limits<double>::infinity();
 
+	std::vector<double> vague_energy_dynamic;
 	std::vector<double> current_energy_dynamic;
 	std::vector<double> best_energy_dynamic;
 };
@@ -89,6 +90,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 	}
 
 
+	std::vector<double> vague_energy_history(params.iterations);
 	std::vector<double> current_energy_history(params.iterations);
 	std::vector<double> best_energy_history(params.iterations);
 
@@ -173,22 +175,25 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 			}
 		}
 
-		current_energy_history[iteration] = this_energy;
+		vague_energy_history[iteration] = this_energy;
+		current_energy_history[iteration] = last_energy;
 		best_energy_history[iteration] = best_energy;
 
-		if (for_vague_history) {
-			for_vague_history->push_back(this_energy);
-		}
-		if (for_usual_history) {
-			for_usual_history->push_back(last_energy);
-		}
-		if(for_best_history) {
-			for_best_history->push_back(best_energy);
-		}
 		// std::cout << std::endl;
 
 
 	}
+
+	if (for_vague_history) {
+		std::copy(vague_energy_history.begin(), vague_energy_history.end(), for_vague_history->begin());
+	}
+	if (for_usual_history) {
+		std::copy(current_energy_history.begin(), current_energy_history.end(), for_usual_history->begin());
+	}
+	if(for_best_history) {
+		std::copy(best_energy_history.begin(), best_energy_history.end(), for_best_history->begin());
+	}
+
 
 	if (output_debug_information) {
 		std::cout << "[Annealing optimize]: Accepted genes: "
@@ -206,6 +211,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 		best_genome,
 		best_energy,
 
+		vague_energy_history,
 		current_energy_history,
 		best_energy_history,
 	};
