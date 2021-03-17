@@ -104,6 +104,8 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 	// Genome temp_genome;
 
 	size_t accepted_gene_count = 0;
+	size_t accepted_despite_increasing_gene_count = 0;
+
 	bool has_finished_ahead_of_schedule = false;
 	size_t iterations_if_finished_early = 0;
 	auto iteration_of_last_improvement = size_t(-1);
@@ -133,6 +135,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 
 		if (dE <= 0 or std::exp(-dE / temperature) > pythonic_random()) {
 			accepted_gene_count++;
+			if(dE > 0) accepted_despite_increasing_gene_count++;
 			// std::cout << " => Mutated Genome accepted!";
 
 			p = mutated;
@@ -162,7 +165,7 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 				// Maybe reset!
 				size_t iterations_from_last_change = iteration - iteration_of_last_improvement;
 				if (iterations_from_last_change >= *params.resurrect_after_iterations) {
-					std::cout << "Iteration " << iteration << ": resurrecting genome from iteration " << iteration_of_last_improvement << std::endl;
+					if (output_debug_information) std::cout << "[Annealing Optimize]: Iteration " << iteration << ": resurrecting genome from iteration " << iteration_of_last_improvement << std::endl;
 
 					// Resurrect best genome:
 					last_energy = best_energy;
@@ -196,8 +199,8 @@ AnnealingOptimizationOutput<GenomeElement> annealing_optimize(
 
 
 	if (output_debug_information) {
-		std::cout << "[Annealing optimize]: Accepted genes: "
-		          << accepted_gene_count << " / "
+		std::cout << "[Annealing optimize]: Accepted gene mutations: "
+		          << accepted_gene_count << " (" << accepted_despite_increasing_gene_count << " of them were accepted despite energy increasing)" << " / "
 		          << (has_finished_ahead_of_schedule ? iterations_if_finished_early : params.iterations);
 		if (has_finished_ahead_of_schedule) {
 			std::cout
