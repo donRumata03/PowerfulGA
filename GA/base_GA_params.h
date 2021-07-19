@@ -83,7 +83,7 @@ namespace GA
 
 
 
-	inline void default_GA_informer_by_percennt(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
+	inline void default_GA_informer_by_percent(const double percent, const double best_fitness, const std::vector<double>& best_genome) {
 		static_assert(is_printable_by_me<const std::vector<double>>::value);
 		std::cout << "GA Percent: " << percent << " %; Best fitness: " << best_fitness << std::endl;
 	}

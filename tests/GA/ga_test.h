@@ -41,7 +41,6 @@ inline void test_GA() {
 
 	auto callback = [&](const size_t iterations_performed, const double best_fitness, const std::vector<double>& best_genome)
 	{
-
 		std::cout << "GA: " << percent_plotter(iterations_performed, epochs, 2) << " iterations performed ; best error now: " << value_by_shaffer_fit(best_fitness) << "; best genome: " << best_genome << std::endl;
 	};
 
