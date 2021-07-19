@@ -9,6 +9,7 @@
 #include <problem_examples/path_minimizing/path_minimizing_utils.h>
 #include <tests/annealing/path_optimizing_util_tests.h>
 #include <tests/benchmarking/GA_adapter_test.h>
+#include <tests/computation_distribution_test.h>
 
 
 int main()
@@ -38,6 +39,9 @@ int main()
 	// test_quantity_counter_with_little_number();
 	// progress_coefficient_test();
 	// test_quantity_dynamic_graphing();
+
+	/// 									GA computation distribution
+	test_iteration_distribution();
 
 	/// 										Annealing:
 	// annealing_permutational_mutation_test();

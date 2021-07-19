@@ -60,6 +60,8 @@ namespace GA
 
 	/// all_computations is always equal to $ population_size \cdot epoch_number $
 	struct ComputationDistribution {
+		friend std::ostream& operator<< (std::ostream& os, const ComputationDistribution& distribution);
+
 		size_t all_computations {};
 
 		size_t population_size {};

@@ -227,6 +227,8 @@ namespace GA
 		show_plot({ .window_title = "Hazing percent = "s + std::to_string(orient_params.hazing_percent) });
 	}
 
+	//////// 							Computation Distribution
+
 	ComputationDistribution distribute_computations_defaultly (size_t target_all_computations, double epoch_pow)
 	{
 		assert(0 <= epoch_pow);
@@ -245,4 +247,10 @@ namespace GA
 		};
 	}
 
+	std::ostream& operator<< (std::ostream& os, const ComputationDistribution& distribution)
+	{
+		os << "ComputationDistribution { all_computations: " << distribution.all_computations << " population_size: "
+		   << distribution.population_size << " epoch_number: " << distribution.epoch_number << " }";
+		return os;
+	}
 }
