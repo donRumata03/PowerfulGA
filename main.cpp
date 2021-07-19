@@ -41,7 +41,9 @@ int main()
 	// test_quantity_dynamic_graphing();
 
 	/// 									GA computation distribution
-	test_iteration_distribution();
+//	 std::cout << n_atic_mean({1, 1, 1, 23, 43, 64, 50, 100, 99, 150}, 0.5) << std::endl;
+	// run_GA_with_iteration_distribution();
+	explore_performance_vs_epoch_pow();
 
 	/// 										Annealing:
 	// annealing_permutational_mutation_test();
