@@ -70,10 +70,14 @@ inline void explore_performance_vs_epoch_pow() {
 
 		auto this_smoothed = smooth(zip(ep_pows, this_dependency), 0.1, 500);
 		add_vectors_to_plot(ep_pows, this_dependency, plot_params { .name = this_name + " (measured points)", .type = "scatter",});
-		add_pairs_to_plot(this_smoothed, { .name = this_name + " (smoothed)" });
+		add_pairs_to_plot(this_smoothed, { .name = this_name + " (smoothed)"});
 	}
 
 
 
-	show_plot();
+	show_plot(
+			plot_common_params{
+				.window_title = "Dependence of target_function_value on epoch_pow"
+			}
+			);
 }
