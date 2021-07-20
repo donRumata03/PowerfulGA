@@ -7,7 +7,7 @@
 #include <GA/GA_optimizer.h>
 
 inline double run_GA_with_iteration_distribution(double ep_pow = 0.35, bool mute = false) {
-	size_t computations = 100000;
+	size_t computations = 7000;
 
 	auto distr = GA::distribute_computations_defaultly(computations, ep_pow);
 	if (not mute) std::cout << distr << std::endl;
@@ -39,6 +39,12 @@ inline double run_GA_with_iteration_distribution(double ep_pow = 0.35, bool mute
 	return fitness;
 }
 
+
+
+/**
+ * Result is:
+ * Optimal epoch pow is: 0.45
+ */
 inline void explore_performance_vs_epoch_pow() {
 	size_t repetitions = 10;
 	double start = 0.1;

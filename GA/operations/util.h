@@ -71,7 +71,7 @@ namespace GA
 	/**
 	 * @param epoch_pow: from 0 to 1, epoch_number ≈ all_computations^epoch_pow
 	 */
-	ComputationDistribution distribute_computations_defaultly(size_t target_all_computations, double epoch_pow);
+	ComputationDistribution distribute_computations_defaultly(size_t target_all_computations, double epoch_pow = 0.45);
 
 	/*
 	 * Deprecated
