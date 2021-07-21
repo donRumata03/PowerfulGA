@@ -6,7 +6,7 @@
 
 namespace GA
 {
-	Population generate_population(const std::vector<std::pair<double, double>>& ranges, const size_t amount)
+	Population generate_population(const std::vector<std::pair<double, double>>& ranges, size_t amount)
 	{
 		size_t genome_size = ranges.size();
 		Population res(amount);

@@ -4,7 +4,19 @@
 double easom_function(const std::vector<double>& point);
 double holder_function(const std::vector<double>& point);
 double eggholder_function(const std::vector<double>& point); // For -512 <= x, y <= 512 : min = -959.6407 at (512, 404.2319)
-double schaffer_function(const std::vector<double>& point); // For -100 <= x, y <= 100 : min = 0.292579 at (0, +- 1.25313)
+
+inline double schaffer_function(const std::vector<double>& point) // For -100 <= x, y <= 100 : min = 0.292579 at (0, +- 1.25313)
+{
+	if (point.size() != 2) {
+		std::cout << console_colors::red /*<< console_colors::bold*/ << console_colors::underlined << "The size of genome "  << point
+		          << " is " << point.size() << ", but should be " << 2 << console_colors::remove_all_colors
+		          << std::endl;
+	}
+
+	assert(point.size() == 2);
+	double x = point[0], y = point[1];
+	return 0.5 + (square(cos(sin(abs(square(x) - square(y))))) - 0.5) / square(1 + 0.001 * (square(x) + square(y)));
+}
 
 double parabaloid(const std::vector<double>& point);
 double parabaloid_fitness(std::vector<double>& xs);
