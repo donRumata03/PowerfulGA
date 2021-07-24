@@ -150,7 +150,9 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 		} catch(std::exception& e) {
 			return { prev_function_value, previous_point };
 		}
-		if ((iteration > 1 and prev_function_value < function_result) or std::isnan(function_result)) {
+		if (std::isnan(function_result) or function_result > prev_function_value * 1.00001) {
+			std::cout.precision(30);
+
 			std::cout << "[Newton Method]: at iteration " << iteration << " / " << iterations
 				<< " previous result of function was smaller than this one (or this is just None…): " << prev_function_value << " → " << function_result
 			<< " ==> return previous one (" << previous_point << " instead of " << current_point << ")" << std::endl;
