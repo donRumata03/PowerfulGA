@@ -135,6 +135,8 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 	auto current_point = start_point;
 	auto previous_point = current_point;
 
+	double prev_function_value = std::numeric_limits<double>::infinity();
+
 	size_t dimensions = start_point.size();
 
 
@@ -146,7 +148,10 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 		try {
 			function_result = func(current_point);
 		} catch(std::exception& e) {
-			return { func(previous_point), previous_point };
+			return { prev_function_value, previous_point };
+		}
+		if (prev_function_value < function_result) {
+			return { prev_function_value, previous_point };
 		}
 
 		try {
@@ -157,6 +162,7 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 		}
 
 		previous_point = current_point;
+		prev_function_value = function_result;
 		for (size_t n_dim = 0; n_dim < dimensions; n_dim++)
 		{
 			if (abs(first_grad[n_dim]) < 1e-120 || abs(second_grad[n_dim]) < 1e-120 || second_grad[n_dim] == 0) {
