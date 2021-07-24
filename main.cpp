@@ -45,6 +45,8 @@ int main()
 	// run_GA_with_iteration_distribution();
 	explore_performance_vs_epoch_pow();
 
+	std::cout << sizeof(double) << " " << sizeof(char) << std::endl;
+
 	/// 										Annealing:
 	// annealing_permutational_mutation_test();
 	// complete_annealing_test();
@@ -96,7 +98,9 @@ int main()
 
 	/// 									Performance tests:
 
-	GA_adapter_test();
+	// GA_adapter_test();
+
+	// std::cout << distribute_computations_defaultly(1000000) << std::endl;
 
 	return 0;
 }

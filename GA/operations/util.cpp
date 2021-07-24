@@ -247,10 +247,12 @@ namespace GA
 		};
 	}
 
-	std::ostream& operator<< (std::ostream& os, const ComputationDistribution& distribution)
-	{
-		os << "ComputationDistribution { all_computations: " << distribution.all_computations << " population_size: "
-		   << distribution.population_size << " epoch_number: " << distribution.epoch_number << " }";
-		return os;
-	}
+
+}
+
+std::ostream& operator<< (std::ostream& os, const GA::ComputationDistribution& distribution)
+{
+	os << "ComputationDistribution { all_computations: " << distribution.all_computations << " population_size: "
+	   << distribution.population_size << " epoch_number: " << distribution.epoch_number << " }";
+	return os;
 }
