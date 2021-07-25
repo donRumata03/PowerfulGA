@@ -14,8 +14,8 @@ inline void test_GA() {
 
 	GA::continuous_GA_params params;
 
-	size_t total_computations = 5'000'000;
-	params.population_size = 100'000;
+	size_t total_computations = 100'000;
+	params.population_size = 1'000;
 	size_t epochs = total_computations / params.population_size;
 	// params.epoch_num = total_computations / params.population_size;
 
@@ -34,7 +34,7 @@ inline void test_GA() {
 
 	// Multithreading parameters:
 	params.threading_params.allow_multithreading = true;
-	params.threading_params.threads = 10;
+//	params.threading_params.threads = 10;
 
 	params.crossover_mode = GA::crossover_mode::low_variance_genetic;
 

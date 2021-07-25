@@ -7,15 +7,15 @@
 #include <GA/GA_optimizer.h>
 
 inline double run_GA_with_iteration_distribution(double ep_pow = 0.35, bool mute = false) {
-	size_t computations = 7000;
+	size_t computations = 20'000;
 
 	auto distr = GA::distribute_computations_defaultly(computations, ep_pow);
 	if (not mute) std::cout << distr << std::endl;
 
 	GA::continuous_GA_params params{};
 	params.mutation_params = {
-			.mutation_percent_sigma = 0.15,
-			.target_gene_mutation_number = 0.4,
+			.mutation_percent_sigma = 0.05,
+			.target_gene_mutation_number = 0.02,
 			.cut_mutations = true,
 	};
 	params.population_size = distr.population_size;

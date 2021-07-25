@@ -32,8 +32,8 @@ inline double easom_fit(const std::vector<double>& point) { return 1 / easom_fun
 inline double holder_fit(const std::vector<double>& point) { return 1 / (50 + holder_function(point)); }
 inline double eggholder_fit(const std::vector<double>& point) { return 1 / (1000 + eggholder_function(point)); }
 
-inline double shaffer_fit(const std::vector<double>& point) { return 1 / (schaffer_function(point) - 0.29); }
-inline double value_by_shaffer_fit(double fit) { return 0.29 + 1 / fit; }
+inline double shaffer_fit(const std::vector<double>& point) { return 1 / (schaffer_function(point) - 0.); }
+inline double value_by_shaffer_fit(double fit) { return 0. + 1 / fit; }
 
 
 
