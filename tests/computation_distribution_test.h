@@ -60,8 +60,8 @@ inline void explore_performance_vs_epoch_pow() {
 		for (size_t i = 0; i < repetitions; ++i) {
 			this_fits.push_back(run_GA_with_iteration_distribution(this_ep_pow, true));
 		}
-		auto upper_mean = n_atic_mean(this_fits, 2.5);
-		auto lower_mean = n_atic_mean(this_fits, 0.5);
+		auto upper_mean = n_atic_mean(this_fits, 3.);
+		auto lower_mean = n_atic_mean(this_fits, -1.);
 		upper_dependency.push_back(upper_mean);
 		lower_dependency.push_back(lower_mean);
 		std::cout << "Epoch pow: " << this_ep_pow
@@ -86,4 +86,16 @@ inline void explore_performance_vs_epoch_pow() {
 				.window_title = "Dependence of target_function_value on epoch_pow"
 			}
 			);
+}
+
+inline void test_averages() {
+	//	 std::cout << n_atic_mean({1, 1, 1, 23, 43, 64, 50, 100, 99, 150}, 0.5) << std::endl;
+// 	std::cout << sizeof(double) << " " << sizeof(char) << std::endl;
+
+	std::vector<double> ms = { 387.803, 387.803, 387.803, 352.3, 387.803, 387.803, 387.803, 387.803, 387.803, 387.803 };
+	std::cout
+		<< "A: " << count_average(ms)
+		<< " Q: " << quadratic_mean(ms)
+		<< " G: " << geometric_mean(ms)
+		<< " H: " << harmonic_mean(ms) << std::endl;
 }

@@ -27,7 +27,7 @@ int main()
 	/// 										GA itself:
 	// old_ga_test();
 	// test_GA();
-	run_GA_with_iteration_distribution();
+	// run_GA_with_iteration_distribution();
 
 	/// 										GA operations:
 	// fancy_crossover_test();
@@ -42,10 +42,9 @@ int main()
 	// test_quantity_dynamic_graphing();
 
 	/// 									GA computation distribution
-//	 std::cout << n_atic_mean({1, 1, 1, 23, 43, 64, 50, 100, 99, 150}, 0.5) << std::endl;
-// 	std::cout << sizeof(double) << " " << sizeof(char) << std::endl;
 
-	// explore_performance_vs_epoch_pow();
+	// test_averages();
+	explore_performance_vs_epoch_pow();
 
 
 	/// 										Annealing:
