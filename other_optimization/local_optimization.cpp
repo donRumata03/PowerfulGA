@@ -173,7 +173,7 @@ newton_optimize (const std::function<double (const std::vector<double> &)> &func
 		prev_function_value = function_result;
 		for (size_t n_dim = 0; n_dim < dimensions; n_dim++)
 		{
-			if (abs(first_grad[n_dim]) < 1e-120 || abs(second_grad[n_dim]) < 1e-120 || second_grad[n_dim] == 0) {
+			if (std::abs(first_grad[n_dim]) < 1e-120 || std::abs(second_grad[n_dim]) < 1e-120 || second_grad[n_dim] == 0) {
 				return { func(current_point), current_point};
 			}
 

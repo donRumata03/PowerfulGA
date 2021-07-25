@@ -15,7 +15,7 @@ inline double schaffer_function(const std::vector<double>& point) // For -100 <=
 
 	assert(point.size() == 2);
 	double x = point[0], y = point[1];
-	return 0.5 + (square(cos(sin(abs(square(x) - square(y))))) - 0.5) / square(1 + 0.001 * (square(x) + square(y)));
+	return 0.5 + (square(cos(sin(std::abs(square(x) - square(y))))) - 0.5) / square(1 + 0.001 * (square(x) + square(y)));
 }
 
 
@@ -42,9 +42,9 @@ inline std::vector<double> schaffer_function_first_derivative(const std::vector<
 	double x = point[0], y = point[1];
 
 	return {
-			(x * (-0.004 * (square(cos(sin(abs(x * x - y * y)))) - 0.5) -
-			      (4 * (x * x - y * y) * (0.001 * (x * x + y * y) + 1) * sin(sin(abs(x * x - y * y))) *
-			       cos(abs(x * x - y * y)) * cos(sin(abs(x * x - y * y)))) / abs(square(x) - square(y))))
+			(x * (-0.004 * (square(cos(sin(std::abs(x * x - y * y)))) - 0.5) -
+			      (4 * (x * x - y * y) * (0.001 * (x * x + y * y) + 1) * sin(sin(std::abs(x * x - y * y))) *
+			       cos(std::abs(x * x - y * y)) * cos(sin(std::abs(x * x - y * y)))) / std::abs(square(x) - square(y))))
 			/
 			cube(0.001 * (square(x) + square(y)) + 1),
 

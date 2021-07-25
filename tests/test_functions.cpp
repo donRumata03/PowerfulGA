@@ -15,14 +15,14 @@ double holder_function(const std::vector<double>& point)
 {
 	assert(point.size() == 2);
 	double x = point[0], y = point[1];
-	return -abs(sin(x) * cos(y) * exp(abs(1 - (sqrt(square(x) + square(y))) / (pi))));
+	return -std::abs(sin(x) * cos(y) * exp(std::abs(1 - (sqrt(square(x) + square(y))) / (pi))));
 }
 
 double eggholder_function(const std::vector<double>& point)
 {
 	assert(point.size() == 2);
 	double x = point[0], y = point[1];
-	return -(y + 47) * sin(sqrt(abs(x / 2 + (y + 47)))) - x * sin(sqrt(abs(x - (y + 47))));
+	return -(y + 47) * sin(sqrt(std::abs(x / 2 + (y + 47)))) - x * sin(sqrt(std::abs(x - (y + 47))));
 }
 
 
