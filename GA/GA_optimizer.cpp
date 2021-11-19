@@ -5,13 +5,6 @@
 #include "GA_optimizer.h"
 #include "displaying/print_stl.h"
 
-std::mutex prnt_mut;
-
-void sf_print(const std::string& to_print) {
-	std::lock_guard<std::mutex> lck (prnt_mut);
-	std::cout << to_print << std::endl;
-}
-
 /**
  * Initialization
  */
